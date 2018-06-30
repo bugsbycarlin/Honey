@@ -1,0 +1,16 @@
+import os
+
+version = "0_01"
+
+env=Environment(SCONS_CXX_STANDARD="c++11")
+
+BuildLibrary = env.StaticLibrary("Honey", Glob("./Source/*.cpp"))
+
+def postBuildSteps(target, source, env):
+  os.system("rm ./Source/*.o")
+  os.system("mv libHoney.a ./Build/%s/Library/" % version)
+  os.system("cp ./Source/*.h ./Build/%s/Includes" % version)
+
+post = Command("postBuildSteps", [], postBuildSteps)
+Depends(post, BuildLibrary)
+BUILD_TARGETS.append("postBuildSteps")

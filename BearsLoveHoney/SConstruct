@@ -1,0 +1,22 @@
+import os
+
+version = "0_01"
+
+env=Environment(SCONS_CXX_STANDARD="c++11")
+
+libraries = ["SDL2", "libHoney.a"]
+
+BearsLoveHoney = env.Program(target = "BearsLoveHoney",
+  source = Glob("./Source/*.cpp"),
+  LIBS = libraries,
+  LIBPATH="../Engine/Build/%s/Library" % version,
+  CPPPATH="../Engine/Build/%s/Includes" % version)
+
+Default()
+
+def cleanObjects(target, source, env):
+  os.system("rm ./Source/*.o")
+
+cleanup = Command("cleanObjects", [], cleanObjects)
+Depends(cleanup, BUILD_TARGETS)
+BUILD_TARGETS.append("cleanObjects")
