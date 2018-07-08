@@ -1,8 +1,14 @@
 import os
 
-version = "0_01"
+version = "0_02"
 
-env=Environment(SCONS_CXX_STANDARD="c++11")
+env=Environment()
+env.Append(CXXFLAGS = "-std=c++11")
+
+os.system("rm -rf ./Build/%s" % version)
+os.system("mkdir ./Build/%s" % version)
+os.system("mkdir ./Build/%s/Library" % version)
+os.system("mkdir ./Build/%s/Includes" % version)
 
 BuildLibrary = env.StaticLibrary("Honey", Glob("./Source/*.cpp"))
 

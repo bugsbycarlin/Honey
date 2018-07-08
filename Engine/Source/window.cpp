@@ -10,11 +10,19 @@
 namespace Honey {
   Window::Window(std::string title, int screen_width, int screen_height, bool fullscreen) {
     
+    this->width = screen_width;
+    this->height = screen_height;
+
     // Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_GAMECONTROLLER) < 0) {
       printf("SDL could not initialize. SDL Error: %s\n", SDL_GetError());
       exit(1);
     }
+
+    // Set OpenGL version
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
     // Set the flags
     int flags = SDL_WINDOW_OPENGL;
