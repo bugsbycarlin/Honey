@@ -1,13 +1,13 @@
 import os
 
-version = "0_03"
+version = "0_04"
 
 env=Environment()
 env.Append(CXXFLAGS = "-std=c++11")
 
-libraries = ["SDL2", "libHoney.a"]
+libraries = ["libHoney.a"]
 
-env.AppendUnique(FRAMEWORKS = Split("OpenGL"))
+env.AppendUnique(FRAMEWORKS = Split("OpenGL SDL2 SDL2_image"))
 
 BearsLoveHoney = env.Program(target = "BearsLoveHoney",
   source = Glob("./Source/*.cpp"),

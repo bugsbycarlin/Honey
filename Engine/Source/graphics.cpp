@@ -26,6 +26,10 @@ namespace Honey {
     printf("OpenGL Version: %s\n", glGetString(GL_VERSION));
     printf("OpenGL Shading Language Version: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
+    // Enable blending, so we can use the alpha or transparency component of images.
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     // glViewport tells OpenGL it's drawing on a square the size of the window.
     glViewport(0, 0, window->width, window->height);
 
@@ -40,6 +44,8 @@ namespace Honey {
     // Here we set up some things that are going to be fed to the shader program.
     // First is the mvp (model-view-projection) matrix.
     mvp_matrix_id = glGetUniformLocation(shader_program, "mvp_matrix");
+    // Second is the texture sampler.
+    texture_sampler_id = glGetUniformLocation(shader_program, "texture_sampler");
 
     // Remember, modern OpenGL works by feeding data (vertices, normals, textures, colors)
     // straight to the graphics card. Here we're telling OpenGL to prepare for an array of
@@ -155,11 +161,23 @@ namespace Honey {
       x_position + width, y_position, 0,
     };
 
+    GLfloat texture_data[] = { 
+      0.0f, 0.0f,
+      0.0f, 1.0f,
+      1.0f, 1.0f,
+      1.0f, 0.0f
+    };
+
     GLuint vertex_buffer;
+    GLuint texture_buffer;
 
     glGenBuffers(1, &vertex_buffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_data) * 4 * 3, vertex_data, GL_STATIC_DRAW);
+
+    glGenBuffers(1, &texture_buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, texture_buffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(texture_data) * 4 * 2, texture_data, GL_STATIC_DRAW);
 
     // 1st buffer : vertices
     glEnableVertexAttribArray(0);
@@ -167,6 +185,18 @@ namespace Honey {
     glVertexAttribPointer(
       0,                  // buffer number 0
       3,                  // size per item is 3 (3 points to a vertex)
+      GL_FLOAT,           // of type float
+      GL_FALSE,           // not normalized
+      0,                  // stride (ignore me!)
+      (void*)0            // array buffer offset (ignore meeee!)
+    );
+
+    // 2nd buffer : textures
+    glEnableVertexAttribArray(1);
+    glBindBuffer(GL_ARRAY_BUFFER, texture_buffer);
+    glVertexAttribPointer(
+      1,                  // buffer number 1
+      2,                  // size per item is 2 (2 points to a texture coordinate)
       GL_FLOAT,           // of type float
       GL_FALSE,           // not normalized
       0,                  // stride (ignore me!)
@@ -182,6 +212,72 @@ namespace Honey {
     }
 
     glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(1);
+  }
+
+  void Graphics::addImage(std::string label, std::string path) {
+    // Don't reload the same texture multiple times.
+    if (texture_map.count(label) == 1) {
+      return;
+    }
+
+    // Use the SDL to load the image
+    SDL_Surface* image = IMG_Load(path.c_str());
+    if (image == nullptr) {
+      printf("IMG_Load failed for %s with error: %s\n", path.c_str(), IMG_GetError());
+      exit(1);
+    }
+
+    // Make a texture
+    GLuint* texture = new GLuint[1];
+    glGenTextures(1, texture);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, image->pixels);
+
+    // Save the texture id in a map
+    texture_map[label] = texture[0];
+
+    // Also save the width and height
+    texture_widths[label] = image->w;
+    texture_heights[label] = image->h;
+  }
+
+  void Graphics::setImage(std::string label) {
+    if (texture_map.count(label) != 1) {
+      printf("Failed to find %s among images.\n", label.c_str());
+      return;
+    }
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture_map[label]);
+    glUniform1i(texture_sampler_id, 0);
+  }
+
+  void Graphics::drawImage(std::string label, int x_position, int y_position) {
+    if (texture_map.count(label) != 1) {
+      printf("Failed to draw %s because it wasn't cached in images.\n", label.c_str());
+      return;
+    }
+
+    setImage(label);
+
+    int width = texture_widths[label];
+    int height = texture_heights[label];
+
+    drawRectangle(x_position, y_position, width, height);
+  }
+
+  void Graphics::destroyImage(std::string label) {
+    if (texture_map.count(label) != 1) {
+      printf("Failed to delete %s because it wasn't cached in images.\n", label.c_str());
+      return;
+    }
+
+    glActiveTexture(GL_TEXTURE0);
+    glDeleteTextures(1, &texture_map[label]);
+    texture_map.erase(label);
   }
 
   void Graphics::updateDisplay() {
