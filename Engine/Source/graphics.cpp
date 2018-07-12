@@ -54,6 +54,18 @@ namespace Honey {
     glGenVertexArrays(1, &vertex_array_id);
     glBindVertexArray(vertex_array_id);
 
+    // Here we create our rectangle texture data and pass it to the card.
+    GLfloat texture_data[] = { 
+      0.0f, 0.0f,
+      0.0f, 1.0f,
+      1.0f, 1.0f,
+      1.0f, 0.0f
+    };
+
+    glGenBuffers(1, &rectangle_texture_buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, rectangle_texture_buffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(texture_data) * 4 * 2, texture_data, GL_STATIC_DRAW);
+
     // The model matrix stores the transform (rotation, translation, scale) of
     // one object. We start out with the identity matrix, which corresponds to
     // "no transform at all".
@@ -128,6 +140,34 @@ namespace Honey {
     glUseProgram(shader_program);
   }
 
+  void Graphics::pushModelMatrix() {
+    // We want to be able to store model states while we mess around with more model transformations.
+    // Here we have a stack to store the model.
+    model_stack.push_back(model);
+  }
+
+  void Graphics::popModelMatrix() {
+    // When we pop the stack, we go back to the previous model.
+    model = model_stack.back();
+    model_stack.pop_back();
+
+    if (using_2d) {
+      // We also need to feed this old model back to the graphics card.
+      glUniformMatrix4fv(mvp_matrix_id, 1, GL_FALSE, glm::value_ptr(projection * model));
+    }
+  }
+
+  void Graphics::translate(float x, float y, float z) {
+    // GLM has a method for us to translate objects. This changes the model matrix,
+    // through multiplication, as though we applied a translation, ie, moved the object
+    // by x, y, and z.
+    // Once we've done this, we need to feed the result to the graphics card.
+    model = model * glm::translate(glm::vec3(x, y, z));
+    if (using_2d) {
+      glUniformMatrix4fv(mvp_matrix_id, 1, GL_FALSE, glm::value_ptr(projection * model));
+    }
+  }
+
   void Graphics::clearScreen(std::string color) {
     // The clear screen method takes a hex-string color (eg #A4F4E3 or #FFFFFF or #003030)
     // and decomposes it into r, g, and b floats, which are each a fraction from 0 (black)
@@ -153,35 +193,32 @@ namespace Honey {
     using_2d = true;
   }
 
-  void Graphics::drawRectangle(float x_position, float y_position, float width, float height) {
+  void Graphics::cacheRectangle(float width, float height) {
+    std::string id = std::to_string(width) + "," + std::to_string(height);
+
     GLfloat vertex_data[] = { 
-      x_position, y_position, 0,
-      x_position, y_position + height, 0,
-      x_position + width, y_position + height, 0,
-      x_position + width, y_position, 0,
+      0, 0, 0,
+      0, height, 0,
+      width, height, 0,
+      width, 0, 0,
     };
 
-    GLfloat texture_data[] = { 
-      0.0f, 0.0f,
-      0.0f, 1.0f,
-      1.0f, 1.0f,
-      1.0f, 0.0f
-    };
-
-    GLuint vertex_buffer;
-    GLuint texture_buffer;
-
-    glGenBuffers(1, &vertex_buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
+    glGenBuffers(1, &vertex_buffers[id]);
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffers[id]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_data) * 4 * 3, vertex_data, GL_STATIC_DRAW);
+  }
 
-    glGenBuffers(1, &texture_buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, texture_buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(texture_data) * 4 * 2, texture_data, GL_STATIC_DRAW);
+  void Graphics::drawRectangle(float x_position, float y_position, float width, float height) {
+    std::string id = std::to_string(width) + "," + std::to_string(height);
+
+    // If we're missing this particular rectangle size, go ahead and cache it
+    if (vertex_buffers.count(id) == 0) {
+      cacheRectangle(width, height);
+    }
 
     // 1st buffer : vertices
     glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffers[id]);
     glVertexAttribPointer(
       0,                  // buffer number 0
       3,                  // size per item is 3 (3 points to a vertex)
@@ -193,7 +230,7 @@ namespace Honey {
 
     // 2nd buffer : textures
     glEnableVertexAttribArray(1);
-    glBindBuffer(GL_ARRAY_BUFFER, texture_buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, rectangle_texture_buffer);
     glVertexAttribPointer(
       1,                  // buffer number 1
       2,                  // size per item is 2 (2 points to a texture coordinate)
@@ -203,6 +240,9 @@ namespace Honey {
       (void*)0            // array buffer offset (ignore meeee!)
     );
 
+    pushModelMatrix();
+    translate(x_position, y_position, 0);
+
     int size = 4;
 
     if (size == 4) {
@@ -210,6 +250,8 @@ namespace Honey {
     } else {
       glDrawArrays(GL_TRIANGLES, 0, 3);
     }
+
+    popModelMatrix();
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
