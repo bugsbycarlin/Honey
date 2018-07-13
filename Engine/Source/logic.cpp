@@ -12,16 +12,14 @@ namespace Honey {
 
   Logic::Logic() {
     time_markers = {};
-    time_locks = {};
-    transient_counters = {};
+    duration_markers = {};
     transient_counter_values = {};
   }
 
   // Remove a label from all logic
   void Logic::remove(std::string label) {
     time_markers.erase(label);
-    time_locks.erase(label);
-    transient_counters.erase(label);
+    duration_markers.erase(label);
     transient_counter_values.erase(label);
   }
 
@@ -29,6 +27,11 @@ namespace Honey {
   void Logic::markTime(std::string label) {
     // Get the time in milliseconds since the world was created.
     time_markers[label] = std::chrono::system_clock::now().time_since_epoch() / std::chrono::milliseconds(1);
+  }
+
+  // Marks the intended duration of a label
+  void Logic::markDuration(std::string label, float seconds) {
+    duration_markers[label] = seconds;
   }
 
   // Tells the time in seconds since a label was marked
@@ -44,27 +47,35 @@ namespace Honey {
     return time_difference;
   }
 
+  // Remind me of the intended duration of the label
+  float Logic::duration(std::string label) {
+    if (duration_markers.count(label) == 0) {
+      return 0;
+    }
+    return duration_markers[label];
+  }
+
   // Locks this label for this many seconds.
   void Logic::makeTimeLock(std::string label, float seconds) {
     // Don't make the time lock if it already exists
-    if (time_locks.count(label) == 1) {
-      printf("Warning: timeLock %s already exists.\n", label.c_str());
+    if (duration_markers.count(label) == 1) {
+      printf("Warning: label %s already exists.\n", label.c_str());
       return;
     }
 
-    time_locks[label] = seconds;
+    duration_markers[label] = seconds;
     markTime(label);
   }
 
   // Tells you if this label is still locked.
   bool Logic::isTimeLocked(std::string label) {
     // If there is no lock, return false; it's not time locked!
-    if (time_locks.count(label) == 0) {
+    if (duration_markers.count(label) == 0) {
       return false;
     }
 
     // The lock has expired! Remove it, and return false; it's no longer time locked!
-    if (time_markers.count(label) == 1 && timeSince(label) > time_locks[label]) {
+    if (time_markers.count(label) == 1 && timeSince(label) > duration_markers[label]) {
       remove(label);
       return false;
     }
@@ -76,12 +87,12 @@ namespace Honey {
   // Make a counter for this label that lasts for this many seconds.
   void Logic::makeTransientCounter(std::string label, float seconds) {
     // Don't make the time lock if it already exists and hasn't expired.
-    if (transient_counters.count(label) == 1 && timeSince(label) < transient_counters[label]) {
+    if (duration_markers.count(label) == 1 && timeSince(label) < duration_markers[label]) {
       printf("Warning: transient counter %s already exists.\n", label.c_str());
       return;
     }
 
-    transient_counters[label] = seconds;
+    duration_markers[label] = seconds;
     transient_counter_values[label] = 0;
     markTime(label);
   }
@@ -89,13 +100,13 @@ namespace Honey {
   // Increment a transient counter if it's still valid.
   void Logic::incrementTransientCounter(std::string label, int value) {
     // If the label doesn't exist, ignore and return.
-    if (transient_counters.count(label) == 0) {
+    if (duration_markers.count(label) == 0) {
       return;
     }
 
     // If the label exists but it has expired, destroy it and recreate it.
-    if (time_markers.count(label) == 1 && timeSince(label) > transient_counters[label]) {
-      float seconds = transient_counters[label];
+    if (time_markers.count(label) == 1 && timeSince(label) > duration_markers[label]) {
+      float seconds = duration_markers[label];
       remove(label);
       makeTransientCounter(label, seconds);
     }
@@ -106,12 +117,12 @@ namespace Honey {
   // Give the value of a transient counter, or 0 if it's no longer valid.
   int Logic::transientCounterValue(std::string label) {
     // If the label doesn't exist, ignore and return 0.
-    if (transient_counters.count(label) == 0) {
+    if (duration_markers.count(label) == 0) {
       return 0;
     }
 
     // If the label exists but it has expired, destroy it and return 0.
-    if (time_markers.count(label) == 1 && timeSince(label) > transient_counters[label]) {
+    if (time_markers.count(label) == 1 && timeSince(label) > duration_markers[label]) {
       remove(label);
       return 0;
     }

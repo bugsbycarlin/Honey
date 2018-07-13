@@ -164,6 +164,22 @@ namespace Honey {
     return false;
   }
 
+  bool Input::threeQuickKey(std::string key) {
+    if (keyPressed(key) > 0) {
+      std::string label = key + "_quick_counter";
+      if (logic->transientCounterValue(label) <= 0) {
+        logic->makeTransientCounter(label, 1.0);
+      }
+
+      logic->incrementTransientCounter(label, keyPressed(key));
+
+      if (logic->transientCounterValue(label) >= 3) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   int Input::actionPressed(std::string action) {
     if (action_to_key.count(action) == 0) {
       return 0;
@@ -186,6 +202,22 @@ namespace Honey {
     } else {
       return keyUp(action_to_key[action]);
     }
+  }
+
+  bool Input::threeQuickAction(std::string action) {
+    if (actionPressed(action) > 0) {
+      std::string label = action + "_quick_counter";
+      if (logic->transientCounterValue(label) <= 0) {
+        logic->makeTransientCounter(label, 1.0);
+      }
+
+      logic->incrementTransientCounter(label, actionPressed(action));
+
+      if (logic->transientCounterValue(label) >= 3) {
+        return true;
+      }
+    }
+    return false;
   }
 
   void Input::addActionKey(std::string action, std::string key) {

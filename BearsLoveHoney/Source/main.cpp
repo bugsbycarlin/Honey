@@ -4,6 +4,7 @@
 #include "logic.h"
 #include "input.h"
 #include "graphics.h"
+#include "effects.h"
 
 using namespace Honey;
 
@@ -19,53 +20,60 @@ int main(int argc, char* args[]) {
   graphics->addImage("grim_bear", "Art/grim_bear.png");
   graphics->addImage("lawn_dart_bear", "Art/lawn_dart_bear.png");
 
+  // Constants to determine the carousel
   std::string bears[] = {"explorer_bear", "grim_bear", "lawn_dart_bear"};
-  int first_bear = 0; // This can have the value 0, 1, or 2, according to which bear comes first on the screen.
-  int bear_margin = 340; // It's 340 pixels between bears.
-  int animation_direction = 0; // -1 is a left movement, 1 is a right movement.
+  const int bear_margin = 340; // It's 340 pixels between bears.
+  const float animation_duration = 0.5; // The animations will take 0.5 seconds
+  
+  // Variables to track which bear is where and which animation is which.
+  int first_bear = 0; // Mod 3
+  int animation_direction = 0;
+
+  input->addActionKey("select left", "left");
+  input->addActionKey("select right", "right");
+  input->addActionKey("choose", "up");
 
   bool quit = false;
   while (!quit) {
     input->processInput();
 
-    input->addActionKey("run left", "left");
-    input->addActionKey("run right", "right");
-
-    if (input->actionDown("run left") && !logic->isTimeLocked("movement")) {
-      printf("Move left!\n");
-      logic->makeTimeLock("movement", 0.5);
-
+    // If user slides left, switch the bears, and make animations.
+    if (input->actionDown("select left") && !logic->isTimeLocked("movement")) {
+      logic->makeTimeLock("movement", animation_duration);
       first_bear += 1;
-      if (first_bear > 2) {
-        first_bear = 0;
-      }
+      first_bear = first_bear % 3;
       animation_direction = -1;
+      effects->makeTween("slide_bear_0", bear_margin, 0, animation_duration);
+      effects->makeTween("slide_bear_1", bear_margin, 0, animation_duration);
+      effects->makeTween("slide_bear_2", -2 * bear_margin, 0, animation_duration);
+      effects->makeTween("dip_bear_2", 0, 15, animation_duration);
     }
 
-    if (input->actionDown("run right") && !logic->isTimeLocked("movement")) {
-      printf("Move right!\n");
-      logic->makeTimeLock("movement", 0.5);
+    // If the user slides right, switch the bears, and make animations.
+    if (input->actionDown("select right") && !logic->isTimeLocked("movement")) {
+      logic->makeTimeLock("movement", animation_duration);
       first_bear -= 1;
-      if (first_bear < 0) {
-        first_bear = 2;
-      }
+      first_bear = (first_bear + 3) % 3;
       animation_direction = 1;
+      effects->makeTween("slide_bear_0", 2 * bear_margin, 0, animation_duration);
+      effects->makeTween("slide_bear_1", -bear_margin, 0, animation_duration);
+      effects->makeTween("slide_bear_2", -bear_margin, 0, animation_duration);
+      effects->makeTween("dip_bear_0", 0, 15, animation_duration);
+    }
+
+    // If the users presses the choose button, shake the middle bear.
+    if (input->actionDown("choose") && !logic->isTimeLocked("movement")) {
+      logic->makeTimeLock("movement", animation_duration);
+      effects->makeShake("shakey shakey", 10, animation_duration);
+      animation_direction = 0;
     }
 
     if (input->keyPressed("quit") > 0) {
       quit = true;
     }
 
-    if (input->keyPressed("escape") > 0) {
-      if (logic->transientCounterValue("escape_counter") <= 0) {
-        logic->makeTransientCounter("escape_counter", 1.0);
-      }
-
-      logic->incrementTransientCounter("escape_counter", input->keyPressed("escape"));
-
-      if (logic->transientCounterValue("escape_counter") >= 3) {
-        quit = true;
-      }
+    if (input->threeQuickKey("escape")) {
+      quit = true;
     }
 
     // Clear the screen to a soft white color
@@ -74,14 +82,24 @@ int main(int argc, char* args[]) {
     // Switch to 2D drawing mode
     graphics->draw2D();
 
-    // Draw three bears in three different locations
-    float adjustment = 0;
-    if (logic->isTimeLocked("movement")) {
-      adjustment = animation_direction * bear_margin * (1 - (logic->timeSince("movement") / logic->time_locks["movement"]));
+    for (int i = 0; i <= 2; i++) {
+      // Set the basic bear position
+      float x = 60 + i * bear_margin;
+      float y = 300;
+      // Add movement tweens if we're moving
+      if (logic->isTimeLocked("movement")) {
+        x += effects->tween("slide_bear_" + std::to_string(i), effects->SIGMOID);
+        y += effects->tween("dip_bear_" + std::to_string(i), effects->SINEWAVE);
+      }
+      // Add shakey shakey to the middle bear.
+      // This will only do anything if the effect is turned on.
+      if (i == 1) {
+        x += effects->shake("shakey shakey");
+        y += effects->shake("shakey shakey");
+      }
+      // Draw the dang ol' bear.
+      graphics->drawImage(bears[(first_bear + i) % 3], x, y);
     }
-    graphics->drawImage(bears[first_bear], 60 - adjustment, 300);
-    graphics->drawImage(bears[(first_bear + 1) % 3], 60 + bear_margin - adjustment, 300);
-    graphics->drawImage(bears[(first_bear + 2) % 3], 60 + 2 * bear_margin - adjustment, 300);
 
     // Put everything we've drawn on screen
     graphics->updateDisplay();
