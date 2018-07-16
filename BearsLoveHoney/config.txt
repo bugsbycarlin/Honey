@@ -1,0 +1,23 @@
+<section name="layout">
+  <param type="int" name="screen_width">960</param>
+  <param type="int" name="screen_height">600</param>
+  <param type="bool" name="full_screen">false</param>
+  <param type="int" name="bear_margin">340</param>
+  <param type="string" name="screen_color">#F0F0F0</param>
+  <param type="int" name="first_bear_x">60</param>
+  <param type="int" name="first_bear_y">300</param>
+</section>
+
+<section name="animation">
+  <param type="float" name="animation_duration">0.5</param>
+  <param type="int" name="tween_type">1</param>
+  <param type="float" name="dip_height">40</param>
+  <param type="float" name="shake_width">10</param>
+</section>
+
+<section name="input">
+  <param type="float" name="lock_duration">0.5</param>
+  <param type="string" name="select_left_key">left</param>
+  <param type="string" name="select_right_key">right</param>
+  <param type="string" name="choose_key">up</param>
+</section>

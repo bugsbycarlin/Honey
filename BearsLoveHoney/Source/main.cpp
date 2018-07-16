@@ -2,6 +2,7 @@
 
 #include "window.h"
 #include "logic.h"
+#include "hotconfig.h"
 #include "input.h"
 #include "graphics.h"
 #include "effects.h"
@@ -11,7 +12,16 @@ using namespace Honey;
 int main(int argc, char* args[]) {
   printf("Honey Engine, reporting for duty!\n");
 
-  Window* window = new Window("Honey Engine", 960, 600, false);
+  // Load configuration
+  if(hot_config->checkAndUpdate() != hot_config->SUCCESS) {
+    exit(1);
+  }
+
+  int screen_width = hot_config->getInt("layout", "screen_width");
+  int screen_height = hot_config->getInt("layout", "screen_height");
+  bool full_screen = hot_config->getBool("layout", "full_screen");
+
+  Window* window = new Window("Honey Engine", screen_width, screen_height, full_screen);
 
   graphics->initialize(window);
 
@@ -22,49 +32,61 @@ int main(int argc, char* args[]) {
 
   // Constants to determine the carousel
   std::string bears[] = {"explorer_bear", "grim_bear", "lawn_dart_bear"};
-  const int bear_margin = 340; // It's 340 pixels between bears.
-  const float animation_duration = 0.5; // The animations will take 0.5 seconds
-  
+
   // Variables to track which bear is where and which animation is which.
   int first_bear = 0; // Mod 3
   int animation_direction = 0;
 
-  input->addActionKey("select left", "left");
-  input->addActionKey("select right", "right");
-  input->addActionKey("choose", "up");
+  input->addActionKey("select left", hot_config->getString("input", "select_left_key"));
+  input->addActionKey("select right", hot_config->getString("input", "select_right_key"));
+  input->addActionKey("choose", hot_config->getString("input", "choose_key"));
 
   bool quit = false;
   while (!quit) {
+    // Check and load configuration (default every 2 seconds)
+    hot_config->checkAndUpdate();
+
+    // Set a bunch of variables from configuration
+    int bear_margin = hot_config->getInt("layout", "bear_margin");
+    int first_bear_x = hot_config->getInt("layout", "first_bear_x");
+    int first_bear_y = hot_config->getInt("layout", "first_bear_y");
+    std::string screen_color = hot_config->getString("layout", "screen_color");
+    float animation_duration = hot_config->getFloat("animation", "animation_duration");
+    int tween_type = hot_config->getInt("animation", "tween_type");
+    float dip_height = hot_config->getFloat("animation", "dip_height");
+    float shake_width = hot_config->getFloat("animation", "shake_width");
+    float lock_duration = hot_config->getFloat("input", "lock_duration");
+
     input->processInput();
 
     // If user slides left, switch the bears, and make animations.
     if (input->actionDown("select left") && !logic->isTimeLocked("movement")) {
-      logic->makeTimeLock("movement", animation_duration);
+      logic->makeTimeLock("movement", lock_duration);
       first_bear += 1;
       first_bear = first_bear % 3;
       animation_direction = -1;
       effects->makeTween("slide_bear_0", bear_margin, 0, animation_duration);
       effects->makeTween("slide_bear_1", bear_margin, 0, animation_duration);
       effects->makeTween("slide_bear_2", -2 * bear_margin, 0, animation_duration);
-      effects->makeTween("dip_bear_2", 0, 15, animation_duration);
+      effects->makeTween("dip_bear_2", 0, dip_height, animation_duration);
     }
 
     // If the user slides right, switch the bears, and make animations.
     if (input->actionDown("select right") && !logic->isTimeLocked("movement")) {
-      logic->makeTimeLock("movement", animation_duration);
+      logic->makeTimeLock("movement", lock_duration);
       first_bear -= 1;
       first_bear = (first_bear + 3) % 3;
       animation_direction = 1;
       effects->makeTween("slide_bear_0", 2 * bear_margin, 0, animation_duration);
       effects->makeTween("slide_bear_1", -bear_margin, 0, animation_duration);
       effects->makeTween("slide_bear_2", -bear_margin, 0, animation_duration);
-      effects->makeTween("dip_bear_0", 0, 15, animation_duration);
+      effects->makeTween("dip_bear_0", 0, dip_height, animation_duration);
     }
 
     // If the users presses the choose button, shake the middle bear.
     if (input->actionDown("choose") && !logic->isTimeLocked("movement")) {
-      logic->makeTimeLock("movement", animation_duration);
-      effects->makeShake("shakey shakey", 10, animation_duration);
+      logic->makeTimeLock("movement", lock_duration);
+      effects->makeShake("shakey shakey", shake_width, animation_duration);
       animation_direction = 0;
     }
 
@@ -77,18 +99,18 @@ int main(int argc, char* args[]) {
     }
 
     // Clear the screen to a soft white color
-    graphics->clearScreen("#F0F0F0");
+    graphics->clearScreen(screen_color);
 
     // Switch to 2D drawing mode
     graphics->draw2D();
 
     for (int i = 0; i <= 2; i++) {
       // Set the basic bear position
-      float x = 60 + i * bear_margin;
-      float y = 300;
+      float x = first_bear_x + i * bear_margin;
+      float y = first_bear_y;
       // Add movement tweens if we're moving
       if (logic->isTimeLocked("movement")) {
-        x += effects->tween("slide_bear_" + std::to_string(i), effects->SIGMOID);
+        x += effects->tween("slide_bear_" + std::to_string(i), tween_type);
         y += effects->tween("dip_bear_" + std::to_string(i), effects->SINEWAVE);
       }
       // Add shakey shakey to the middle bear.
