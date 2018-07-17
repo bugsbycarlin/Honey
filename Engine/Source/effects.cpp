@@ -11,8 +11,6 @@ namespace Honey {
   Effects* effects = new Effects();
 
   Effects::Effects() {
-    srand (time(NULL));
-
     tween_starts = {};
     tween_ends = {};
     shake_widths = {};

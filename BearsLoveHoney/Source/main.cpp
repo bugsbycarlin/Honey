@@ -5,6 +5,7 @@
 #include "hotconfig.h"
 #include "input.h"
 #include "graphics.h"
+#include "sound.h"
 #include "effects.h"
 
 using namespace Honey;
@@ -24,11 +25,25 @@ int main(int argc, char* args[]) {
   Window* window = new Window("Honey Engine", screen_width, screen_height, full_screen);
 
   graphics->initialize(window);
+  sound->initialize();
 
   // Load three images of bears
   graphics->addImage("explorer_bear", "Art/explorer_bear.png");
   graphics->addImage("grim_bear", "Art/grim_bear.png");
   graphics->addImage("lawn_dart_bear", "Art/lawn_dart_bear.png");
+
+  // Add music and some sound effects
+  sound->addMusic("background_music", "Sound/Nothing_to_Fear.mp3");
+  sound->addSound("move_left", "Sound/C_Square1.wav");
+  sound->addSound("move_right", "Sound/C_Square2.wav");
+  sound->addSound("choose_1", "Sound/Chant1.wav");
+  sound->addSound("choose_2", "Sound/Chant2.wav");
+  sound->addSound("choose_3", "Sound/Chant3.wav");
+  sound->addSound("choose_4", "Sound/Chant4.wav");
+  sound->addSound("choose_5", "Sound/Chant5.wav");
+
+  // Start playing music
+  sound->playMusic("background_music", -1);
 
   // Constants to determine the carousel
   std::string bears[] = {"explorer_bear", "grim_bear", "lawn_dart_bear"};
@@ -52,15 +67,22 @@ int main(int argc, char* args[]) {
     int first_bear_y = hot_config->getInt("layout", "first_bear_y");
     std::string screen_color = hot_config->getString("layout", "screen_color");
     float animation_duration = hot_config->getFloat("animation", "animation_duration");
+    float choose_duration = hot_config->getFloat("animation", "choose_duration");
     int tween_type = hot_config->getInt("animation", "tween_type");
     float dip_height = hot_config->getFloat("animation", "dip_height");
     float shake_width = hot_config->getFloat("animation", "shake_width");
     float lock_duration = hot_config->getFloat("input", "lock_duration");
+    float sound_volume = hot_config->getFloat("sound", "sound_volume");
+    float music_volume = hot_config->getFloat("sound", "music_volume");
+
+    sound->setSoundVolume(sound_volume);
+    sound->setMusicVolume(music_volume);
 
     input->processInput();
 
     // If user slides left, switch the bears, and make animations.
     if (input->actionDown("select left") && !logic->isTimeLocked("movement")) {
+      sound->playSound("move_left", 1);
       logic->makeTimeLock("movement", lock_duration);
       first_bear += 1;
       first_bear = first_bear % 3;
@@ -73,6 +95,7 @@ int main(int argc, char* args[]) {
 
     // If the user slides right, switch the bears, and make animations.
     if (input->actionDown("select right") && !logic->isTimeLocked("movement")) {
+      sound->playSound("move_right", 1);
       logic->makeTimeLock("movement", lock_duration);
       first_bear -= 1;
       first_bear = (first_bear + 3) % 3;
@@ -85,8 +108,9 @@ int main(int argc, char* args[]) {
 
     // If the users presses the choose button, shake the middle bear.
     if (input->actionDown("choose") && !logic->isTimeLocked("movement")) {
+      sound->playSound("choose_" + std::to_string(logic->randomInt(1,5)), 1);
       logic->makeTimeLock("movement", lock_duration);
-      effects->makeShake("shakey shakey", shake_width, animation_duration);
+      effects->makeShake("shakey shakey", shake_width, choose_duration);
       animation_direction = 0;
     }
 
@@ -131,6 +155,11 @@ int main(int argc, char* args[]) {
   graphics->destroyImage("explorer_bear");
   graphics->destroyImage("grim_bear");
   graphics->destroyImage("lawn_dart_bear");
+
+  // Kill the sounds too!
+  sound->destroyMusic("background_music");
+  sound->destroySound("move_left");
+  sound->destroySound("move_right");
 
   window->destroy();
 }

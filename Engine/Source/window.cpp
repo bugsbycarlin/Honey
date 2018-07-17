@@ -14,7 +14,7 @@ namespace Honey {
     this->height = screen_height;
 
     // Initialize SDL
-    if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_GAMECONTROLLER) < 0) {
+    if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_GAMECONTROLLER|SDL_INIT_AUDIO) < 0) {
       printf("SDL could not initialize. SDL Error: %s\n", SDL_GetError());
       exit(1);
     }
@@ -50,8 +50,14 @@ namespace Honey {
 
     // Use Vsync
     if (SDL_GL_SetSwapInterval(1) < 0) {
-      printf("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
+      printf("Unable to set VSync! SDL Error: %s\n", SDL_GetError());
       exit(1);
+    }
+
+    // Initialize Audio
+    if (Mix_Init(MIX_INIT_MP3) != MIX_INIT_MP3) {
+        printf("Could not initialize SDL mixer! Error: %s\n", Mix_GetError());
+        exit(1);
     }
   }
 
@@ -59,6 +65,9 @@ namespace Honey {
     // Destroy the window
     SDL_DestroyWindow(window);
     window = NULL;
+
+    // Shut down the SDL_Mixer
+    Mix_Quit();
 
     // Shut down the SDL
     SDL_Quit();

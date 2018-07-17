@@ -9,15 +9,21 @@
 </section>
 
 <section name="animation">
-  <param type="float" name="animation_duration">0.5</param>
+  <param type="float" name="animation_duration">0.35</param>
+  <param type="float" name="choose_duration">0.25</param>
   <param type="int" name="tween_type">1</param>
   <param type="float" name="dip_height">40</param>
   <param type="float" name="shake_width">10</param>
 </section>
 
 <section name="input">
-  <param type="float" name="lock_duration">0.5</param>
+  <param type="float" name="lock_duration">0.35</param>
   <param type="string" name="select_left_key">left</param>
   <param type="string" name="select_right_key">right</param>
   <param type="string" name="choose_key">up</param>
+</section>
+
+<section name="sound">
+  <param type="float" name="sound_volume">1.0</param>
+  <param type="float" name="music_volume">0.8</param>
 </section>

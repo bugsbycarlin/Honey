@@ -11,6 +11,8 @@ namespace Honey {
   Logic* logic = new Logic();
 
   Logic::Logic() {
+    srand (time(NULL));
+
     time_markers = {};
     duration_markers = {};
     transient_counter_values = {};
@@ -128,5 +130,10 @@ namespace Honey {
     }
 
     return transient_counter_values[label];
+  }
+
+  // Get a random integer between start and end
+  int Logic::randomInt(int start, int end) {
+    return rand() % (int) (end - start) + start;
   }
 }

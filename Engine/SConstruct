@@ -1,9 +1,9 @@
 import os
 
-version = "0_08"
+version = "0_09"
 
 env=Environment()
-env.Append(CXXFLAGS = "-std=c++11")
+env.Append(CXXFLAGS = "-std=c++11 -mmacosx-version-min=10.10")
 
 os.system("rm -rf ./Build/%s" % version)
 os.system("mkdir ./Build/%s" % version)
