@@ -27,10 +27,11 @@ int main(int argc, char* args[]) {
   graphics->initialize(window);
   sound->initialize();
 
-  // Load three images of bears
+  // Load images
   graphics->addImage("explorer_bear", "Art/explorer_bear.png");
   graphics->addImage("grim_bear", "Art/grim_bear.png");
   graphics->addImage("lawn_dart_bear", "Art/lawn_dart_bear.png");
+  graphics->addImage("star", "Art/star.png");
 
   // Add music and some sound effects
   sound->addMusic("background_music", "Sound/Nothing_to_Fear.mp3");
@@ -52,9 +53,27 @@ int main(int argc, char* args[]) {
   int first_bear = 0; // Mod 3
   int animation_direction = 0;
 
+  // Set action keys
   input->addActionKey("select left", hot_config->getString("input", "select_left_key"));
   input->addActionKey("select right", hot_config->getString("input", "select_right_key"));
   input->addActionKey("choose", hot_config->getString("input", "choose_key"));
+
+  // Make a star oscillation effect
+  int star_y = hot_config->getInt("layout", "star_y");
+  float starbounce_height = hot_config->getFloat("animation", "starbounce_height");
+  float starbounce_period = hot_config->getFloat("animation", "starbounce_period");
+  effects->makeOscillation("starbounce", starbounce_height, starbounce_period);
+  float startilt_angle = hot_config->getFloat("animation", "startilt_angle");
+  float startilt_period = hot_config->getFloat("animation", "startilt_period");
+  effects->makeOscillation("startilt", startilt_angle, startilt_period);
+
+  // Make a star field
+  int star_field_x[60];
+  int star_field_y[60];
+  for (int i = 0; i < 60; i++) {
+    star_field_x[i] = logic->randomInt(-screen_width / 2.0, 1.5 * screen_width);
+    star_field_y[i] = logic->randomInt(-screen_height / 2.0, 1.5 * screen_height);
+  }
 
   bool quit = false;
   while (!quit) {
@@ -111,6 +130,7 @@ int main(int argc, char* args[]) {
       sound->playSound("choose_" + std::to_string(logic->randomInt(1,5)), 1);
       logic->makeTimeLock("movement", lock_duration);
       effects->makeShake("shakey shakey", shake_width, choose_duration);
+      effects->makeTween("star_phasing", 0, 1, animation_duration);
       animation_direction = 0;
     }
 
@@ -128,6 +148,20 @@ int main(int argc, char* args[]) {
     // Switch to 2D drawing mode
     graphics->draw2D();
 
+    // Light up the sky
+    if (effects->tween("star_phasing", 0) != 0) {
+      float opacity = effects->tween("star_phasing", effects->SINEWAVE);
+      float shooting_star = 300 * effects->tween("star_phasing", effects->LINEAR);
+      graphics->setColor(hot_config->getString("layout", "star_color_1"), opacity);
+
+      for (int i = 0; i < 60; i++) {
+        graphics->drawImage("star", star_field_x[i] + shooting_star, star_field_y[i] - shooting_star, true, 0, 0.15);
+      }
+
+      graphics->setColor(1, 1, 1, 1);
+    }
+
+    // Draw the bears
     for (int i = 0; i <= 2; i++) {
       // Set the basic bear position
       float x = first_bear_x + i * bear_margin;
@@ -147,6 +181,16 @@ int main(int argc, char* args[]) {
       graphics->drawImage(bears[(first_bear + i) % 3], x, y);
     }
 
+    // Draw the stars
+    // Translate once to change the position of all the stars
+    graphics->translate(0, effects->oscillation("starbounce"), 0);
+    for (int i = 0; i <= 2; i++) {
+      float x = first_bear_x + i * bear_margin + 78;
+      float y = star_y;
+      graphics->setColor(hot_config->getString("layout", "star_color_" + std::to_string(i)), 1);
+      graphics->drawImage("star", x, y, true, effects->oscillation("startilt"), 0.25);
+    }
+
     // Put everything we've drawn on screen
     graphics->updateDisplay();
   }
@@ -155,6 +199,7 @@ int main(int argc, char* args[]) {
   graphics->destroyImage("explorer_bear");
   graphics->destroyImage("grim_bear");
   graphics->destroyImage("lawn_dart_bear");
+  graphics->destroyImage("star");
 
   // Kill the sounds too!
   sound->destroyMusic("background_music");

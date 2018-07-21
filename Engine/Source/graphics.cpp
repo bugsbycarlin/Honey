@@ -46,6 +46,8 @@ namespace Honey {
     mvp_matrix_id = glGetUniformLocation(shader_program, "mvp_matrix");
     // Second is the texture sampler.
     texture_sampler_id = glGetUniformLocation(shader_program, "texture_sampler");
+    // Third is the color.
+    color_id = glGetUniformLocation(shader_program, "color");
 
     // Remember, modern OpenGL works by feeding data (vertices, normals, textures, colors)
     // straight to the graphics card. Here we're telling OpenGL to prepare for an array of
@@ -70,6 +72,9 @@ namespace Honey {
     // one object. We start out with the identity matrix, which corresponds to
     // "no transform at all".
     model = glm::mat4(1.0);
+
+    // We also start out with white as the color.
+    color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
   }
 
   void Graphics::initializeShaders() {
@@ -168,6 +173,43 @@ namespace Honey {
     }
   }
 
+  void Graphics::rotate(float angle, float x, float y, float z) {
+    // GLM has a method for us to rotate objects. This changes the model matrix,
+    // through multiplication, as though we applied a rotation, ie, rotated the object
+    // by angle degrees around the vector x, y, z.
+    model = model * glm::rotate(glm::radians(angle), glm::vec3(x, y, z));
+    if (using_2d) {
+      glUniformMatrix4fv(mvp_matrix_id, 1, GL_FALSE, glm::value_ptr(projection * model));
+    }
+  }
+  
+  void Graphics::scale(float x, float y, float z) {
+    // GLM has a method for us to scale objects. This changes the model matrix,
+    // through multiplication, as though we applied a scale, ie, scaled the object
+    // by factors of x, y, and z in those respective directions.
+    model = model * glm::scale(glm::vec3(x, y, z));
+    if (using_2d) {
+      glUniformMatrix4fv(mvp_matrix_id, 1, GL_FALSE, glm::value_ptr(projection * model));
+    }
+  }
+
+  void Graphics::setColor(std::string color, float opacity) {
+    // The clear screen method takes a hex-string color (eg #A4F4E3 or #FFFFFF or #003030)
+    // and decomposes it into r, g, and b floats, which are each a fraction from 0 (black)
+    // to 1 (fully saturated). (1,0,0) is full red, (0,1,0) is full green, (0,0,1) is full
+    // blue, and (1,1,1) is full white.
+    float r = std::stoi(color.substr(1,2), 0, 16) / 255.0f;
+    float g = std::stoi(color.substr(3,2), 0, 16) / 255.0f;
+    float b = std::stoi(color.substr(5,2), 0, 16) / 255.0f;
+
+    setColor(r, g, b, opacity);
+  }
+
+  void Graphics::setColor(float r, float g, float b, float opacity) {
+    color = glm::vec4(r, g, b, opacity);
+    glUniform4fv(color_id, 1, glm::value_ptr(color));
+  }
+
   void Graphics::clearScreen(std::string color) {
     // The clear screen method takes a hex-string color (eg #A4F4E3 or #FFFFFF or #003030)
     // and decomposes it into r, g, and b floats, which are each a fraction from 0 (black)
@@ -180,6 +222,15 @@ namespace Honey {
     // Tell OpenGL to clear the whole screen to our chosen color.
     glClearColor(r, g, b, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // Also, for convenience, reset the model matrix
+    model = glm::mat4(1.0);
+    if (using_2d) {
+      glUniformMatrix4fv(mvp_matrix_id, 1, GL_FALSE, glm::value_ptr(projection * model));
+    }
+
+    // and the color
+    setColor(1.0f, 1.0f, 1.0f, 1.0f);
   }
 
   void Graphics::draw2D() {
@@ -309,6 +360,24 @@ namespace Honey {
     int height = texture_heights[label];
 
     drawRectangle(x_position, y_position, width, height);
+  }
+
+  void Graphics::drawImage(std::string label, int x_position, int y_position, bool centered, float rotation, float scale) {
+    pushModelMatrix();
+    
+    translate(x_position, y_position, 0);
+    rotate(rotation, 0, 0, 1);
+    this->scale(scale, scale, scale);
+
+    if (centered) {
+      int width = texture_widths[label];
+      int height = texture_heights[label];
+      translate(-width / 2.0, -height / 2.0, 0);
+    }
+
+    drawImage(label, 0, 0);
+
+    popModelMatrix();
   }
 
   void Graphics::destroyImage(std::string label) {

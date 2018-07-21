@@ -13,7 +13,7 @@ namespace Honey {
   Effects::Effects() {
     tween_starts = {};
     tween_ends = {};
-    shake_widths = {};
+    widths = {};
   }
 
   void Effects::makeTween(std::string label, float start_value, float end_value, float seconds) {
@@ -77,7 +77,7 @@ namespace Honey {
   void Effects::makeShake(std::string label, int shake_width, float seconds) {
     logic->markDuration(label, seconds);
     logic->markTime(label);
-    shake_widths[label] = shake_width;
+    widths[label] = shake_width;
   }
 
   float Effects::shake(std::string label) {
@@ -89,11 +89,31 @@ namespace Honey {
     // If the label is expired, destroy it and return 0
     if (logic->timeSince(label) > logic->duration(label)) {
       logic->remove(label);
-      shake_widths.erase(label);
+      widths.erase(label);
       return 0;
     }
 
     // Return a random number between -width/2 and width/2
-    return rand() % (int) shake_widths[label] - shake_widths[label] / 2.0;
+    return rand() % (int) widths[label] - widths[label] / 2.0;
+  }
+
+  void Effects::makeOscillation(std::string label, float oscillation_width, float period_in_seconds) {
+    logic->markDuration(label, period_in_seconds);
+    logic->markTime(label);
+    widths[label] = oscillation_width;
+  }
+
+  float Effects::oscillation(std::string label) {
+    // If there's no label, return 0
+    if (logic->time_markers.count(label) == 0) {
+      return 0;
+    }
+
+    // We *don't* check if the oscillation has expired. Oscillations are infinite, until they're manually deleted.
+
+    // We're misusing duration for period
+    float time_fraction = logic->timeSince(label) / logic->duration(label);
+    float space_fraction = sin(2 * M_PI * time_fraction);
+    return (2 * space_fraction - 1) * widths[label];
   }
 }

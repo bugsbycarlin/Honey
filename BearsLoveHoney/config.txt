@@ -5,15 +5,23 @@
   <param type="int" name="bear_margin">340</param>
   <param type="string" name="screen_color">#F0F0F0</param>
   <param type="int" name="first_bear_x">60</param>
-  <param type="int" name="first_bear_y">300</param>
+  <param type="int" name="first_bear_y">350</param>
+  <param type="int" name="star_y">280</param>
+  <param type="string" name="star_color_0">#ff6961</param>
+  <param type="string" name="star_color_1">#77dd77</param>
+  <param type="string" name="star_color_2">#779ecb</param>
 </section>
 
 <section name="animation">
-  <param type="float" name="animation_duration">0.35</param>
+  <param type="float" name="animation_duration">0.5</param>
   <param type="float" name="choose_duration">0.25</param>
   <param type="int" name="tween_type">1</param>
   <param type="float" name="dip_height">40</param>
   <param type="float" name="shake_width">10</param>
+  <param type="float" name="starbounce_height">5</param>
+  <param type="float" name="starbounce_period">2</param>
+  <param type="float" name="startilt_angle">20</param>
+  <param type="float" name="startilt_period">2</param>
 </section>
 
 <section name="input">
