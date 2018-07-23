@@ -48,6 +48,12 @@ namespace Honey {
       exit(1);
     }
 
+    // Initialize SDL2_ttf for fonts
+    if (TTF_Init() < 0) {
+      printf("Warning: Unable to initialize SDL2_ttf for fonts: %s\n", TTF_GetError());
+      exit(1);
+    }
+
     // Use Vsync
     if (SDL_GL_SetSwapInterval(1) < 0) {
       printf("Unable to set VSync! SDL Error: %s\n", SDL_GetError());

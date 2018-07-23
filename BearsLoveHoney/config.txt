@@ -7,9 +7,13 @@
   <param type="int" name="first_bear_x">60</param>
   <param type="int" name="first_bear_y">350</param>
   <param type="int" name="star_y">280</param>
-  <param type="string" name="star_color_0">#ff6961</param>
-  <param type="string" name="star_color_1">#77dd77</param>
-  <param type="string" name="star_color_2">#779ecb</param>
+  <param type="int" name="font_x">70</param>
+  <param type="int" name="font_y">520</param>
+  <param type="int" name="font_size">50</param>
+  <param type="int" name="font_margin">340</param>
+  <param type="string" name="bear_color_0">#ff6961</param>
+  <param type="string" name="bear_color_1">#77dd77</param>
+  <param type="string" name="bear_color_2">#779ecb</param>
 </section>
 
 <section name="animation">

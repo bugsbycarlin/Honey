@@ -337,6 +337,23 @@ namespace Honey {
     texture_heights[label] = image->h;
   }
 
+  void Graphics::addTextImage(std::string label, SDL_Surface* text_render) {
+    // Make a texture
+    GLuint* texture = new GLuint[1];
+    glGenTextures(1, texture);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, text_render->w, text_render->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, text_render->pixels);
+
+    // Save the texture id in a map
+    texture_map[label] = texture[0];
+
+    // Also save the width and height
+    texture_widths[label] = text_render->w;
+    texture_heights[label] = text_render->h;
+  }
+
   void Graphics::setImage(std::string label) {
     if (texture_map.count(label) != 1) {
       printf("Failed to find %s among images.\n", label.c_str());

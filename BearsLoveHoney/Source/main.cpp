@@ -5,6 +5,7 @@
 #include "hotconfig.h"
 #include "input.h"
 #include "graphics.h"
+#include "textbox.h"
 #include "sound.h"
 #include "effects.h"
 
@@ -48,6 +49,19 @@ int main(int argc, char* args[]) {
 
   // Constants to determine the carousel
   std::string bears[] = {"explorer_bear", "grim_bear", "lawn_dart_bear"};
+  std::string bear_names[] = {"Colonel", "Grimsby", "Darty"};
+
+  // Make text boxes
+  int font_margin = hot_config->getInt("layout", "font_margin");
+  int font_x = hot_config->getInt("layout", "font_x");
+  int font_y = hot_config->getInt("layout", "font_y");
+  int font_size = hot_config->getInt("layout", "font_size");
+  Textbox* bear_text[3];
+  for (int i = 0; i < 3; i++) {
+    bear_text[i] = new Textbox("Fonts/jennifer.ttf", font_size, bear_names[i],
+      hot_config->getString("layout", "bear_color_" + std::to_string(i)), 
+      font_x + i * font_margin, font_y);
+  }
 
   // Variables to track which bear is where and which animation is which.
   int first_bear = 0; // Mod 3
@@ -150,9 +164,10 @@ int main(int argc, char* args[]) {
 
     // Light up the sky
     if (effects->tween("star_phasing", 0) != 0) {
+      int center_bear = (first_bear + 1) % 3;
       float opacity = effects->tween("star_phasing", effects->SINEWAVE);
       float shooting_star = 300 * effects->tween("star_phasing", effects->LINEAR);
-      graphics->setColor(hot_config->getString("layout", "star_color_1"), opacity);
+      graphics->setColor(hot_config->getString("layout", "bear_color_" + std::to_string(center_bear)), opacity);
 
       for (int i = 0; i < 60; i++) {
         graphics->drawImage("star", star_field_x[i] + shooting_star, star_field_y[i] - shooting_star, true, 0, 0.15);
@@ -177,23 +192,42 @@ int main(int argc, char* args[]) {
         x += effects->shake("shakey shakey");
         y += effects->shake("shakey shakey");
       }
-      // Draw the dang ol' bear.
-      graphics->drawImage(bears[(first_bear + i) % 3], x, y);
-    }
 
-    // Draw the stars
-    // Translate once to change the position of all the stars
-    graphics->translate(0, effects->oscillation("starbounce"), 0);
-    for (int i = 0; i <= 2; i++) {
-      float x = first_bear_x + i * bear_margin + 78;
-      float y = star_y;
-      graphics->setColor(hot_config->getString("layout", "star_color_" + std::to_string(i)), 1);
+      int bear_num = (first_bear + i) % 3;
+
+      // Draw the dang ol' bear.
+      graphics->drawImage(bears[bear_num], x, y);
+
+      // And the stars
+      x += 78;
+      y = star_y + effects->oscillation("starbounce");
+      if (logic->isTimeLocked("movement")) {
+        //x += effects->tween("slide_bear_" + std::to_string(i), tween_type);
+        y += effects->tween("dip_bear_" + std::to_string(i), effects->SINEWAVE);
+      }
+      graphics->setColor(hot_config->getString("layout", "bear_color_" + std::to_string(bear_num)), 1);
       graphics->drawImage("star", x, y, true, effects->oscillation("startilt"), 0.25);
+      graphics->setColor("#FFFFFF", 1);
+
+      // And the font
+      bear_text[bear_num]->x = font_x + first_bear + i * font_margin;
+      bear_text[bear_num]->y = font_y;
+      if (logic->isTimeLocked("movement")) {
+        bear_text[bear_num]->x += effects->tween("slide_bear_" + std::to_string(i), tween_type);
+        bear_text[bear_num]->y += effects->tween("dip_bear_" + std::to_string(i), effects->SINEWAVE);
+      }
+      bear_text[bear_num]->draw();
+
     }
 
     // Put everything we've drawn on screen
     graphics->updateDisplay();
   }
+
+  // Kill the fonts
+  bear_text[0]->shutdown();
+  bear_text[1]->shutdown();
+  bear_text[2]->shutdown();
 
   // Get rid of the bears. Throw those bears down the garbage chute!
   graphics->destroyImage("explorer_bear");
