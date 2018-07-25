@@ -21,45 +21,40 @@ namespace Honey {
 
     this->text = text;
 
-    Uint8 r = std::stoi(color.substr(1,2), 0, 16);
-    Uint8 g = std::stoi(color.substr(3,2), 0, 16);
-    Uint8 b = std::stoi(color.substr(5,2), 0, 16);
+    intColor c = graphics->parseIntColor(color);
+    this->color = {(Uint8) c.r, (Uint8) c.g, (Uint8) c.b};
 
     // A somewhat unique label to reference this textbox from graphics.
     this->label = font_path + "," + std::to_string(font_size) + "," + std::to_string(x) + "," + std::to_string(y);
 
-    this->color = {r, g, b};
-
-    text_surface = TTF_RenderText_Blended(font, this->text.c_str(), this->color);
-    graphics->addTextImage(this->label, text_surface);
+    remakeBox();
   }
-
 
   void Textbox::setText(std::string text) {
     this->text = text;
 
-    text_surface = TTF_RenderText_Blended(font, this->text.c_str(), this->color);
-    graphics->destroyImage(this->label);
-    graphics->addTextImage(this->label, text_surface);
+    remakeBox();
   }
 
   void Textbox::setColor(std::string color) {
-    Uint8 r = std::stoi(color.substr(1,2), 0, 16);
-    Uint8 g = std::stoi(color.substr(3,2), 0, 16);
-    Uint8 b = std::stoi(color.substr(5,2), 0, 16);
+    intColor c = graphics->parseIntColor(color);
+    this->color = {(Uint8) c.r, (Uint8) c.g, (Uint8) c.b};
+    remakeBox();
+  }
 
-    this->color = {r, g, b};
-
-    text_surface = TTF_RenderText_Blended(font, this->text.c_str(), this->color);
-    graphics->destroyImage(this->label);
-    graphics->addTextImage(this->label, text_surface);
+  void Textbox::remakeBox() {
+    if (graphics->checkImage(label)) {
+      graphics->destroyImage(label);
+    }
+    text_surface = TTF_RenderText_Blended(font, text.c_str(), color);
+    graphics->addImageFromSurface(label, text_surface);
   }
 
   void Textbox::draw() {
     graphics->drawImage(this->label, x, y);
   }
 
-  void Textbox::shutdown() {
+  void Textbox::destroy() {
     graphics->destroyImage(this->label);
     TTF_CloseFont(font);
   }

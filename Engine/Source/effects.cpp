@@ -16,6 +16,10 @@ namespace Honey {
     widths = {};
   }
 
+  bool Effects::check(std::string label) {
+    return logic->time_markers.count(label) == 1;
+  }
+
   void Effects::makeTween(std::string label, float start_value, float end_value, float seconds) {
     logic->markDuration(label, seconds);
     logic->markTime(label);

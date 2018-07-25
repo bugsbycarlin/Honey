@@ -57,6 +57,13 @@ namespace Honey {
     sounds.erase(label);
   }
 
+  void Sound::destroyAllSounds() {
+    for (std::pair<std::string, Mix_Chunk*> item : sounds) {
+      Mix_FreeChunk(item.second);
+      sounds.erase(item.first);
+    }
+  }
+
   void Sound::addMusic(std::string label, std::string path) {
     Mix_Music *musica;
     musica = Mix_LoadMUS(path.c_str());
@@ -80,5 +87,13 @@ namespace Honey {
 
     Mix_FreeMusic(music[label]);
     music.erase(label);
+  }
+
+  // NOOOOOOOOOOOOOOOOO
+  void Sound::destroyAllMusic() {
+    for (std::pair<std::string, Mix_Music*> item : music) {
+      Mix_FreeMusic(item.second);
+      music.erase(item.first);
+    }
   }
 }

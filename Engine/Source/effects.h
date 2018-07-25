@@ -39,6 +39,8 @@ namespace Honey {
       std::unordered_map<std::string, float> tween_ends;
       std::unordered_map<std::string, float> widths;
 
+      bool check(std::string label);
+
       void makeTween(std::string label, float start_value, float end_value, float seconds);
       float tween(std::string label, int style);
 

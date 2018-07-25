@@ -20,6 +20,7 @@
 #include <string>
 
 // Honey includes
+#include "primitives.h"
 #include "graphics.h"
 
 namespace Honey {
@@ -40,9 +41,11 @@ namespace Honey {
     void setText(std::string text);
     void setColor(std::string color);
 
+    void remakeBox();
+
     void draw();
 
-    void shutdown();
+    void destroy();
   };
 }
 #endif

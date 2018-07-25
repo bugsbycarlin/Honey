@@ -25,6 +25,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
+#include "primitives.h"
 #include "window.h"
 #include "shaders.h"
 
@@ -68,6 +69,8 @@ namespace Honey {
       void rotate(float angle, float x, float y, float z);
       void scale(float x, float y, float z);
 
+      floatColor parseFloatColor(std::string color);
+      intColor parseIntColor(std::string color);
       void setColor(std::string color, float opacity);
       void setColor(float r, float g, float b, float opacity);
 
@@ -77,11 +80,13 @@ namespace Honey {
       void drawRectangle(float x_position, float y_position, float width, float height);
 
       void addImage(std::string label, std::string path);
-      void addTextImage(std::string label, SDL_Surface* text_render);
+      void addImageFromSurface(std::string label, SDL_Surface* image);
       void setImage(std::string label);
       void drawImage(std::string label, int x_position, int y_position);
       void drawImage(std::string label, int x_position, int y_position, bool centered, float rotation, float scale);
       void destroyImage(std::string label);
+      void destroyAllImages();
+      bool checkImage(std::string label);
 
       void updateDisplay();
   };

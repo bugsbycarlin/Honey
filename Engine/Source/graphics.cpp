@@ -193,16 +193,32 @@ namespace Honey {
     }
   }
 
-  void Graphics::setColor(std::string color, float opacity) {
-    // The clear screen method takes a hex-string color (eg #A4F4E3 or #FFFFFF or #003030)
+  floatColor Graphics::parseFloatColor(std::string color) {
+    // This method takes a hex-string color (eg #A4F4E3 or #FFFFFF or #003030)
     // and decomposes it into r, g, and b floats, which are each a fraction from 0 (black)
     // to 1 (fully saturated). (1,0,0) is full red, (0,1,0) is full green, (0,0,1) is full
     // blue, and (1,1,1) is full white.
-    float r = std::stoi(color.substr(1,2), 0, 16) / 255.0f;
-    float g = std::stoi(color.substr(3,2), 0, 16) / 255.0f;
-    float b = std::stoi(color.substr(5,2), 0, 16) / 255.0f;
+    floatColor c;
+    c.r = std::stoi(color.substr(1,2), 0, 16) / 255.0f;
+    c.g = std::stoi(color.substr(3,2), 0, 16) / 255.0f;
+    c.b = std::stoi(color.substr(5,2), 0, 16) / 255.0f;
+    return c;
+  }
 
-    setColor(r, g, b, opacity);
+  intColor Graphics::parseIntColor(std::string color) {
+    // This method takes a hex-string color (eg #A4F4E3 or #FFFFFF or #003030)
+    // and decomposes it into r, g, and b ints, which range from 0 to 255.
+    intColor c;
+    c.r = std::stoi(color.substr(1,2), 0, 16);
+    c.g = std::stoi(color.substr(3,2), 0, 16);
+    c.b = std::stoi(color.substr(5,2), 0, 16);
+    return c;
+  }
+
+  void Graphics::setColor(std::string color, float opacity) {
+    floatColor c = parseFloatColor(color);
+
+    setColor(c.r, c.g, c.b, opacity);
   }
 
   void Graphics::setColor(float r, float g, float b, float opacity) {
@@ -211,16 +227,10 @@ namespace Honey {
   }
 
   void Graphics::clearScreen(std::string color) {
-    // The clear screen method takes a hex-string color (eg #A4F4E3 or #FFFFFF or #003030)
-    // and decomposes it into r, g, and b floats, which are each a fraction from 0 (black)
-    // to 1 (fully saturated). (1,0,0) is full red, (0,1,0) is full green, (0,0,1) is full
-    // blue, and (1,1,1) is full white.
-    float r = std::stoi(color.substr(1,2), 0, 16) / 255.0f;
-    float g = std::stoi(color.substr(3,2), 0, 16) / 255.0f;
-    float b = std::stoi(color.substr(5,2), 0, 16) / 255.0f;
+    floatColor c = parseFloatColor(color);
 
     // Tell OpenGL to clear the whole screen to our chosen color.
-    glClearColor(r, g, b, 1.0f);
+    glClearColor(c.r, c.g, c.b, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Also, for convenience, reset the model matrix
@@ -321,6 +331,10 @@ namespace Honey {
       exit(1);
     }
 
+    addImageFromSurface(label, image);
+  }
+
+  void Graphics::addImageFromSurface(std::string label, SDL_Surface* image) {
     // Make a texture
     GLuint* texture = new GLuint[1];
     glGenTextures(1, texture);
@@ -335,23 +349,6 @@ namespace Honey {
     // Also save the width and height
     texture_widths[label] = image->w;
     texture_heights[label] = image->h;
-  }
-
-  void Graphics::addTextImage(std::string label, SDL_Surface* text_render) {
-    // Make a texture
-    GLuint* texture = new GLuint[1];
-    glGenTextures(1, texture);
-    glBindTexture(GL_TEXTURE_2D, texture[0]);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, text_render->w, text_render->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, text_render->pixels);
-
-    // Save the texture id in a map
-    texture_map[label] = texture[0];
-
-    // Also save the width and height
-    texture_widths[label] = text_render->w;
-    texture_heights[label] = text_render->h;
   }
 
   void Graphics::setImage(std::string label) {
@@ -406,6 +403,18 @@ namespace Honey {
     glActiveTexture(GL_TEXTURE0);
     glDeleteTextures(1, &texture_map[label]);
     texture_map.erase(label);
+  }
+
+  void Graphics::destroyAllImages() {
+    for (std::pair<std::string, GLuint> item : texture_map) {
+      glActiveTexture(GL_TEXTURE0);
+      glDeleteTextures(1, &item.second);
+      texture_map.erase(item.first);
+    }
+  }
+
+  bool Graphics::checkImage(std::string label) {
+    return texture_map.count(label) == 1;
   }
 
   void Graphics::updateDisplay() {

@@ -35,11 +35,13 @@ namespace Honey {
       //-1 loops forever
       void playSound(std::string label, int loops);
       void destroySound(std::string label);
+      void destroyAllSounds();
 
       void addMusic(std::string label, std::string path);
       //-1 loops forever
       void playMusic(std::string label, int loops);
       void destroyMusic(std::string label);
+      void destroyAllMusic();
   };
 
   extern Sound* sound;
