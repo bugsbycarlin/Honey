@@ -1,0 +1,37 @@
+<section name="layout">
+  <param type="int" name="screen_width">960</param>
+  <param type="int" name="screen_height">600</param>
+  <param type="bool" name="full_screen">false</param>
+  <param type="string" name="screen_color">#F0F0F0</param>
+  <param type="int" name="first_bear_x">60</param>
+  <param type="int" name="first_bear_y">200</param>
+  <param type="int" name="bear_margin_x">340</param>
+  <param type="int" name="bear_margin_y">200</param>
+  <param type="int" name="font_x">400</param>
+  <param type="int" name="font_y">80</param>
+  <param type="int" name="font_size">50</param>
+  <param type="string" name="bear_color_0">#77dd77</param>
+  <param type="string" name="bear_color_1">#ff6961</param>
+  <param type="string" name="bear_color_2">#c0c0c0</param>
+  <param type="string" name="bear_color_3">#779ecb</param>
+  <param type="string" name="bear_color_4">#b39eb5</param>
+  <param type="string" name="bear_color_5">#ffb347</param>
+</section>
+
+<section name="animation">
+  <param type="float" name="animation_duration">0.5</param>
+  <param type="float" name="choose_duration">0.25</param>
+  <param type="float" name="shake_width">10</param>
+</section>
+
+<section name="input">
+  <param type="float" name="lock_duration">0.5</param>
+  <param type="string" name="select_left_key">left</param>
+  <param type="string" name="select_right_key">right</param>
+  <param type="string" name="choose_key">up</param>
+</section>
+
+<section name="sound">
+  <param type="float" name="sound_volume">1.0</param>
+  <param type="float" name="music_volume">0.8</param>
+</section>
