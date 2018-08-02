@@ -1,9 +1,14 @@
 #include <string>
 #include <array>
 
-#include "all_the_honey.h"
+#include "honey.h"
 
 using namespace Honey;
+using namespace std;
+
+int test_one(settings s) {
+  return boost::get<int>(s["end"]);
+}
 
 int main(int argc, char* args[]) {
   printf("Honey Engine, reporting for duty!\n");
@@ -13,13 +18,19 @@ int main(int argc, char* args[]) {
     exit(1);
   }
 
+  settings s = {
+    {"label", "star"},
+    {"end", 1},
+    {"duration", 1.5}
+  };
+  printf("Settings: %d\n", test_one(s));
+
   int screen_width = hot_config->getInt("layout", "screen_width");
   int screen_height = hot_config->getInt("layout", "screen_height");
   bool full_screen = hot_config->getBool("layout", "full_screen");
 
-  Window* window = new Window("Honey Engine", screen_width, screen_height, full_screen);
-
-  graphics->initialize(window);
+  window->initialize("Honey Engine", screen_width, screen_height, full_screen);
+  graphics->initialize();
   sound->initialize();
 
   // Load images
@@ -44,9 +55,9 @@ int main(int argc, char* args[]) {
   sound->addSound("bob", "Sound/bob.wav");
 
   // Arrays of bears and bear names and bear colors
-  std::array<std::string, 6> bears = {"boss_bear", "explorer_bear", "grim_bear", "lawn_dart_bear", "emo_bear", "magnet_bear"};
-  std::array<std::string, 6> bear_names = {"Bossy", "Colonel", "Grimsby", "Darty", "Emo Bob", "Maggie"};
-  std::array<std::string, 6> bear_colors = {
+  array<string, 6> bears = {"boss_bear", "explorer_bear", "grim_bear", "lawn_dart_bear", "emo_bear", "magnet_bear"};
+  array<string, 6> bear_names = {"Bossy", "Colonel", "Grimsby", "Darty", "Emo Bob", "Maggie"};
+  array<string, 6> bear_colors = {
     hot_config->getString("layout", "bear_color_0"),
     hot_config->getString("layout", "bear_color_1"),
     hot_config->getString("layout", "bear_color_2"),
@@ -56,8 +67,8 @@ int main(int argc, char* args[]) {
   };
 
   // Star field locations
-  std::array<int, 120> star_field_x;
-  std::array<int, 120> star_field_y;
+  array<int, 120> star_field_x;
+  array<int, 120> star_field_y;
   for (int i = 0; i < star_field_x.size(); i++) {
     star_field_x[i] = logic->randomInt(-screen_width / 2.0, 1.5 * screen_width);
     star_field_y[i] = logic->randomInt(-screen_height / 2.0, 1.5 * screen_height);
@@ -91,13 +102,11 @@ int main(int argc, char* args[]) {
   input->addActionKey("select right", hot_config->getString("input", "select_right_key"));
   input->addActionKey("choose", hot_config->getString("input", "choose_key"));
 
-  std::string screen_color = hot_config->getString("layout", "screen_color");
+  string screen_color = hot_config->getString("layout", "screen_color");
   
   float animation_duration = hot_config->getFloat("animation", "animation_duration");
   float choose_duration = hot_config->getFloat("animation", "choose_duration");
   float lock_duration = hot_config->getFloat("input", "lock_duration");
-  
-  int tween_type = hot_config->getInt("animation", "tween_type");
   float shake_width = hot_config->getFloat("animation", "shake_width");
 
   float sound_volume = hot_config->getFloat("sound", "sound_volume");
@@ -124,8 +133,8 @@ int main(int argc, char* args[]) {
       animation_direction = -1;
 
       for (int i = 0; i < bears.size(); i++) {
-        pair p1 = layouts->tileWrap("bearousel", (i + bears.size() - 1) % bears.size());
-        pair p2 = layouts->tileWrap("bearousel", i);
+        position p1 = layouts->tileWrap("bearousel", (i + bears.size() - 1) % bears.size());
+        position p2 = layouts->tileWrap("bearousel", i);
         effects->makeTween(bears[i] + "x", p1.x, p2.x, animation_duration);
         effects->makeTween(bears[i] + "y", p1.y, p2.y, animation_duration);
       }
@@ -142,8 +151,8 @@ int main(int argc, char* args[]) {
       animation_direction = 1;
 
       for (int i = 0; i < bears.size(); i++) {
-        pair p1 = layouts->tileWrap("bearousel", (i + 1) % bears.size());
-        pair p2 = layouts->tileWrap("bearousel", i);
+        position p1 = layouts->tileWrap("bearousel", (i + 1) % bears.size());
+        position p2 = layouts->tileWrap("bearousel", i);
         effects->makeTween(bears[i] + "x", p1.x, p2.x, animation_duration);
         effects->makeTween(bears[i] + "y", p1.y, p2.y, animation_duration);
       }
@@ -152,7 +161,7 @@ int main(int argc, char* args[]) {
     // If the users presses the choose button, shake the middle bear.
     if (input->actionDown("choose") && !logic->isTimeLocked("movement")) {
       if (selected_bear != 4) {
-        sound->playSound("choose_" + std::to_string(logic->randomInt(1,5)), 1);
+        sound->playSound("choose_" + to_string(logic->randomInt(1,5)), 1);
       } else {
         sound->playSound("bob", 1);
       }
@@ -177,7 +186,7 @@ int main(int argc, char* args[]) {
     graphics->draw2D();
 
     // Light up the sky
-    if (effects->tween("star_phasing", 0) != 0) {
+    if (effects->tween("star_phasing", 0) != 0 && logic->timeSince("star_phasing") < animation_duration) {
       float opacity = effects->tween("star_phasing", effects->SINEWAVE);
       float shooting_star = 300 * effects->tween("star_phasing", effects->LINEAR);
       graphics->setColor(bear_colors[selected_bear], opacity);
@@ -200,22 +209,22 @@ int main(int argc, char* args[]) {
 
       // Shift the chosen bears by the carousel selection value
       int bear_num = (selected_bear - 1 + i + bears.size()) % bears.size();
-      pair position = layouts->tileWrap("bearousel", i);
+      position p = layouts->tileWrap("bearousel", i);
       if (logic->isTimeLocked("movement")) {
         if (animation_direction != 0) {
-          position.x = effects->tween(bears[i] + "x", effects->SIGMOID);
-          position.y = effects->tween(bears[i] + "y", effects->SIGMOID);
+          p.x = effects->tween(bears[i] + "x", effects->SIGMOID);
+          p.y = effects->tween(bears[i] + "y", effects->SIGMOID);
         } else if (bear_num == selected_bear) {
-          position.x += effects->shake("shakey shakey");
-          position.y += effects->shake("shakey shakey");
+          p.x += effects->shake("shakey shakey");
+          p.y += effects->shake("shakey shakey");
         }
       }
-      graphics->drawImage(bears[bear_num], position.x, position.y);
+      graphics->drawImage(bears[bear_num], p.x, p.y);
     }
 
     // Draw the selector
     graphics->setColor(bear_colors[selected_bear], 1);
-    pair p = layouts->tileWrap("bearousel", 1);
+    position p = layouts->tileWrap("bearousel", 1);
     graphics->drawImage("selector", p.x, p.y);
     graphics->setColor("#FFFFFF", 1);
 
@@ -226,10 +235,6 @@ int main(int argc, char* args[]) {
     graphics->updateDisplay();
   }
 
-  // Kill 'em All
-  bear_name_text->destroy();
-  graphics->destroyAllImages();
-  sound->destroyAllMusic();
-  sound->destroyAllSounds();
-  window->destroy();
+  delete bear_name_text;
+  QuitHoney();
 }

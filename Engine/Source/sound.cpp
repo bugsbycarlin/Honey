@@ -7,6 +7,8 @@
 
 #include "sound.h"
 
+using namespace std;
+
 namespace Honey {
   Sound* sound = new Sound();
 
@@ -25,15 +27,15 @@ namespace Honey {
 
   void Sound::setMusicVolume(float fraction) {
     Mix_VolumeMusic((int) (MIX_MAX_VOLUME * fraction));
-  }  
+  }
 
-  void Sound::addSound(std::string label, std::string path) {
+  void Sound::addSound(string label, string path) {
     Mix_Chunk *sound;
     sound = Mix_LoadWAV(path.c_str());
     sounds[label] = sound;
   }
 
-  void Sound::playSound(std::string label, int loops) {
+  void Sound::playSound(string label, int loops) {
     if (sounds.count(label) == 0) {
       printf("Failed to find %s in sounds.\n", label.c_str());
       return;
@@ -47,7 +49,7 @@ namespace Honey {
     Mix_PlayChannel(-1, sounds[label], loops);
   }
 
-  void Sound::destroySound(std::string label) {
+  void Sound::destroySound(string label) {
     if (sounds.count(label) == 0) {
       printf("Failed to delete %s because it wasn't in sounds.\n", label.c_str());
       return;
@@ -58,19 +60,19 @@ namespace Honey {
   }
 
   void Sound::destroyAllSounds() {
-    for (std::pair<std::string, Mix_Chunk*> item : sounds) {
+    for (pair<string, Mix_Chunk*> item : sounds) {
       Mix_FreeChunk(item.second);
-      sounds.erase(item.first);
     }
+    sounds.clear();
   }
 
-  void Sound::addMusic(std::string label, std::string path) {
+  void Sound::addMusic(string label, string path) {
     Mix_Music *musica;
     musica = Mix_LoadMUS(path.c_str());
     music[label] = musica;
   }
 
-  void Sound::playMusic(std::string label, int loops) {
+  void Sound::playMusic(string label, int loops) {
     if (music.count(label) == 0) {
       printf("Failed to find %s in music.\n", label.c_str());
       return;
@@ -79,7 +81,7 @@ namespace Honey {
     Mix_PlayMusic(music[label], loops);
   }
 
-  void Sound::destroyMusic(std::string label) {
+  void Sound::destroyMusic(string label) {
     if (music.count(label) == 0) {
       printf("Failed to delete %s because it wasn't in sounds.\n", label.c_str());
       return;
@@ -91,9 +93,14 @@ namespace Honey {
 
   // NOOOOOOOOOOOOOOOOO
   void Sound::destroyAllMusic() {
-    for (std::pair<std::string, Mix_Music*> item : music) {
+    for (pair<string, Mix_Music*> item : music) {
       Mix_FreeMusic(item.second);
-      music.erase(item.first);
     }
+    music.clear();
+  }
+
+  Sound::~Sound() {
+    sound->destroyAllMusic();
+    sound->destroyAllSounds();
   }
 }

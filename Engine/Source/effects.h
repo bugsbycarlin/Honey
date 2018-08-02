@@ -6,8 +6,7 @@
   Effects class provides convenience methods to create visual effects.
 */
 
-#ifndef HONEY_EFFECTS_H_
-#define HONEY_EFFECTS_H_
+#pragma once
 
 #include <chrono>
 #include <math.h>
@@ -18,10 +17,11 @@
 #include "graphics.h"
 #include "logic.h"
 
+using namespace std;
+
 namespace Honey {
   class Effects {
    public:
-
       Effects();
 
       enum STYLES {
@@ -33,24 +33,25 @@ namespace Honey {
         SINEWAVE
       };
 
+      bool check(string label);
+      void destroyAllEffects();
+
+      void makeTween(string label, float start_value, float end_value, float seconds);
+      float tween(string label, int style);
+
+      void makeShake(string label, int shake_width, float seconds);
+      float shake(string label);
+
+      void makeOscillation(string label, float oscillation_width, float period_in_seconds);
+      float oscillation(string label);
+
+    private:
       const float sigmoid_steepness = 5;
 
-      std::unordered_map<std::string, float> tween_starts;
-      std::unordered_map<std::string, float> tween_ends;
-      std::unordered_map<std::string, float> widths;
-
-      bool check(std::string label);
-
-      void makeTween(std::string label, float start_value, float end_value, float seconds);
-      float tween(std::string label, int style);
-
-      void makeShake(std::string label, int shake_width, float seconds);
-      float shake(std::string label);
-
-      void makeOscillation(std::string label, float oscillation_width, float period_in_seconds);
-      float oscillation(std::string label);
+      unordered_map<string, float> tween_starts;
+      unordered_map<string, float> tween_ends;
+      unordered_map<string, float> widths;
   };
 
   extern Effects* effects;
 }
-#endif

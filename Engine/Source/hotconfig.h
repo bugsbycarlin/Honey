@@ -6,8 +6,7 @@
   HotConfig class reads config from a file and can update during runtime.
 */
 
-#ifndef HONEY_HOT_CONFIG_H_
-#define HONEY_HOT_CONFIG_H_
+#pragma once
 
 #include <string>
 #include <stdlib.h>
@@ -17,20 +16,11 @@
 
 #include "logic.h"
 
+using namespace std;
+
 namespace Honey {
   class HotConfig {
    public:
-      const float default_update_interval = 2;
-      float update_interval;
-
-      const std::string default_path = "config.txt";
-      std::string path;
-
-      std::unordered_map<std::string, std::unordered_map<std::string, bool>> bools = {};
-      std::unordered_map<std::string, std::unordered_map<std::string, int>> ints = {};
-      std::unordered_map<std::string, std::unordered_map<std::string, float>> floats = {};
-      std::unordered_map<std::string, std::unordered_map<std::string, std::string>> strings = {};
-
       enum STATUS {
         SUCCESS,
         FAILURE,
@@ -40,7 +30,7 @@ namespace Honey {
       HotConfig();
 
       // Read from this location
-      void setPath(std::string path);
+      void setPath(string path);
 
       // Use this interval
       void setUpdateInterval(float interval);
@@ -52,12 +42,25 @@ namespace Honey {
       int update();
 
       // Get values by section
-      bool getBool(std::string section, std::string name);
-      int getInt(std::string section, std::string name);
-      float getFloat(std::string section, std::string name);
-      std::string getString(std::string section, std::string name);
+      bool getBool(string section, string name);
+      int getInt(string section, string name);
+      float getFloat(string section, string name);
+      string getString(string section, string name);
+
+      ~HotConfig();
+
+    private:
+      const float default_update_interval = 2;
+      float update_interval;
+
+      const string default_path = "config.txt";
+      string path;
+
+      unordered_map<string, unordered_map<string, bool>> bools = {};
+      unordered_map<string, unordered_map<string, int>> ints = {};
+      unordered_map<string, unordered_map<string, float>> floats = {};
+      unordered_map<string, unordered_map<string, string>> strings = {};
   };
 
   extern HotConfig* hot_config;
 }
-#endif

@@ -6,8 +6,7 @@
   Input class wraps SDL input methods to create an event handling system.
 */
 
-#ifndef HONEY_INPUT_H_
-#define HONEY_INPUT_H_
+#pragma once
 
 #include <string>
 #include <stdlib.h>
@@ -17,34 +16,39 @@
 
 #include "logic.h"
 
+using namespace std;
+
 namespace Honey {
   class Input {
    public:
-      std::unordered_map<std::string, std::string> action_to_key;
-
-      std::unordered_map<std::string, bool> down;
-      std::unordered_map<std::string, bool> up;
-      std::unordered_map<std::string, int> pressed;
-
       Input();
 
       void processInput();
-      std::string translateToKey(SDL_Event event);
+      
+      int keyPressed(string key);
+      bool keyDown(string key);
+      bool keyUp(string key);
+      bool threeQuickKey(string key);
 
-      int keyPressed(std::string key);
-      bool keyDown(std::string key);
-      bool keyUp(std::string key);
-      bool threeQuickKey(std::string key);
+      int actionPressed(string action);
+      bool actionDown(string action);
+      bool actionUp(string action);
+      bool threeQuickAction(string action);
 
-      int actionPressed(std::string action);
-      bool actionDown(std::string action);
-      bool actionUp(std::string action);
-      bool threeQuickAction(std::string action);
+      void addActionKey(string action, string key);
+      void deleteAction(string action);
 
-      void addActionKey(std::string action, std::string key);
-      void deleteAction(std::string action);
+      ~Input();
+
+    private:
+      unordered_map<string, string> action_to_key;
+
+      unordered_map<string, bool> down;
+      unordered_map<string, bool> up;
+      unordered_map<string, int> pressed;
+
+      string translateToKey(SDL_Event event);
   };
 
   extern Input* input;
 }
-#endif

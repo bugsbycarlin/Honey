@@ -3,22 +3,24 @@
   Honey
   Copyright 2018 - Matthew Carlin
 
-  Primitives has some useful structs that get usefully used all over this place.
+  Primitives has some useful structs and typedefs that get usefully used all over this place.
 */
 
-#ifndef HONEY_PRIMITIVES_H_
-#define HONEY_PRIMITIVES_H_
+#pragma once
 
 #include <string>
-#include <stdlib.h>
+#include <unordered_map>
+#include <boost/variant.hpp>
+
+using namespace std;
 
 namespace Honey {
-  struct pair {
+  struct position {
     int x;
     int y;
   };
 
-  const pair empty_pair = {0, 0};
+  const position origin = {0, 0};
 
   struct point {
     float x;
@@ -39,5 +41,16 @@ namespace Honey {
     int g;
     int b;
   };
+
+  // This is a cheap way to build settings dictionaries like
+  // settings s = {
+  // {"type", "tween"},
+  // {"style", "sigmoid"},
+  // {"label", "bear_movement"},
+  // {"active", 0},
+  // {"start", 1},
+  // {"end", 0},
+  // {"duration", 1.5}}
+  typedef boost::variant<int, double, string> primitive;
+  typedef unordered_map<string, primitive> settings;
 }
-#endif

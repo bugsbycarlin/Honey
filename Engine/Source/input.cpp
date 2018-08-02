@@ -7,6 +7,8 @@
 
 #include "input.h"
 
+using namespace std;
+
 namespace Honey {
   Input* input = new Input();
 
@@ -17,13 +19,12 @@ namespace Honey {
   void Input::processInput() {
     // Clear the list of things that were pressed and the list of things that were up,
     // but preserve the list of things that are down.
-    pressed = {};
-    up = {};
+    pressed.clear();
+    up.clear();
 
     // Handle the events in the queue
     SDL_Event event;
     while (SDL_PollEvent(&event) != 0) {
-      
       if (event.type == SDL_QUIT) {
         // Special input: quitting! The user can for instance ask
         // to quit by pressing a window close button.
@@ -33,7 +34,7 @@ namespace Honey {
         // If we see a key down, translate it using the helper method,
         // clear it from the up map, and mark it in the down map.
         // Also, if it's not a repeat, mark it in the pressed map.
-        std::string key = translateToKey(event);
+        string key = translateToKey(event);
         up.erase(key);
         down[key] = true;
         if (!event.key.repeat) {
@@ -46,15 +47,15 @@ namespace Honey {
       } else if (event.type == SDL_KEYUP) {
         // If we see a key up, translate it using the helper method,
         // clear it from the down map, and mark it in the up map.
-        std::string key = translateToKey(event);
+        string key = translateToKey(event);
         down.erase(key);
         up[key] = true;
       }
     }
   }
 
-  std::string Input::translateToKey(SDL_Event event) {
-    std::string key = "unknown";
+  string Input::translateToKey(SDL_Event event) {
+    string key = "unknown";
     switch (event.key.keysym.sym) {
       case SDLK_UP : key = "up"; break;
       case SDLK_DOWN : key = "down"; break;
@@ -143,30 +144,30 @@ namespace Honey {
     return key;
   }
 
-  int Input::keyPressed(std::string key) {
+  int Input::keyPressed(string key) {
     if (pressed.count(key) == 1) {
       return pressed[key];
     }
     return 0;
   }
 
-  bool Input::keyDown(std::string key) {
+  bool Input::keyDown(string key) {
     if (down.count(key) == 1) {
       return true;
     }
     return false;
   }
 
-  bool Input::keyUp(std::string key) {
+  bool Input::keyUp(string key) {
     if (up.count(key) == 1) {
       return true;
     }
     return false;
   }
 
-  bool Input::threeQuickKey(std::string key) {
+  bool Input::threeQuickKey(string key) {
     if (keyPressed(key) > 0) {
-      std::string label = key + "_quick_counter";
+      string label = key + "_quick_counter";
       if (logic->transientCounterValue(label) <= 0) {
         logic->makeTransientCounter(label, 1.0);
       }
@@ -180,7 +181,7 @@ namespace Honey {
     return false;
   }
 
-  int Input::actionPressed(std::string action) {
+  int Input::actionPressed(string action) {
     if (action_to_key.count(action) == 0) {
       return 0;
     } else {
@@ -188,7 +189,7 @@ namespace Honey {
     }
   }
 
-  bool Input::actionDown(std::string action) {
+  bool Input::actionDown(string action) {
     if (action_to_key.count(action) == 0) {
       return false;
     } else {
@@ -196,7 +197,7 @@ namespace Honey {
     }
   }
 
-  bool Input::actionUp(std::string action) {
+  bool Input::actionUp(string action) {
     if (action_to_key.count(action) == 0) {
       return false;
     } else {
@@ -204,9 +205,9 @@ namespace Honey {
     }
   }
 
-  bool Input::threeQuickAction(std::string action) {
+  bool Input::threeQuickAction(string action) {
     if (actionPressed(action) > 0) {
-      std::string label = action + "_quick_counter";
+      string label = action + "_quick_counter";
       if (logic->transientCounterValue(label) <= 0) {
         logic->makeTransientCounter(label, 1.0);
       }
@@ -220,11 +221,18 @@ namespace Honey {
     return false;
   }
 
-  void Input::addActionKey(std::string action, std::string key) {
+  void Input::addActionKey(string action, string key) {
     action_to_key[action] = key;
   }
 
-  void Input::deleteAction(std::string action) {
+  void Input::deleteAction(string action) {
     action_to_key.erase(action);
+  }
+
+  Input::~Input() {
+    action_to_key.clear();
+    down.clear();
+    up.clear();
+    pressed.clear();
   }
 }

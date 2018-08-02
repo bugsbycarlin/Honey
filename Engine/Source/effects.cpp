@@ -7,6 +7,8 @@
 
 #include "effects.h"
 
+using namespace std;
+
 namespace Honey {
   Effects* effects = new Effects();
 
@@ -16,29 +18,35 @@ namespace Honey {
     widths = {};
   }
 
-  bool Effects::check(std::string label) {
-    return logic->time_markers.count(label) == 1;
+  bool Effects::check(string label) {
+    return logic->check(label);
   }
 
-  void Effects::makeTween(std::string label, float start_value, float end_value, float seconds) {
+  void Effects::destroyAllEffects() {
+    for (pair<string, float> item : tween_starts) {
+      logic->remove(item.first);
+    }
+    tween_starts = {};
+    tween_ends = {};
+    widths = {};
+  }
+
+  void Effects::makeTween(string label, float start_value, float end_value, float seconds) {
     logic->markDuration(label, seconds);
     logic->markTime(label);
     tween_starts[label] = start_value;
     tween_ends[label] = end_value;
   }
 
-  float Effects::tween(std::string label, int style) {
+  float Effects::tween(string label, int style) {
     // If there's no tween, return 0
-    if (logic->time_markers.count(label) == 0) {
+    if (!logic->check(label)) {
       return 0;
     }
 
-    // If the tween is expired, destroy it and return 0
+    // If the tween is expired, return the end value
     if (logic->timeSince(label) > logic->duration(label)) {
-      logic->remove(label);
-      tween_starts.erase(label);
-      tween_ends.erase(label);
-      return 0;
+      return tween_ends[label];
     }
 
     // The time fraction is from 0 (no time has elapsed) to 1 (all the time has elapsed)
@@ -47,29 +55,35 @@ namespace Honey {
     float space_fraction;
 
     switch (style) {
-      case LINEAR: // constant speed
+      // constant speed
+      case LINEAR:
         return (1 - time_fraction) * tween_starts[label] + time_fraction * tween_ends[label];
 
-      case SIGMOID: // slow at the start, fast in the middle, slow at the end
+      // slow at the start, fast in the middle, slow at the end
+      case SIGMOID:
         param = (time_fraction * 2.0) - 1.0;
         space_fraction = 1.0 / (1 + exp(-1 * sigmoid_steepness * param));
         return (1 - space_fraction) * tween_starts[label] + space_fraction * tween_ends[label];
 
-      case CUBIC: // fast at the start, slow in the middle, fast at the end
+      // fast at the start, slow in the middle, fast at the end
+      case CUBIC:
         param = (time_fraction * 4.0) - 2.0;
         space_fraction = (pow(param, 3) / 8.0 + 1.0) / 2.0;
         return (1 - space_fraction) * tween_starts[label] + space_fraction * tween_ends[label];
 
-      case RAMPDOWN: // fast at the start, medium in the middle, slow at the end
+      // fast at the start, medium in the middle, slow at the end
+      case RAMPDOWN:
         param = time_fraction - 1.0;
         space_fraction = pow(param, 3) + 1.0;
         return (1 - space_fraction) * tween_starts[label] + space_fraction * tween_ends[label];
 
-      case RAMPUP: // slow at the start, medium in the middle, fast at the end
+      // slow at the start, medium in the middle, fast at the end
+      case RAMPUP:
         space_fraction = pow(time_fraction, 3);
         return (1 - space_fraction) * tween_starts[label] + space_fraction * tween_ends[label];
 
-      case SINEWAVE: // oscillates from start value at t=0 to end value at t=0.5 to start value at t=1
+      // oscillates from start value at t=0 to end value at t=0.5 to start value at t=1
+      case SINEWAVE:
         space_fraction = sin(M_PI * time_fraction);
         return (1 - space_fraction) * tween_starts[label] + space_fraction * tween_ends[label];
     }
@@ -78,15 +92,15 @@ namespace Honey {
     return 0;
   }
 
-  void Effects::makeShake(std::string label, int shake_width, float seconds) {
+  void Effects::makeShake(string label, int shake_width, float seconds) {
     logic->markDuration(label, seconds);
     logic->markTime(label);
     widths[label] = shake_width;
   }
 
-  float Effects::shake(std::string label) {
+  float Effects::shake(string label) {
     // If there's no label, return 0
-    if (logic->time_markers.count(label) == 0) {
+    if (!logic->check(label)) {
       return 0;
     }
 
@@ -101,15 +115,15 @@ namespace Honey {
     return rand() % (int) widths[label] - widths[label] / 2.0;
   }
 
-  void Effects::makeOscillation(std::string label, float oscillation_width, float period_in_seconds) {
+  void Effects::makeOscillation(string label, float oscillation_width, float period_in_seconds) {
     logic->markDuration(label, period_in_seconds);
     logic->markTime(label);
     widths[label] = oscillation_width;
   }
 
-  float Effects::oscillation(std::string label) {
+  float Effects::oscillation(string label) {
     // If there's no label, return 0
-    if (logic->time_markers.count(label) == 0) {
+    if (!logic->check(label)) {
       return 0;
     }
 

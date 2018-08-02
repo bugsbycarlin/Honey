@@ -6,8 +6,7 @@
   Textbox class holds a textbox of a particular size and font, and prints it to the screen.
 */
 
-#ifndef HONEY_TEXTBOX_H_
-#define HONEY_TEXTBOX_H_
+#pragma once
 
 // SDL, for window, user input, and media
 #include <SDL2/SDL.h>
@@ -23,29 +22,32 @@
 #include "primitives.h"
 #include "graphics.h"
 
+using namespace std;
+
 namespace Honey {
   class Textbox {
-   public:
-    SDL_Surface* text_surface;
-    TTF_Font* font;
-    SDL_Color color;
+    public:
+      int x;
+      int y;  
 
-    std::string label;
-    std::string text;
+      Textbox(string font_path, int font_size, string text, string color, int x, int y);
 
-    int x;
-    int y;  
+      void setText(string text);
+      void setColor(string color);
+      void draw();
 
-    Textbox(std::string font_path, int font_size, std::string text, std::string color, int x, int y);
+      ~Textbox();
+    private:
+      SDL_Surface* text_surface;
+      TTF_Font* font;
+      SDL_Color color;
 
-    void setText(std::string text);
-    void setColor(std::string color);
+      string label;
+      string text;
 
-    void remakeBox();
+      int width;
+      int height;
 
-    void draw();
-
-    void destroy();
+      void remakeBox();
   };
 }
-#endif

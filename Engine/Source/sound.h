@@ -6,8 +6,7 @@
   Sound class wraps SDL sound functions.
 */
 
-#ifndef HONEY_SOUND_H_
-#define HONEY_SOUND_H_
+#pragma once
 
 #include <string>
 #include <stdlib.h>
@@ -16,13 +15,11 @@
 #include <SDL2/SDL.h>
 #include "SDL2_mixer/SDL_mixer.h"
 
+using namespace std;
+
 namespace Honey {
   class Sound {
    public:
-
-      std::unordered_map<std::string, Mix_Chunk*> sounds;
-      std::unordered_map<std::string, Mix_Music*> music;
-
       Sound();
 
       void initialize();
@@ -31,19 +28,24 @@ namespace Honey {
       void setSoundVolume(float fraction);
       void setMusicVolume(float fraction);
 
-      void addSound(std::string label, std::string path);
+      void addSound(string label, string path);
       //-1 loops forever
-      void playSound(std::string label, int loops);
-      void destroySound(std::string label);
+      void playSound(string label, int loops);
+      void destroySound(string label);
       void destroyAllSounds();
 
-      void addMusic(std::string label, std::string path);
+      void addMusic(string label, string path);
       //-1 loops forever
-      void playMusic(std::string label, int loops);
-      void destroyMusic(std::string label);
+      void playMusic(string label, int loops);
+      void destroyMusic(string label);
       void destroyAllMusic();
+
+      ~Sound();
+
+    private:
+      unordered_map<string, Mix_Chunk*> sounds;
+      unordered_map<string, Mix_Music*> music;
   };
 
   extern Sound* sound;
 }
-#endif

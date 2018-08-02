@@ -7,6 +7,8 @@
 
 #include "hotconfig.h"
 
+using namespace std;
+
 namespace Honey {
   HotConfig* hot_config = new HotConfig();
 
@@ -23,7 +25,7 @@ namespace Honey {
   }
 
   // Read from this location
-  void HotConfig::setPath(std::string path) {
+  void HotConfig::setPath(string path) {
     this->path = path;
   }
 
@@ -37,7 +39,7 @@ namespace Honey {
 
   // Check the time and update
   int HotConfig::checkAndUpdate() {
-    if(!logic->isTimeLocked("hot_config_update")) {
+    if (!logic->isTimeLocked("hot_config_update")) {
       logic->makeTimeLock("hot_config_update", update_interval);
     } else {
       return SLEEPING;
@@ -55,13 +57,13 @@ namespace Honey {
       return FAILURE;
     }
 
-    std::unordered_map<std::string, std::unordered_map<std::string, bool>> new_bools = {};
-    std::unordered_map<std::string, std::unordered_map<std::string, int>> new_ints = {};
-    std::unordered_map<std::string, std::unordered_map<std::string, float>> new_floats = {};
-    std::unordered_map<std::string, std::unordered_map<std::string, std::string>> new_strings = {};
+    unordered_map<string, unordered_map<string, bool>> new_bools = {};
+    unordered_map<string, unordered_map<string, int>> new_ints = {};
+    unordered_map<string, unordered_map<string, float>> new_floats = {};
+    unordered_map<string, unordered_map<string, string>> new_strings = {};
 
     XMLElement* section = doc.FirstChildElement();
-    std::string node_value;
+    string node_value;
     while (section != nullptr) {
       node_value = section->Value();
       if (node_value != "section") {
@@ -70,11 +72,11 @@ namespace Honey {
       }
 
       const char* section_name_chars;
-      if(section->QueryStringAttribute("name", &section_name_chars) != XML_SUCCESS) {
+      if (section->QueryStringAttribute("name", &section_name_chars) != XML_SUCCESS) {
         printf("HotConfig load failed on line number %d. Section is missing name.\n", section->GetLineNum());
         return FAILURE;
       }
-      std::string section_name(section_name_chars);
+      string section_name(section_name_chars);
       new_bools[section_name] = {};
       new_ints[section_name] = {};
       new_floats[section_name] = {};
@@ -89,21 +91,21 @@ namespace Honey {
         }
 
         const char* element_type_chars;
-        if(element->QueryStringAttribute("type", &element_type_chars) != XML_SUCCESS) {
+        if (element->QueryStringAttribute("type", &element_type_chars) != XML_SUCCESS) {
           printf("HotConfig load failed on line number %d. Param is missing type.\n", element->GetLineNum());
           return FAILURE;
         }
-        std::string element_type(element_type_chars);
+        string element_type(element_type_chars);
 
         const char* element_name_chars;
-        if(element->QueryStringAttribute("name", &element_name_chars) != XML_SUCCESS) {
+        if (element->QueryStringAttribute("name", &element_name_chars) != XML_SUCCESS) {
           printf("HotConfig load failed on line number %d. Param is missing name.\n", element->GetLineNum());
           return FAILURE;
         }
-        std::string element_name(element_name_chars);
+        string element_name(element_name_chars);
 
         if (element_type == "bool") {
-          std::string value(element->GetText());
+          string value(element->GetText());
           if (value != "true" && value != "false") {
             printf("HotConfig load failed on line number %d. Failed to parse bool value. Expected true or false, but got %s.\n", element->GetLineNum(), value.c_str());
             return FAILURE;
@@ -129,7 +131,7 @@ namespace Honey {
           }
           new_floats[section_name][element_name] = value;
         } else if (element_type == "string") {
-          std::string value(element->GetText());
+          string value(element->GetText());
           new_strings[section_name][element_name] = value;
         } else {
           printf("HotConfig load failed on line number %d. Unknown type %s. Must be bool, int, float, or string.\n", element->GetLineNum(), element_type_chars);
@@ -149,7 +151,7 @@ namespace Honey {
     return SUCCESS;
   }
 
-  bool HotConfig::getBool(std::string section, std::string name) {
+  bool HotConfig::getBool(string section, string name) {
     if (bools.count(section) == 0 || bools[section].count(name) == 0) {
       printf("WARNING: Failed to find bool %s in section %s in config.\n", name.c_str(), section.c_str());
       return false;
@@ -158,7 +160,7 @@ namespace Honey {
     return bools[section][name];
   }
 
-  int HotConfig::getInt(std::string section, std::string name) {
+  int HotConfig::getInt(string section, string name) {
     if (ints.count(section) == 0 || ints[section].count(name) == 0) {
       printf("WARNING: Failed to find int %s in section %s in config.\n", name.c_str(), section.c_str());
       return 0;
@@ -167,7 +169,7 @@ namespace Honey {
     return ints[section][name];
   }
 
-  float HotConfig::getFloat(std::string section, std::string name) {
+  float HotConfig::getFloat(string section, string name) {
     if (floats.count(section) == 0 || floats[section].count(name) == 0) {
       printf("WARNING: Failed to find float %s in section %s in config.\n", name.c_str(), section.c_str());
       return 0;
@@ -176,12 +178,31 @@ namespace Honey {
     return floats[section][name];
   }
 
-  std::string HotConfig::getString(std::string section, std::string name) {
+  string HotConfig::getString(string section, string name) {
     if (strings.count(section) == 0 || strings[section].count(name) == 0) {
       printf("WARNING: Failed to find string %s in section %s in config.\n", name.c_str(), section.c_str());
       return "";
     }
 
     return strings[section][name];
+  }
+
+  HotConfig::~HotConfig() {
+    for (pair<string, unordered_map<string, bool>> item : bools) {
+      item.second.clear();
+    }
+    bools.clear();
+    for (pair<string, unordered_map<string, int>> item : ints) {
+      item.second.clear();
+    }
+    ints.clear();
+    for (pair<string, unordered_map<string, float>> item : floats) {
+      item.second.clear();
+    }
+    floats.clear();
+    for (pair<string, unordered_map<string, string>> item : strings) {
+      item.second.clear();
+    }
+    strings.clear();
   }
 }

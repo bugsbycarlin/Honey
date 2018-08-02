@@ -15,3 +15,16 @@
 #include "textbox.h"
 #include "sound.h"
 #include "effects.h"
+
+using namespace Honey;
+
+void QuitHoney() {
+  delete effects;
+  delete sound;
+  delete layouts;
+  delete graphics;
+  delete input;
+  delete hot_config;
+  delete logic;
+  delete window;
+}

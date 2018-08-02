@@ -6,14 +6,15 @@
   Shaders just holds Honey's vertex and fragment shaders as strings.
 */
 
-#ifndef HONEY_SHADERS_H_
-#define HONEY_SHADERS_H_
+#pragma once
 
 #include <string>
 #include <stdlib.h>
 
+using namespace std;
+
 namespace Honey {
-  const std::string vertex_shader = R"(
+  const string vertex_shader = R"(
   #version 330 core
 
   uniform mat4 mvp_matrix;
@@ -29,7 +30,7 @@ namespace Honey {
   }
   )";
 
-  const std::string fragment_shader = R"(
+  const string fragment_shader = R"(
   #version 330 core
 
   uniform sampler2D texture_sampler;
@@ -44,4 +45,3 @@ namespace Honey {
   } 
   )";
 }
-#endif

@@ -7,15 +7,15 @@
 
 #include "graphics.h"
 
+using namespace std;
+
 namespace Honey {
   Graphics* graphics = new Graphics();
 
   Graphics::Graphics() {
   }
 
-  void Graphics::initialize(Window* window) {
-    this->window = window;
-
+  void Graphics::initialize() {
     initializeOpenGL();
     initializeShaders();
     initializeBuffersAndGeometry();
@@ -52,12 +52,11 @@ namespace Honey {
     // Remember, modern OpenGL works by feeding data (vertices, normals, textures, colors)
     // straight to the graphics card. Here we're telling OpenGL to prepare for an array of
     // vertices.
-    GLuint vertex_array_id;
     glGenVertexArrays(1, &vertex_array_id);
     glBindVertexArray(vertex_array_id);
 
     // Here we create our rectangle texture data and pass it to the card.
-    GLfloat texture_data[] = { 
+    GLfloat texture_data[] = {
       0.0f, 0.0f,
       0.0f, 1.0f,
       1.0f, 1.0f,
@@ -81,7 +80,7 @@ namespace Honey {
     // Why do we set our shader program at 17? No reason.
     shader_program = 17;
 
-    std::string line;
+    string line;
 
     // The shaders are defined in shaders.h
     const char *vertex_str = vertex_shader.c_str();
@@ -143,6 +142,12 @@ namespace Honey {
     // This is important. Tell OpenGL to use this particular shader program.
     // We *could* in principle make multiple shader programs and switch between them.
     glUseProgram(shader_program);
+
+    // Clean up
+    glDetachShader(shader_program, vertex_shader);
+    glDetachShader(shader_program, fragment_shader);
+    glDeleteShader(vertex_shader);
+    glDeleteShader(fragment_shader);
   }
 
   void Graphics::pushModelMatrix() {
@@ -182,7 +187,7 @@ namespace Honey {
       glUniformMatrix4fv(mvp_matrix_id, 1, GL_FALSE, glm::value_ptr(projection * model));
     }
   }
-  
+
   void Graphics::scale(float x, float y, float z) {
     // GLM has a method for us to scale objects. This changes the model matrix,
     // through multiplication, as though we applied a scale, ie, scaled the object
@@ -193,29 +198,29 @@ namespace Honey {
     }
   }
 
-  floatColor Graphics::parseFloatColor(std::string color) {
+  floatColor Graphics::parseFloatColor(string color) {
     // This method takes a hex-string color (eg #A4F4E3 or #FFFFFF or #003030)
     // and decomposes it into r, g, and b floats, which are each a fraction from 0 (black)
     // to 1 (fully saturated). (1,0,0) is full red, (0,1,0) is full green, (0,0,1) is full
     // blue, and (1,1,1) is full white.
     floatColor c;
-    c.r = std::stoi(color.substr(1,2), 0, 16) / 255.0f;
-    c.g = std::stoi(color.substr(3,2), 0, 16) / 255.0f;
-    c.b = std::stoi(color.substr(5,2), 0, 16) / 255.0f;
+    c.r = stoi(color.substr(1, 2), 0, 16) / 255.0f;
+    c.g = stoi(color.substr(3, 2), 0, 16) / 255.0f;
+    c.b = stoi(color.substr(5, 2), 0, 16) / 255.0f;
     return c;
   }
 
-  intColor Graphics::parseIntColor(std::string color) {
+  intColor Graphics::parseIntColor(string color) {
     // This method takes a hex-string color (eg #A4F4E3 or #FFFFFF or #003030)
     // and decomposes it into r, g, and b ints, which range from 0 to 255.
     intColor c;
-    c.r = std::stoi(color.substr(1,2), 0, 16);
-    c.g = std::stoi(color.substr(3,2), 0, 16);
-    c.b = std::stoi(color.substr(5,2), 0, 16);
+    c.r = stoi(color.substr(1, 2), 0, 16);
+    c.g = stoi(color.substr(3, 2), 0, 16);
+    c.b = stoi(color.substr(5, 2), 0, 16);
     return c;
   }
 
-  void Graphics::setColor(std::string color, float opacity) {
+  void Graphics::setColor(string color, float opacity) {
     floatColor c = parseFloatColor(color);
 
     setColor(c.r, c.g, c.b, opacity);
@@ -226,7 +231,7 @@ namespace Honey {
     glUniform4fv(color_id, 1, glm::value_ptr(color));
   }
 
-  void Graphics::clearScreen(std::string color) {
+  void Graphics::clearScreen(string color) {
     floatColor c = parseFloatColor(color);
 
     // Tell OpenGL to clear the whole screen to our chosen color.
@@ -255,9 +260,9 @@ namespace Honey {
   }
 
   void Graphics::cacheRectangle(float width, float height) {
-    std::string id = std::to_string(width) + "," + std::to_string(height);
+    string id = to_string(width) + "," + to_string(height);
 
-    GLfloat vertex_data[] = { 
+    GLfloat vertex_data[] = {
       0, 0, 0,
       0, height, 0,
       width, height, 0,
@@ -270,7 +275,7 @@ namespace Honey {
   }
 
   void Graphics::drawRectangle(float x_position, float y_position, float width, float height) {
-    std::string id = std::to_string(width) + "," + std::to_string(height);
+    string id = to_string(width) + "," + to_string(height);
 
     // If we're missing this particular rectangle size, go ahead and cache it
     if (vertex_buffers.count(id) == 0) {
@@ -318,7 +323,7 @@ namespace Honey {
     glDisableVertexAttribArray(1);
   }
 
-  void Graphics::addImage(std::string label, std::string path) {
+  void Graphics::addImage(string label, string path) {
     // Don't reload the same texture multiple times.
     if (texture_map.count(label) == 1) {
       return;
@@ -332,9 +337,10 @@ namespace Honey {
     }
 
     addImageFromSurface(label, image);
+    SDL_FreeSurface(image);
   }
 
-  void Graphics::addImageFromSurface(std::string label, SDL_Surface* image) {
+  void Graphics::addImageFromSurface(string label, SDL_Surface* image) {
     // Make a texture
     GLuint* texture = new GLuint[1];
     glGenTextures(1, texture);
@@ -349,9 +355,12 @@ namespace Honey {
     // Also save the width and height
     texture_widths[label] = image->w;
     texture_heights[label] = image->h;
+
+    // Clean up the texture reference
+    delete[] texture;
   }
 
-  void Graphics::setImage(std::string label) {
+  void Graphics::setImage(string label) {
     if (texture_map.count(label) != 1) {
       printf("Failed to find %s among images.\n", label.c_str());
       return;
@@ -362,7 +371,7 @@ namespace Honey {
     glUniform1i(texture_sampler_id, 0);
   }
 
-  void Graphics::drawImage(std::string label, int x_position, int y_position) {
+  void Graphics::drawImage(string label, int x_position, int y_position) {
     if (texture_map.count(label) != 1) {
       printf("Failed to draw %s because it wasn't cached in images.\n", label.c_str());
       return;
@@ -376,9 +385,9 @@ namespace Honey {
     drawRectangle(x_position, y_position, width, height);
   }
 
-  void Graphics::drawImage(std::string label, int x_position, int y_position, bool centered, float rotation, float scale) {
+  void Graphics::drawImage(string label, int x_position, int y_position, bool centered, float rotation, float scale) {
     pushModelMatrix();
-    
+
     translate(x_position, y_position, 0);
     rotate(rotation, 0, 0, 1);
     this->scale(scale, scale, scale);
@@ -394,7 +403,7 @@ namespace Honey {
     popModelMatrix();
   }
 
-  void Graphics::destroyImage(std::string label) {
+  void Graphics::destroyImage(string label) {
     if (texture_map.count(label) != 1) {
       printf("Failed to delete %s because it wasn't cached in images.\n", label.c_str());
       return;
@@ -406,19 +415,30 @@ namespace Honey {
   }
 
   void Graphics::destroyAllImages() {
-    for (std::pair<std::string, GLuint> item : texture_map) {
+    for (pair<string, GLuint> item : texture_map) {
       glActiveTexture(GL_TEXTURE0);
       glDeleteTextures(1, &item.second);
-      texture_map.erase(item.first);
     }
+    texture_map.clear();
   }
 
-  bool Graphics::checkImage(std::string label) {
+  bool Graphics::checkImage(string label) {
     return texture_map.count(label) == 1;
   }
 
   void Graphics::updateDisplay() {
     // Take everything we've drawn since the last wipe and put it on the screen all at once.
     SDL_GL_SwapWindow(window->window);
+  }
+
+  Graphics::~Graphics() {
+    printf("Destroying graphics\n");
+    glDeleteVertexArrays(1, &vertex_array_id);
+    glDeleteBuffers(1, &rectangle_texture_buffer);
+    for (pair<string, GLuint> item : texture_map) {
+      glDeleteBuffers(1, &item.second);
+    }
+    destroyAllImages();
+    glDeleteProgram(shader_program);
   }
 }

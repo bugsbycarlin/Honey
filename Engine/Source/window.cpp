@@ -7,9 +7,15 @@
 
 #include "window.h"
 
+using namespace std;
+
 namespace Honey {
-  Window::Window(std::string title, int screen_width, int screen_height, bool fullscreen) {
-    
+  Window* window = new Window();
+
+  Window::Window() {
+  }
+
+  void Window::initialize(string title, int screen_width, int screen_height, bool fullscreen) {
     this->width = screen_width;
     this->height = screen_height;
 
@@ -36,14 +42,14 @@ namespace Honey {
       SDL_WINDOWPOS_UNDEFINED,
       screen_width, screen_height,
       flags);
-    if (window == NULL) {
+    if (window == nullptr) {
       printf("Window could not be created. SDL Error: %s\n", SDL_GetError());
       exit(1);
     }
 
     // Create the OpenGL context
     context = SDL_GL_CreateContext(window);
-    if (context == NULL) {
+    if (context == nullptr) {
       printf("OpenGL context could not be created! SDL Error: %s\n", SDL_GetError());
       exit(1);
     }
@@ -67,13 +73,22 @@ namespace Honey {
     }
   }
 
-  void Window::destroy() {
+  Window::~Window() {
     // Destroy the window
     SDL_DestroyWindow(window);
-    window = NULL;
+    window = nullptr;
+
+    // Destroy the OpenGL context
+    SDL_GL_DeleteContext(context);
 
     // Shut down the SDL_Mixer
     Mix_Quit();
+
+    // Shut down the SDL_TTF fonts
+    TTF_Quit();
+
+    // Shut down SDL_image
+    IMG_Quit();
 
     // Shut down the SDL
     SDL_Quit();
