@@ -23,7 +23,7 @@ namespace Honey {
 
     this->text = text;
 
-    intColor c = graphics->parseIntColor(color);
+    intColor c = graphics.parseIntColor(color);
     this->color = {(Uint8) c.r, (Uint8) c.g, (Uint8) c.b};
 
     // A somewhat unique label to reference this textbox from graphics.
@@ -39,28 +39,28 @@ namespace Honey {
   }
 
   void Textbox::setColor(string color) {
-    intColor c = graphics->parseIntColor(color);
+    intColor c = graphics.parseIntColor(color);
     this->color = {(Uint8) c.r, (Uint8) c.g, (Uint8) c.b};
     remakeBox();
   }
 
   void Textbox::remakeBox() {
-    if (graphics->checkImage(label)) {
-      graphics->destroyImage(label);
+    if (graphics.checkImage(label)) {
+      graphics.removeImage(label);
     }
     text_surface = TTF_RenderText_Blended(font, text.c_str(), color);
     width = text_surface->w;
     height = text_surface->h;
-    graphics->addImageFromSurface(label, text_surface);
+    graphics.addImageFromSurface(label, text_surface);
     SDL_FreeSurface(text_surface);
   }
 
   void Textbox::draw() {
-    graphics->drawImage(this->label, x, y);
+    graphics.drawImage(this->label, x, y);
   }
 
   Textbox::~Textbox() {
-    graphics->destroyImage(this->label);
+    graphics.removeImage(this->label);
     TTF_CloseFont(font);
   }
 }

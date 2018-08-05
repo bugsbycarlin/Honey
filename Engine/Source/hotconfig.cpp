@@ -10,9 +10,12 @@
 using namespace std;
 
 namespace Honey {
-  HotConfig* hot_config = new HotConfig();
-
   using namespace tinyxml2;
+
+  HotConfig& HotConfig::instance() {
+    static HotConfig hot_config_instance;
+    return hot_config_instance;
+  }
 
   HotConfig::HotConfig() {
     path = default_path;
@@ -32,15 +35,15 @@ namespace Honey {
   // Use this interval
   void HotConfig::setUpdateInterval(float interval) {
     update_interval = interval;
-    logic->remove("hot_config_update");
-    logic->makeTimeLock("hot_config_update", update_interval);
+    logic.remove("hot_config_update");
+    logic.makeTimeLock("hot_config_update", update_interval);
     update();
   }
 
   // Check the time and update
   int HotConfig::checkAndUpdate() {
-    if (!logic->isTimeLocked("hot_config_update")) {
-      logic->makeTimeLock("hot_config_update", update_interval);
+    if (!logic.isTimeLocked("hot_config_update")) {
+      logic.makeTimeLock("hot_config_update", update_interval);
     } else {
       return SLEEPING;
     }
@@ -188,21 +191,9 @@ namespace Honey {
   }
 
   HotConfig::~HotConfig() {
-    for (pair<string, unordered_map<string, bool>> item : bools) {
-      item.second.clear();
-    }
     bools.clear();
-    for (pair<string, unordered_map<string, int>> item : ints) {
-      item.second.clear();
-    }
     ints.clear();
-    for (pair<string, unordered_map<string, float>> item : floats) {
-      item.second.clear();
-    }
     floats.clear();
-    for (pair<string, unordered_map<string, string>> item : strings) {
-      item.second.clear();
-    }
     strings.clear();
   }
 }

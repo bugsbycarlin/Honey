@@ -10,12 +10,15 @@
 using namespace std;
 
 namespace Honey {
-  Window* window = new Window();
+  Window& Window::instance() {
+    static Window window_instance;
+    return window_instance;
+  }
 
   Window::Window() {
   }
 
-  void Window::initialize(string title, int screen_width, int screen_height, bool fullscreen) {
+  void Window::initialize(string title, int screen_width, int screen_height, bool full_screen) {
     this->width = screen_width;
     this->height = screen_height;
 
@@ -32,7 +35,7 @@ namespace Honey {
 
     // Set the flags
     int flags = SDL_WINDOW_OPENGL;
-    if (fullscreen) {
+    if (full_screen) {
       flags = SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN;
     }
 
@@ -74,13 +77,6 @@ namespace Honey {
   }
 
   Window::~Window() {
-    // Destroy the window
-    SDL_DestroyWindow(window);
-    window = nullptr;
-
-    // Destroy the OpenGL context
-    SDL_GL_DeleteContext(context);
-
     // Shut down the SDL_Mixer
     Mix_Quit();
 
@@ -89,6 +85,12 @@ namespace Honey {
 
     // Shut down SDL_image
     IMG_Quit();
+
+    // Destroy the OpenGL context
+    SDL_GL_DeleteContext(context);
+
+    // Destroy the window
+    SDL_DestroyWindow(window);
 
     // Shut down the SDL
     SDL_Quit();

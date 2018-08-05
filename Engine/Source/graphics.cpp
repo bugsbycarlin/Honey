@@ -10,7 +10,10 @@
 using namespace std;
 
 namespace Honey {
-  Graphics* graphics = new Graphics();
+  Graphics& Graphics::instance() {
+    static Graphics graphics_instance;
+    return graphics_instance;
+  }
 
   Graphics::Graphics() {
   }
@@ -31,7 +34,7 @@ namespace Honey {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // glViewport tells OpenGL it's drawing on a square the size of the window.
-    glViewport(0, 0, window->width, window->height);
+    glViewport(0, 0, window.width, window.height);
 
     GLenum error = glGetError();
     if (error != GL_NO_ERROR) {
@@ -253,7 +256,7 @@ namespace Honey {
     // No depth testing (checking whether one polygon is closer to the camera than another),
     glDisable(GL_DEPTH_TEST);
     // an Orthographic projection (camera is looking straight overhead, and there's no perspective correction),
-    projection = glm::ortho(0.0f, (float) window->width, (float) window->height, 0.0f, 0.0f, 1.0f);
+    projection = glm::ortho(0.0f, (float) window.width, (float) window.height, 0.0f, 0.0f, 1.0f);
     glUniformMatrix4fv(mvp_matrix_id, 1, GL_FALSE, glm::value_ptr(projection));
     // and a boolean to make sure other parts of the system behave in a 2d way.
     using_2d = true;
@@ -403,7 +406,7 @@ namespace Honey {
     popModelMatrix();
   }
 
-  void Graphics::destroyImage(string label) {
+  void Graphics::removeImage(string label) {
     if (texture_map.count(label) != 1) {
       printf("Failed to delete %s because it wasn't cached in images.\n", label.c_str());
       return;
@@ -414,7 +417,7 @@ namespace Honey {
     texture_map.erase(label);
   }
 
-  void Graphics::destroyAllImages() {
+  void Graphics::removeAllImages() {
     for (pair<string, GLuint> item : texture_map) {
       glActiveTexture(GL_TEXTURE0);
       glDeleteTextures(1, &item.second);
@@ -428,17 +431,16 @@ namespace Honey {
 
   void Graphics::updateDisplay() {
     // Take everything we've drawn since the last wipe and put it on the screen all at once.
-    SDL_GL_SwapWindow(window->window);
+    SDL_GL_SwapWindow(window.window);
   }
 
   Graphics::~Graphics() {
-    printf("Destroying graphics\n");
     glDeleteVertexArrays(1, &vertex_array_id);
     glDeleteBuffers(1, &rectangle_texture_buffer);
     for (pair<string, GLuint> item : texture_map) {
       glDeleteBuffers(1, &item.second);
     }
-    destroyAllImages();
+    removeAllImages();
     glDeleteProgram(shader_program);
   }
 }

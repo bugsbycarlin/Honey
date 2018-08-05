@@ -1,9 +1,7 @@
-/*
-
-  Honey
-  Copyright 2018 - Matthew Carlin
-
-  Effects class provides convenience methods to create visual effects.
+/*!
+  @Honey
+  @author Matthew Carlin
+  Copyright 2018
 */
 
 #pragma once
@@ -20,38 +18,126 @@
 using namespace std;
 
 namespace Honey {
-  class Effects {
+  /*!
+    The Effects class provides convenience methods to create visual effects.
+
+    Primarily covered in blog posts:
+
+    http://www.friendsonmountains.com/blog/2018/07/14/lets-make-honey-version-0-07-effects
+  */
+  class Effects final {
    public:
-      Effects();
+    /*!
+      Singleton instance getter.
 
-      enum STYLES {
-        LINEAR,
-        SIGMOID,
-        CUBIC,
-        RAMPDOWN,
-        RAMPUP,
-        SINEWAVE
-      };
+      @return This'll get you the one instance of Effects you're supposed to have.
+    */
+    static Effects& instance();
 
-      bool check(string label);
-      void destroyAllEffects();
+    /*!
+      Effects Styles.
 
-      void makeTween(string label, float start_value, float end_value, float seconds);
-      float tween(string label, int style);
+      See graphs in http://www.friendsonmountains.com/blog/2018/07/14/lets-make-honey-version-0-07-effects
+    */
+    enum TWEEN_STYLES {
+      LINEAR, /*!< Linear Tween. Constant speed. */
+      SIGMOID, /*!< Sigmoid Tween. Starts slow, gets fast in the middle, ends slow. */
+      CUBIC, /*!< Cubic Tween. Starts fast, pauses in the middle, ends fast. */
+      RAMPDOWN, /*!< Rampdown Tween. Starts fast, ends slow. */
+      RAMPUP, /*!< Rampdown Tween. Starts slow, ends fast. */
+      SINEWAVE /*!< Sinewave Tween. Moves from start to end, then boomerangs back to start. */
+    };
 
-      void makeShake(string label, int shake_width, float seconds);
-      float shake(string label);
+    /*!
+      Check for the existence of an effect.
+      
+      @param label The effect you want to check.
+      @return true if and only if the label exists.
+    */
+    bool check(string label);
 
-      void makeOscillation(string label, float oscillation_width, float period_in_seconds);
-      float oscillation(string label);
+    /*!
+      Remove all effects currently stored in the Effects instance.
+    */
+    void removeAllEffects();
 
-    private:
-      const float sigmoid_steepness = 5;
+    /*!
+      Create a tween which interpolates between two values over time.
+      
+      @param label Name of the effect to create.
+      @param start_value The value when the tween starts.
+      @param end_value The value when the tween ends.
+      @param duration_in_seconds The duration of the tween effect.
+    */
+    void makeTween(string label, float start_value, float end_value, float duration_in_seconds);
 
-      unordered_map<string, float> tween_starts;
-      unordered_map<string, float> tween_ends;
-      unordered_map<string, float> widths;
+    /*!
+      Get the interpolated value of a given tween effect.
+
+      Note that time is calculated for you in the background.
+      
+      @param label Name of the effect.
+      @param style Tween style (see TWEEN_STYLES enum for different styles).
+      @return A value somewhere between the start and end values for this tween.
+    */
+    float tween(string label, int style);
+
+    /*!
+      Create a shake effect which adds some random noise.
+      
+      @param label Name of the effect to create.
+      @param shake_size Shake noise is sampled from the range (-shake_size, shake_size).
+      @param duration_in_seconds The duration of the shake effect.
+    */
+    void makeShake(string label, int shake_size, float duration_in_seconds);
+
+    /*!
+      Grab a value from the random shaker.
+
+      This value will range from -shake_size to shake_size.
+      
+      @param label Name of the effect.
+      @return A value in the range (-shake_size, shake_size) as defined in makeShake.
+    */
+    float shake(string label);
+
+    /*!
+      Create an oscillation effect, which goes back and forth in a sine wave.
+
+      @param label Name of the effect to create.
+      @param oscillation_size Effect ranges from (-oscillation_size, oscillation_size).
+      @param period_in_seconds A full oscillation is completed every period_in_seconds.
+    */
+    void makeOscillation(string label, float oscillation_size, float period_in_seconds);
+
+    /*!
+      Grab a value from the random shaker.
+
+      This value will range from -oscillation_size to oscillation_size.
+
+      Note that time is calculated for you in the background.
+      
+      @param label Name of the effect.
+      @return A value in the range (-oscillation_size, oscillation_size) as defined in makeOscillation.
+    */
+    float oscillation(string label);
+
+   private:
+    // Hide constructor, destructor, copy constructor and assignment operator
+    Effects();
+    ~Effects();
+
+    Effects(const Effects&) = delete;
+    Effects& operator=(const Effects&) = delete;
+    Effects(Effects&&) = delete;
+    Effects& operator=(Effects&&) = delete;
+
+    const float sigmoid_steepness = 5;
+
+    unordered_map<string, float> tween_starts;
+    unordered_map<string, float> tween_ends;
+    unordered_map<string, float> sizes;
   };
 
-  extern Effects* effects;
+  extern Effects& effects;
 }

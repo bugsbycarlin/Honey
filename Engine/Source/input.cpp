@@ -10,7 +10,10 @@
 using namespace std;
 
 namespace Honey {
-  Input* input = new Input();
+  Input& Input::instance() {
+    static Input input_instance;
+    return input_instance;
+  }
 
   Input::Input() {
     action_to_key = {};
@@ -168,13 +171,13 @@ namespace Honey {
   bool Input::threeQuickKey(string key) {
     if (keyPressed(key) > 0) {
       string label = key + "_quick_counter";
-      if (logic->transientCounterValue(label) <= 0) {
-        logic->makeTransientCounter(label, 1.0);
+      if (logic.transientCounterValue(label) <= 0) {
+        logic.makeTransientCounter(label, 1.0);
       }
 
-      logic->incrementTransientCounter(label, keyPressed(key));
+      logic.incrementTransientCounter(label, keyPressed(key));
 
-      if (logic->transientCounterValue(label) >= 3) {
+      if (logic.transientCounterValue(label) >= 3) {
         return true;
       }
     }
@@ -208,13 +211,13 @@ namespace Honey {
   bool Input::threeQuickAction(string action) {
     if (actionPressed(action) > 0) {
       string label = action + "_quick_counter";
-      if (logic->transientCounterValue(label) <= 0) {
-        logic->makeTransientCounter(label, 1.0);
+      if (logic.transientCounterValue(label) <= 0) {
+        logic.makeTransientCounter(label, 1.0);
       }
 
-      logic->incrementTransientCounter(label, actionPressed(action));
+      logic.incrementTransientCounter(label, actionPressed(action));
 
-      if (logic->transientCounterValue(label) >= 3) {
+      if (logic.transientCounterValue(label) >= 3) {
         return true;
       }
     }
@@ -225,7 +228,7 @@ namespace Honey {
     action_to_key[action] = key;
   }
 
-  void Input::deleteAction(string action) {
+  void Input::removeAction(string action) {
     action_to_key.erase(action);
   }
 

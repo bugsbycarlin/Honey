@@ -10,7 +10,10 @@
 using namespace std;
 
 namespace Honey {
-  Sound* sound = new Sound();
+  Sound& Sound::instance() {
+    static Sound sound_instance;
+    return sound_instance;
+  }
 
   Sound::Sound() {
     sounds = {};
@@ -49,7 +52,7 @@ namespace Honey {
     Mix_PlayChannel(-1, sounds[label], loops);
   }
 
-  void Sound::destroySound(string label) {
+  void Sound::removeSound(string label) {
     if (sounds.count(label) == 0) {
       printf("Failed to delete %s because it wasn't in sounds.\n", label.c_str());
       return;
@@ -59,7 +62,7 @@ namespace Honey {
     sounds.erase(label);
   }
 
-  void Sound::destroyAllSounds() {
+  void Sound::removeAllSounds() {
     for (pair<string, Mix_Chunk*> item : sounds) {
       Mix_FreeChunk(item.second);
     }
@@ -81,7 +84,7 @@ namespace Honey {
     Mix_PlayMusic(music[label], loops);
   }
 
-  void Sound::destroyMusic(string label) {
+  void Sound::removeMusic(string label) {
     if (music.count(label) == 0) {
       printf("Failed to delete %s because it wasn't in sounds.\n", label.c_str());
       return;
@@ -92,7 +95,7 @@ namespace Honey {
   }
 
   // NOOOOOOOOOOOOOOOOO
-  void Sound::destroyAllMusic() {
+  void Sound::removeAllMusic() {
     for (pair<string, Mix_Music*> item : music) {
       Mix_FreeMusic(item.second);
     }
@@ -100,7 +103,7 @@ namespace Honey {
   }
 
   Sound::~Sound() {
-    sound->destroyAllMusic();
-    sound->destroyAllSounds();
+    removeAllMusic();
+    removeAllSounds();
   }
 }

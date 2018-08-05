@@ -3,7 +3,7 @@ import os
 version = "0_14"
 
 env=Environment()
-env.Append(CXXFLAGS = "-std=c++11")
+env.Append(CXXFLAGS = "-std=c++11 -g -O0")
 
 libraries = ["libHoney.a"]
 
