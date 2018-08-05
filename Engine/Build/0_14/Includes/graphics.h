@@ -1,9 +1,7 @@
-/*
-
-  Honey
-  Copyright 2018 - Matthew Carlin
-
-  Graphics class wraps OpenGL for drawing and handles image loading.
+/*!
+  @Honey
+  @author Matthew Carlin
+  Copyright 2018
 */
 
 #pragma once
@@ -31,70 +29,246 @@
 using namespace std;
 
 namespace Honey {
-  class Graphics {
+  /*!
+    The Graphics class class wraps OpenGL for drawing and handles image loading.
+
+    Primarily covered in blog posts:
+
+    http://www.friendsonmountains.com/blog/2018/07/08/lets-make-honey-version-0-02-set-up-opengl
+    http://www.friendsonmountains.com/blog/2018/07/09/lets-make-honey-version-0-03-draw-something
+    http://www.friendsonmountains.com/blog/2018/07/09/lets-make-honey-version-0-04-load-and-draw-images
+    http://www.friendsonmountains.com/blog/2018/07/12/lets-make-honey-version-0-06-draw-caching
+    http://www.friendsonmountains.com/blog/2018/07/21/lets-make-honey-version-0-10-starshine-the-graphics
+    http://www.friendsonmountains.com/blog/2018/07/25/lets-make-honey-version-0-12-layouts-and-refactoring
+  */
+  class Graphics final {
    public:
-      Graphics();
+    /*!
+      Singleton instance getter.
 
-      void initialize();
+      @return This'll get you the one instance of Graphics you're supposed to have.
+    */
+    static Graphics& instance();
 
-      void pushModelMatrix();
-      void popModelMatrix();
-      void translate(float x, float y, float z);
-      void rotate(float angle, float x, float y, float z);
-      void scale(float x, float y, float z);
+    /*!
+      Initialize Graphics by performing OpenGL setup, including shaders, rendering pipeline, and model-view-control type stuff.
+    */
+    void initialize();
 
-      floatColor parseFloatColor(string color);
-      intColor parseIntColor(string color);
-      void setColor(string color, float opacity);
-      void setColor(float r, float g, float b, float opacity);
+    /*!
+      Store the current model matrix on the stack. This allows you to perform further transforms without losing your place.
+    */
+    void pushModelMatrix();
 
-      void clearScreen(string color);
-      void draw2D();
-      void drawRectangle(float x_position, float y_position, float width, float height);
+    /*!
+      Pop a model matrix from the stack. This allows you to return to previous model configuration.
+    */
+    void popModelMatrix();
 
-      void addImage(string label, string path);
-      void addImageFromSurface(string label, SDL_Surface* image);
-      void setImage(string label);
-      void drawImage(string label, int x_position, int y_position);
-      void drawImage(string label, int x_position, int y_position, bool centered, float rotation, float scale);
-      void destroyImage(string label);
-      void destroyAllImages();
-      bool checkImage(string label);
+    /*!
+      Perform a translation, which moves everything in the world by x, y, and z.
+      
+      @param x desired movement along the x axis.
+      @param y desired movement along the y axis.
+      @param z desired movement along the z axis.
+    */
+    void translate(float x, float y, float z);
 
-      void updateDisplay();
+    /*!
+      Perform a rotation by the specified angle, around a vector defined by x, y, and z.
+      
+      @param angle desired rotation angle.
+      @param x component of rotation vector.
+      @param y component of rotation vector.
+      @param z component of rotation vector.
+    */
+    void rotate(float angle, float x, float y, float z);
 
-      ~Graphics();
+    /*!
+      Perform a scale, rescaling everything in the world by x, y, and z proportions.
+      
+      @param x desired rescale along the x axis.
+      @param y desired rescale along the y axis.
+      @param z desired rescale along the z axis.
+    */
+    void scale(float x, float y, float z);
 
-    private:
-      // Pointers to buffers for stuff on the graphics card
-      unordered_map<string, GLuint> vertex_buffers;
-      GLuint rectangle_texture_buffer;
-      GLuint vertex_array_id;
+    /*!
+      Parse a string color such as #FFD4C5 into a floatColor primitive.
+      
+      @param color a hex string color such as "#CF48FF".
+      @returns floatColor, a struct which contains float values for Red, Green, and Blue from 0 to 1.
+    */
+    floatColor parseFloatColor(string color);
 
-      // Maps to store texture information
-      map<string, GLuint> texture_map;
-      map<string, int> texture_widths;
-      map<string, int> texture_heights;
+    /*!
+      Parse a string color such as #FFD4C5 into an intColor primitive.
+      
+      @param color a hex string color such as "#CF48FF".
+      @returns intColor, a struct which contains int values for Red, Green, and Blue from 0 to 255.
+    */
+    intColor parseIntColor(string color);
 
-      // Variables for communicating with the graphics card
-      GLuint mvp_matrix_id;
-      GLuint color_id;
-      GLuint texture_sampler_id;
-      GLuint shader_program;
+    /*!
+      Set the global color of all subsequent draw operations on this draw cycle.
+      
+      @param color a hex string color such as "#CF48FF".
+      @param opacity an opacity value from 0 (fully transparent) to 1 (opaque).
+    */
+    void setColor(string color, float opacity);
 
-      // Variables for working on the CPU size
-      glm::mat4 projection;
-      glm::mat4 model;
-      glm::vec4 color;
-      bool using_2d;
-      vector<glm::mat4> model_stack;
+    /*!
+      Set the global color of all subsequent draw operations on this draw cycle.
+      
+      @param r float value for red, from 0 (no red) to 1 (full red).
+      @param g float value for green, from 0 (no green) to 1 (full green).
+      @param b float value for blue, from 0 (no blue) to 1 (full blue).
+      @param opacity an opacity value from 0 (fully transparent) to 1 (opaque).
+    */
+    void setColor(float r, float g, float b, float opacity);
 
-      void initializeOpenGL();
-      void initializeBuffersAndGeometry();
-      void initializeShaders();
+    /*!
+      Wipe the screen clean, setting everything to the specified color.
+      
+      @param color a hex string color such as "#CF48FF".
+    */
+    void clearScreen(string color);
 
-      void cacheRectangle(float width, float height);
+    /*!
+      Tell Graphics to prepare for 2D drawing. This sets orthographic perspective so that
+      x and y correspond directly to the screen width and height (starting from 0,0 in
+      the top left corner), and disabled depth testing so objects draw over each other
+      based on draw order.
+    */
+    void draw2D();
+
+    /*!
+      Draw a 2D rectangle at the given x and y position with the given width and height.
+      It is assumed that the color or texture (ie image) of the rectangle will have been
+      set before this, either with setColor or setImage.
+      
+      @param desired x_position x coordinate of the rectangle on the screen.
+      @param desired y_position y coordinate of the rectangle on the screen.
+      @param desired width width of the rectangle on the screen.
+      @param desired height height of the rectangle on the screen.
+    */
+    void drawRectangle(float x_position, float y_position, float width, float height);
+
+    /*!
+      Load an image at the specified path, storing it on the graphics card, where we
+      can reference it later by using the specified label.
+      
+      @param label the label we will use to reference the image later (like "star").
+      @param path the path to an image file on disk (like "Art/star.png").
+    */
+    void addImage(string label, string path);
+
+    /*!
+      Add an image from an existing SDL_Surface object, storing it on the graphics card, where we
+      can reference it later by using the specified label.
+      
+      @param label the label we will use to reference the image later (like "star").
+      @param image an SDL_Surface which represents an image in RAM.
+    */
+    void addImageFromSurface(string label, SDL_Surface* image);
+
+    /*!
+      Tell OpenGL we're using a particular image for the next round of drawing.
+      
+      @param label the name of an image in our system. It is assumed this has already been loaded with addImage.
+    */
+    void setImage(string label);
+
+    /*!
+      Draw an image at the given location.
+      
+      @param label the name of an image in our system. It is assumed this has already been loaded with addImage.
+      @param x_position desired x coordinate of the image on the screen.
+      @param y_position desired y coordinate of the image on the screen.
+    */
+    void drawImage(string label, int x_position, int y_position);
+
+    /*!
+      Draw an image at the given location. This version has more options; the image can be centered at x,y instead
+      of drawn from the top left corner. It can be rotated clockwise by a specified angle, and scaled by a specified
+      scale value.
+      
+      @param label the name of an image in our system. It is assumed this has already been loaded with addImage.
+      @param x_position desired x coordinate of the image on the screen.
+      @param y_position desired y coordinate of the image on the screen.
+      @param centered whether to draw the image from the center instead of the top left.
+      @param rotation desired clockwise rotation of the image on the screen.
+      @param scale desired scale of the image on the screen (1 is the original size, 0.5 is half size, 2 is double size, etc).
+    */
+    void drawImage(string label, int x_position, int y_position, bool centered, float rotation, float scale);
+
+    /*!
+      Remove the desired image from the graphics card and from this Graphics system.
+      
+      @param label the name of an image in our system. It is assumed this has already been loaded with addImage,
+      but the system will merely warn if it can't find this image.
+    */
+    void removeImage(string label);
+
+    /*!
+      Remove all images, removing them from the graphics card and from this Graphics system.
+    */
+    void removeAllImages();
+
+    /*!
+      Check whether an image label exists in this Graphics system.
+      
+      @param label the name of an image in our system.
+      @return true if and only if this label exists in the system, ie, it has been previously loaded with addImage and not removed.
+    */
+    bool checkImage(string label);
+
+    /*!
+      Update the display. Honey Graphics is double buffered, meaning on every cycle, everything is drawn to a hidden
+      surface, and then when we call this method, the hidden surface and the visible surface are swapped, and the new
+      stuff suddenly appears on the screen all together.
+    */
+    void updateDisplay();
+
+   private:
+    // Hide constructor, destructor, copy constructor and assignment operator
+    Graphics();
+    ~Graphics();
+
+    Graphics(const Graphics&) = delete;
+    Graphics& operator=(const Graphics&) = delete;
+    Graphics(Graphics&&) = delete;
+    Graphics& operator=(Graphics&&) = delete;
+
+    // Pointers to buffers for stuff on the graphics card
+    unordered_map<string, GLuint> vertex_buffers;
+    GLuint rectangle_texture_buffer;
+    GLuint vertex_array_id;
+
+    // Maps to store texture information
+    map<string, GLuint> texture_map;
+    map<string, int> texture_widths;
+    map<string, int> texture_heights;
+
+    // Variables for communicating with the graphics card
+    GLuint mvp_matrix_id;
+    GLuint color_id;
+    GLuint texture_sampler_id;
+    GLuint shader_program;
+
+    // Variables for working on the CPU size
+    glm::mat4 projection;
+    glm::mat4 model;
+    glm::vec4 color;
+    bool using_2d;
+    vector<glm::mat4> model_stack;
+
+    void initializeOpenGL();
+    void initializeBuffersAndGeometry();
+    void initializeShaders();
+
+    void cacheRectangle(float width, float height);
   };
 
-  extern Graphics* graphics;
+  extern Graphics& graphics;
 }

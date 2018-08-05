@@ -1,7 +1,7 @@
-/*
-
-  Honey
-  Copyright 2018 - Matthew Carlin
+/*!
+  @Honey
+  @author Matthew Carlin
+  Copyright 2018
 
   Shaders just holds Honey's vertex and fragment shaders as strings.
 */

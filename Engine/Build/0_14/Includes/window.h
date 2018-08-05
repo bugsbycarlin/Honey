@@ -1,9 +1,7 @@
-/*
-
-  Honey
-  Copyright 2018 - Matthew Carlin
-
-  Window class wraps SDL window creation.
+/*!
+  @Honey
+  @author Matthew Carlin
+  Copyright 2018
 */
 
 #pragma once
@@ -20,23 +18,51 @@
 using namespace std;
 
 namespace Honey {
-  class Window {
+  /*!
+    The Window class wraps SDL window creation.
+
+    Primarily covered in blog posts:
+
+    http://www.friendsonmountains.com/blog/2018/06/30/lets-make-honey-version-0-01-windows-and-libraries
+  */
+  class Window final {
    public:
-      // The SDL window
-      SDL_Window* window;
+    /*!
+      Singleton instance getter.
 
-      // The OpenGL context
-      SDL_GLContext context;
+      @return This'll get you the one instance of Window you're supposed to have.
+    */
+    static Window& instance();
 
-      int width;
-      int height;
+    // The SDL window
+    SDL_Window* window;
 
-      Window();
+    // The OpenGL context
+    SDL_GLContext context;
 
-      void initialize(string title, int screen_width, int screen_height, bool fullscreen);
+    int width;
+    int height;
 
-      ~Window();
+    /*!
+      Initialize SDL, create a window, initialize OpenGL, initialize SDL images, sound, and fonts.
+      
+      @param title The title of the game.
+      @param screen_width Self explanatory.
+      @param screen_height Self explanatory.
+      @param full_screen Self explanatory.
+    */
+    void initialize(string title, int screen_width, int screen_height, bool full_screen);
+
+   private:
+    // Hide constructor, destructor, copy constructor and assignment operator
+    Window();
+    ~Window();
+
+    Window(const Window&) = delete;
+    Window& operator=(const Window&) = delete;
+    Window(Window&&) = delete;
+    Window& operator=(Window&&) = delete;
   };
 
-  extern Window* window;
+  extern Window& window;
 }
