@@ -9,6 +9,7 @@
 #include <string>
 #include <stdlib.h>
 #include <unordered_map>
+#include <vector>
 
 #include <SDL2/SDL.h>
 #include "SDL2_mixer/SDL_mixer.h"
@@ -26,6 +27,7 @@ namespace Honey {
     Primarily covered in blog posts:
 
     http://www.friendsonmountains.com/blog/2018/07/17/lets-make-honey-version-0-09-sounds-good
+    http://www.friendsonmountains.com/blog/2018/08/28/lets-make-honey-version-0-15-attaching-effects
   */
   class Sound final {
    public:
@@ -64,6 +66,14 @@ namespace Honey {
     void addSound(string label, string path);
 
     /*!
+      Add many sounds to this system. Assumes wav files under one root path.
+
+      @param root_path OS valid path of a set of wav files (eg "Sound/"). Should have the slash.
+      @param labels list of labels, each corresponding to a wav file inside root_path (eg "cheer", "shout", "yay").
+    */
+    void addSounds(string root_path, vector<string> labels);
+
+    /*!
       Play a sound a certain number of times.
 
       @param label The sound.
@@ -90,6 +100,14 @@ namespace Honey {
       @param path OS valid path of an mp3 file (eg "Sound/bearJamboreeDubstep.mp3").
     */
     void addMusic(string label, string path);
+
+    /*!
+      Add many musicas to this system. Assumes mp3 files under one root path.
+
+      @param root_path OS valid path of a set of mp3 files (eg "Music/"). Should have the slash.
+      @param labels list of labels, each corresponding to an mp3 file inside root_path (eg "song1", "song2", "song3").
+    */
+    void addMusics(string root_path, vector<string> labels);
 
     /*!
       Play music a certain number of times.

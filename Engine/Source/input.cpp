@@ -25,6 +25,16 @@ namespace Honey {
     pressed.clear();
     up.clear();
 
+    // If the global key lock is engaged, additionally clear the down list
+    // and empty the queue before returning.
+    if (locked()) {
+      down.clear();
+      SDL_Event event;
+      while (SDL_PollEvent(&event) != 0) {
+      }
+      return;
+    }
+
     // Handle the events in the queue
     SDL_Event event;
     while (SDL_PollEvent(&event) != 0) {
@@ -32,7 +42,6 @@ namespace Honey {
         // Special input: quitting! The user can for instance ask
         // to quit by pressing a window close button.
         pressed["quit"] = 1;
-
       } else if (event.type == SDL_KEYDOWN) {
         // If we see a key down, translate it using the helper method,
         // clear it from the up map, and mark it in the down map.
@@ -147,6 +156,18 @@ namespace Honey {
     return key;
   }
 
+  void Input::lockInput(float duration_in_seconds) {
+    timing.lock(global_input_lock, duration_in_seconds);
+  }
+
+  void Input::unlockInput() {
+    timing.remove(global_input_lock);
+  }
+
+  bool Input::locked() {
+    return timing.locked(global_input_lock);
+  }
+
   int Input::keyPressed(string key) {
     if (pressed.count(key) == 1) {
       return pressed[key];
@@ -171,13 +192,13 @@ namespace Honey {
   bool Input::threeQuickKey(string key) {
     if (keyPressed(key) > 0) {
       string label = key + "_quick_counter";
-      if (logic.transientCounterValue(label) <= 0) {
-        logic.makeTransientCounter(label, 1.0);
+      if (timing.transientCounterValue(label) <= 0) {
+        timing.makeTransientCounter(label, 1.0);
       }
 
-      logic.incrementTransientCounter(label, keyPressed(key));
+      timing.incrementTransientCounter(label, keyPressed(key));
 
-      if (logic.transientCounterValue(label) >= 3) {
+      if (timing.transientCounterValue(label) >= 3) {
         return true;
       }
     }
@@ -211,13 +232,13 @@ namespace Honey {
   bool Input::threeQuickAction(string action) {
     if (actionPressed(action) > 0) {
       string label = action + "_quick_counter";
-      if (logic.transientCounterValue(label) <= 0) {
-        logic.makeTransientCounter(label, 1.0);
+      if (timing.transientCounterValue(label) <= 0) {
+        timing.makeTransientCounter(label, 1.0);
       }
 
-      logic.incrementTransientCounter(label, actionPressed(action));
+      timing.incrementTransientCounter(label, actionPressed(action));
 
-      if (logic.transientCounterValue(label) >= 3) {
+      if (timing.transientCounterValue(label) >= 3) {
         return true;
       }
     }

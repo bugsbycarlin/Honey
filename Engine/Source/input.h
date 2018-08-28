@@ -12,7 +12,7 @@
 
 #include <SDL2/SDL.h>
 
-#include "logic.h"
+#include "timing.h"
 
 using namespace std;
 
@@ -125,10 +125,29 @@ namespace Honey {
     void processInput();
 
     /*!
+      Lock all input for a period of time. All input commands will return negative or zero.
+      
+      @param duration_in_seconds The duration of the global input lock.
+    */
+    void lockInput(float duration_in_seconds);
+
+    /*!
+      Unlock all input, canceling the global input lock.
+    */
+    void unlockInput();
+
+    /*!
+      Return true if the input is currently globally locked.
+
+      @return true if the input is currently globally locked.
+    */
+    bool locked();
+
+    /*!
       Count the number of times this key was pressed.
       
       @param key The short string name for a keyboard key.
-      @return 
+      @return the number if times this key was pressed
     */
     int keyPressed(string key);
 
@@ -160,7 +179,7 @@ namespace Honey {
       Count the number of times this action was performed.
       
       @param action The name of an action.
-      @return 
+      @return the number if times this action was performed
     */
     int actionPressed(string action);
 
@@ -212,6 +231,8 @@ namespace Honey {
     Input& operator=(const Input&) = delete;
     Input(Input&&) = delete;
     Input& operator=(Input&&) = delete;
+
+    const string global_input_lock = "__global_input_lock__";
 
     unordered_map<string, string> action_to_key;
 

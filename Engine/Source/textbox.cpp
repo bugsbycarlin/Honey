@@ -32,6 +32,14 @@ namespace Honey {
     remakeBox();
   }
 
+  int Textbox::getWidth() {
+    return width;
+  }
+
+  int Textbox::getHeight() {
+    return height;
+  }
+
   void Textbox::setText(string text) {
     this->text = text;
 

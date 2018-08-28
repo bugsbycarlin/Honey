@@ -22,12 +22,12 @@ namespace Honey {
   }
 
   bool Effects::check(string label) {
-    return logic.check(label);
+    return timing.check(label);
   }
 
   void Effects::removeAllEffects() {
     for (pair<string, float> item : tween_starts) {
-      logic.remove(item.first);
+      timing.remove(item.first);
     }
     tween_starts.clear();
     tween_ends.clear();
@@ -35,25 +35,25 @@ namespace Honey {
   }
 
   void Effects::makeTween(string label, float start_value, float end_value, float duration_in_seconds) {
-    logic.markDuration(label, duration_in_seconds);
-    logic.markTime(label);
+    timing.setDuration(label, duration_in_seconds);
+    timing.mark(label);
     tween_starts[label] = start_value;
     tween_ends[label] = end_value;
   }
 
   float Effects::tween(string label, int style) {
     // If there's no tween, return 0
-    if (!logic.check(label)) {
+    if (!timing.check(label)) {
       return 0;
     }
 
     // If the tween is expired, return the end value
-    if (logic.timeSince(label) > logic.duration(label)) {
+    if (timing.since(label) > timing.duration(label)) {
       return tween_ends[label];
     }
 
     // The time fraction is from 0 (no time has elapsed) to 1 (all the time has elapsed)
-    float time_fraction = logic.timeSince(label) / logic.duration(label);
+    float time_fraction = timing.since(label) / timing.duration(label);
     float param;
     float space_fraction;
 
@@ -96,20 +96,20 @@ namespace Honey {
   }
 
   void Effects::makeShake(string label, int shake_size, float duration_in_seconds) {
-    logic.markDuration(label, duration_in_seconds);
-    logic.markTime(label);
+    timing.setDuration(label, duration_in_seconds);
+    timing.mark(label);
     sizes[label] = shake_size;
   }
 
   float Effects::shake(string label) {
     // If there's no label, return 0
-    if (!logic.check(label)) {
+    if (!timing.check(label)) {
       return 0;
     }
 
     // If the label is expired, remove it and return 0
-    if (logic.timeSince(label) > logic.duration(label)) {
-      logic.remove(label);
+    if (timing.since(label) > timing.duration(label)) {
+      timing.remove(label);
       sizes.erase(label);
       return 0;
     }
@@ -119,21 +119,21 @@ namespace Honey {
   }
 
   void Effects::makeOscillation(string label, float oscillation_size, float period_in_seconds) {
-    logic.markDuration(label, period_in_seconds);
-    logic.markTime(label);
+    timing.setDuration(label, period_in_seconds);
+    timing.mark(label);
     sizes[label] = oscillation_size;
   }
 
   float Effects::oscillation(string label) {
     // If there's no label, return 0
-    if (!logic.check(label)) {
+    if (!timing.check(label)) {
       return 0;
     }
 
     // We *don't* check if the oscillation has expired. Oscillations are infinite, until they're manually deleted.
 
     // We're misusing duration for period
-    float time_fraction = logic.timeSince(label) / logic.duration(label);
+    float time_fraction = timing.since(label) / timing.duration(label);
     float space_fraction = sin(2 * M_PI * time_fraction);
     return (2 * space_fraction - 1) * sizes[label];
   }

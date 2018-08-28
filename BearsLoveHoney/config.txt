@@ -25,7 +25,6 @@
 </section>
 
 <section name="input">
-  <param type="float" name="lock_duration">0.5</param>
   <param type="string" name="select_left_key">left</param>
   <param type="string" name="select_right_key">right</param>
   <param type="string" name="choose_key">up</param>

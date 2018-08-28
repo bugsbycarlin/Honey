@@ -35,15 +35,15 @@ namespace Honey {
   // Use this interval
   void HotConfig::setUpdateInterval(float interval) {
     update_interval = interval;
-    logic.remove("hot_config_update");
-    logic.makeTimeLock("hot_config_update", update_interval);
+    timing.remove("hot_config_update");
+    timing.lock("hot_config_update", update_interval);
     update();
   }
 
   // Check the time and update
   int HotConfig::checkAndUpdate() {
-    if (!logic.isTimeLocked("hot_config_update")) {
-      logic.makeTimeLock("hot_config_update", update_interval);
+    if (!timing.locked("hot_config_update")) {
+      timing.lock("hot_config_update", update_interval);
     } else {
       return SLEEPING;
     }

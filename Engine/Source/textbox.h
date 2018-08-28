@@ -36,6 +36,7 @@ namespace Honey {
       public variable controlling the horizontal position of the Textbox.
     */
     int x;
+
     /*!
       public variable controlling the vertical position of the Textbox.
     */
@@ -53,6 +54,20 @@ namespace Honey {
       @return a Textbox, of course.
     */
     Textbox(string font_path, int font_size, string text, string color, int x, int y);
+
+    /*!
+      Get the width of the Textbox.
+
+      @returns width of the Textbox.
+    */
+    int getWidth();
+
+    /*!
+      Get the height of the Textbox.
+
+      @returns height of the Textbox.
+    */
+    int getHeight();
 
     /*!
       Set the text of the Textbox.

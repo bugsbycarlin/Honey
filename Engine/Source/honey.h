@@ -21,7 +21,7 @@
   
   To use, include "honey.h".
 
-  This header file creates global singletons for window, logic, hot_config,
+  This header file creates global singletons for window, time, math, hot_config,
   input, layouts, graphics, effects, and sound, in that order.
 
   To initialize, call StartHoney();
@@ -61,26 +61,28 @@
 */
 
 #include "window.h"
-#include "logic.h"
+#include "timing.h"
+#include "mathutilities.h"
 #include "hotconfig.h"
 #include "input.h"
+#include "effects.h"
 #include "graphics.h"
 #include "layouts.h"
 #include "textbox.h"
 #include "sound.h"
-#include "effects.h"
 
 using namespace std;
 
 namespace Honey {
 
   Window& window = window.instance();
-  Logic& logic = logic.instance();
+  Timing& timing = timing.instance();
+  MathUtilities& math_utils = math_utils.instance();
   HotConfig& hot_config = hot_config.instance();
   Input& input = input.instance();
+  Effects& effects = effects.instance();
   Layouts& layouts = layouts.instance();
   Graphics& graphics = graphics.instance();
-  Effects& effects = effects.instance();
   Sound& sound = sound.instance();
 
   void StartHoney(string title, int screen_width, int screen_height, bool full_screen) {

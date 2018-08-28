@@ -38,6 +38,13 @@ namespace Honey {
     sounds[label] = sound;
   }
 
+  void Sound::addSounds(string root_path, vector<string> labels) {
+    for (string label : labels) {
+      string full_path = root_path + label + ".wav";
+      addSound(label, full_path);
+    }
+  }
+
   void Sound::playSound(string label, int loops) {
     if (sounds.count(label) == 0) {
       printf("Failed to find %s in sounds.\n", label.c_str());
@@ -73,6 +80,13 @@ namespace Honey {
     Mix_Music *musica;
     musica = Mix_LoadMUS(path.c_str());
     music[label] = musica;
+  }
+
+  void Sound::addMusics(string root_path, vector<string> labels) {
+    for (string label : labels) {
+      string full_path = root_path + label + ".mp3";
+      addMusic(label, full_path);
+    }
   }
 
   void Sound::playMusic(string label, int loops) {

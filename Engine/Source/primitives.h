@@ -51,4 +51,20 @@ namespace Honey {
     int g;
     int b;
   };
+
+  /*!
+    <pre>
+    \typdef settings is a cheap way to build settings dictionaries like
+      settings s = {
+      {"type", "tween"},
+      {"style", "sigmoid"},
+      {"label", "bear_movement"},
+      {"active", 0},
+      {"start", 1},
+      {"end", 0},
+      {"duration", 1.5}}
+    </pre>
+  */
+  typedef boost::variant<int, double, string> primitive;
+  typedef unordered_map<string, primitive> settings;
 }

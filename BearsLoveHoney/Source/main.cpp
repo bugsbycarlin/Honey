@@ -21,25 +21,29 @@ int main(int argc, char* args[]) {
   int screen_height = hot_config.getInt("layout", "screen_height");
 
   // Load images
-  graphics.addImage("boss_bear", "Art/boss_bear.png");
-  graphics.addImage("explorer_bear", "Art/explorer_bear.png");
-  graphics.addImage("grim_bear", "Art/grim_bear.png");
-  graphics.addImage("lawn_dart_bear", "Art/lawn_dart_bear.png");
-  graphics.addImage("emo_bear", "Art/emo_bear.png");
-  graphics.addImage("magnet_bear", "Art/magnet_bear.png");
-  graphics.addImage("star", "Art/star.png");
-  graphics.addImage("selector", "Art/selector.png");
+  graphics.addImages( "Art/", {
+    "boss_bear",
+    "explorer_bear",
+    "grim_bear",
+    "lawn_dart_bear",
+    "emo_bear",
+    "magnet_bear",
+    "star",
+    "selector"
+  });
 
   // Add music and some sound effects
   sound.addMusic("background_music", "Sound/Nothing_to_Fear.mp3");
-  sound.addSound("move_left", "Sound/C_Square1.wav");
-  sound.addSound("move_right", "Sound/C_Square2.wav");
-  sound.addSound("choose_1", "Sound/Chant1.wav");
-  sound.addSound("choose_2", "Sound/Chant2.wav");
-  sound.addSound("choose_3", "Sound/Chant3.wav");
-  sound.addSound("choose_4", "Sound/Chant4.wav");
-  sound.addSound("choose_5", "Sound/Chant5.wav");
-  sound.addSound("bob", "Sound/bob.wav");
+  sound.addSounds( "Sound/", {
+    "move_left",
+    "move_right",
+    "choose_1",
+    "choose_2",
+    "choose_3",
+    "choose_4",
+    "choose_5",
+    "bob"
+  });
 
   // Arrays of bears and bear names and bear colors
   array<string, 6> bears = {"boss_bear", "explorer_bear", "grim_bear", "lawn_dart_bear", "emo_bear", "magnet_bear"};
@@ -57,8 +61,8 @@ int main(int argc, char* args[]) {
   array<int, 120> star_field_x;
   array<int, 120> star_field_y;
   for (int i = 0; i < star_field_x.size(); i++) {
-    star_field_x[i] = logic.randomInt(-screen_width / 2.0, 1.5 * screen_width);
-    star_field_y[i] = logic.randomInt(-screen_height / 2.0, 1.5 * screen_height);
+    star_field_x[i] = math_utils.randomInt(-screen_width / 2.0, 1.5 * screen_width);
+    star_field_y[i] = math_utils.randomInt(-screen_height / 2.0, 1.5 * screen_height);
   }
 
   // Bear layout; we wrap around every 3 bears
@@ -93,7 +97,6 @@ int main(int argc, char* args[]) {
 
   float animation_duration = hot_config.getFloat("animation", "animation_duration");
   float choose_duration = hot_config.getFloat("animation", "choose_duration");
-  float lock_duration = hot_config.getFloat("input", "lock_duration");
   float shake_width = hot_config.getFloat("animation", "shake_width");
 
   float sound_volume = hot_config.getFloat("sound", "sound_volume");
@@ -110,9 +113,9 @@ int main(int argc, char* args[]) {
     input.processInput();
 
     // If user slides left, switch the bears, and make animations.
-    if (input.actionDown("select left") && !logic.isTimeLocked("movement")) {
+    if (input.actionDown("select left")) {
       sound.playSound("move_left", 1);
-      logic.makeTimeLock("movement", lock_duration);
+      input.lockInput(animation_duration);
       selected_bear -= 1;
       selected_bear = (selected_bear + bears.size()) % bears.size();
       bear_name_text->setColor(bear_colors[selected_bear]);
@@ -128,9 +131,9 @@ int main(int argc, char* args[]) {
     }
 
     // If the user slides right, switch the bears, and make animations.
-    if (input.actionDown("select right") && !logic.isTimeLocked("movement")) {
+    if (input.actionDown("select right")) {
       sound.playSound("move_right", 1);
-      logic.makeTimeLock("movement", lock_duration);
+      input.lockInput(animation_duration);
       selected_bear += 1;
       selected_bear = selected_bear % bears.size();
       bear_name_text->setColor(bear_colors[selected_bear]);
@@ -145,14 +148,14 @@ int main(int argc, char* args[]) {
       }
     }
 
-    // If the users presses the choose button, shake the middle bear.
-    if (input.actionDown("choose") && !logic.isTimeLocked("movement")) {
+    // If the user presses the choose button, shake the middle bear.
+    if (input.actionDown("choose")) {
       if (selected_bear != 4) {
-        sound.playSound("choose_" + to_string(logic.randomInt(1, 5)), 1);
+        sound.playSound("choose_" + to_string(math_utils.randomInt(1, 5)), 1);
       } else {
         sound.playSound("bob", 1);
       }
-      logic.makeTimeLock("movement", lock_duration);
+      input.lockInput(animation_duration);
       effects.makeShake("shakey shakey", shake_width, choose_duration);
       effects.makeTween("star_phasing", 0, 1, animation_duration);
       animation_direction = 0;
@@ -173,7 +176,7 @@ int main(int argc, char* args[]) {
     graphics.draw2D();
 
     // Light up the sky
-    if (effects.tween("star_phasing", 0) != 0 && logic.timeSince("star_phasing") < animation_duration) {
+    if (effects.tween("star_phasing", 0) != 0 && timing.since("star_phasing") < animation_duration) {
       float opacity = effects.tween("star_phasing", effects.SINEWAVE);
       float shooting_star = 300 * effects.tween("star_phasing", effects.LINEAR);
       graphics.setColor(bear_colors[selected_bear], opacity);
@@ -196,7 +199,7 @@ int main(int argc, char* args[]) {
       // Shift the chosen bears by the carousel selection value
       int bear_num = (selected_bear - 1 + i + bears.size()) % bears.size();
       position p = layouts.tileWrap("bearousel", i);
-      if (logic.isTimeLocked("movement")) {
+      if (input.locked()) {
         if (animation_direction != 0) {
           p.x = effects.tween(bears[i] + "x", effects.SIGMOID);
           p.y = effects.tween(bears[i] + "y", effects.SIGMOID);

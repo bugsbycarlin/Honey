@@ -12,8 +12,7 @@
 #include <stdlib.h>
 #include <unordered_map>
 
-#include "graphics.h"
-#include "logic.h"
+#include "timing.h"
 
 using namespace std;
 

@@ -12,7 +12,7 @@
 
 #include "tinyxml/tinyxml2.h"
 
-#include "logic.h"
+#include "timing.h"
 
 using namespace std;
 

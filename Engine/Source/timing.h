@@ -15,22 +15,23 @@ using namespace std;
 
 namespace Honey {
   /*!
-    The Logic class provides game logic convenience functions.
+    The Timing class provides time logic convenience functions.
 
     Different functions are all referenced by string labels; these labels are shared across functions.
 
     Primarily covered in blog posts:
 
     http://www.friendsonmountains.com/blog/2018/07/11/lets-make-honey-version-0-05-basic-controls
+    http://www.friendsonmountains.com/blog/2018/08/28/lets-make-honey-version-0-15-attaching-effects
   */
-  class Logic final {
+  class Timing final {
    public:
     /*!
       Singleton instance getter.
 
-      @return This'll get you the one instance of Logic you're supposed to have.
+      @return This'll get you the one instance of Timing you're supposed to have.
     */
-    static Logic& instance();
+    static Timing& instance();
 
     /*!
       Remove a label from this system.
@@ -52,7 +53,7 @@ namespace Honey {
       
       @param label Name of the label.
     */
-    void markTime(string label);
+    void mark(string label);
 
     /*!
       Store a duration time in seconds for this label.
@@ -60,7 +61,7 @@ namespace Honey {
       @param label Name of the label.
       @param seconds Intended duration in seconds.
     */
-    void markDuration(string label, float seconds);
+    void setDuration(string label, float seconds);
 
     /*!
       Get the time in seconds since this label was marked.
@@ -68,7 +69,7 @@ namespace Honey {
       @param label Name of the label.
       @returns the time since this label was last marked.
     */
-    float timeSince(string label);
+    float since(string label);
 
     /*!
       Get the intended duration in seconds of this label.
@@ -79,12 +80,12 @@ namespace Honey {
     float duration(string label);
 
     /*!
-      Lock this label for this many seconds. Calls to isTimeLocked will now return true.
+      Lock this label for this many seconds. Calls to locked will now return true.
       
       @param label Name of the label.
       @param seconds the duration of the lock.
     */
-    void makeTimeLock(string label, float seconds);
+    void lock(string label, float seconds);
 
     /*!
       Check whether a label has been time locked.
@@ -92,7 +93,7 @@ namespace Honey {
       @param label Name of the label.
       @returns true if and only if the label has been locked using makeTimeLock, less than a certain number of seconds ago.
     */
-    bool isTimeLocked(string label);
+    bool locked(string label);
 
     /*!
       Make an integer counter for this label that lasts for this many seconds.
@@ -118,24 +119,15 @@ namespace Honey {
     */
     int transientCounterValue(string label);
 
-    /*!
-      Get a random integer between low and high (inclusive, eg 3,5 will return any of 3, 4, and 5).
-      
-      @param low lowest value.
-      @param high highest value.
-      @returns a random number between the lowest and highest values.
-    */
-    int randomInt(int low, int high);
-
    private:
     // Hide constructor, destructor, copy constructor and assignment operator
-    Logic();
-    ~Logic();
+    Timing();
+    ~Timing();
 
-    Logic(const Logic&) = delete;
-    Logic& operator=(const Logic&) = delete;
-    Logic(Logic&&) = delete;
-    Logic& operator=(Logic&&) = delete;
+    Timing(const Timing&) = delete;
+    Timing& operator=(const Timing&) = delete;
+    Timing(Timing&&) = delete;
+    Timing& operator=(Timing&&) = delete;
 
     unordered_map<string, unsigned long> time_markers;
     unordered_map<string, float> duration_markers;
@@ -143,5 +135,5 @@ namespace Honey {
     unordered_map<string, int> transient_counter_values;
   };
 
-  extern Logic& logic;
+  extern Timing& timing;
 }

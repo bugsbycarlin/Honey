@@ -5,44 +5,42 @@
 
 */
 
-#include "logic.h"
+#include "timing.h"
 
 using namespace std;
 
 namespace Honey {
-  Logic& Logic::instance() {
-    static Logic logic_instance;
-    return logic_instance;
+  Timing& Timing::instance() {
+    static Timing time_instance;
+    return time_instance;
   }
 
-  Logic::Logic() {
-    srand(time(NULL));
-
+  Timing::Timing() {
     time_markers = {};
     duration_markers = {};
     transient_counter_values = {};
   }
 
-  void Logic::remove(string label) {
+  void Timing::remove(string label) {
     time_markers.erase(label);
     duration_markers.erase(label);
     transient_counter_values.erase(label);
   }
 
-  bool Logic::check(string label) {
+  bool Timing::check(string label) {
     return time_markers.count(label) == 1;
   }
 
-  void Logic::markTime(string label) {
+  void Timing::mark(string label) {
     // Get the time in milliseconds since the world was created.
     time_markers[label] = chrono::system_clock::now().time_since_epoch() / chrono::milliseconds(1);
   }
 
-  void Logic::markDuration(string label, float seconds) {
+  void Timing::setDuration(string label, float seconds) {
     duration_markers[label] = seconds;
   }
 
-  float Logic::timeSince(string label) {
+  float Timing::since(string label) {
     // Check if the marker exists; if not, return 0.
     if (time_markers.count(label) == 0) {
       return 0;
@@ -54,32 +52,32 @@ namespace Honey {
     return time_difference;
   }
 
-  float Logic::duration(string label) {
-    if (duration_markers.count(label) == 0) {
+  float Timing::duration(string label) {
+    if (!check(label)) {
       return 0;
     }
     return duration_markers[label];
   }
 
-  void Logic::makeTimeLock(string label, float seconds) {
+  void Timing::lock(string label, float seconds) {
     // Don't make the time lock if it already exists
-    if (duration_markers.count(label) == 1) {
+    if (check(label)) {
       printf("Warning: label %s already exists.\n", label.c_str());
       return;
     }
 
-    duration_markers[label] = seconds;
-    markTime(label);
+    setDuration(label, seconds);
+    mark(label);
   }
 
-  bool Logic::isTimeLocked(string label) {
+  bool Timing::locked(string label) {
     // If there is no lock, return false; it's not time locked!
-    if (duration_markers.count(label) == 0) {
+    if (!check(label)) {
       return false;
     }
 
     // The lock has expired! Remove it, and return false; it's no longer time locked!
-    if (time_markers.count(label) == 1 && timeSince(label) > duration_markers[label]) {
+    if (check(label) && since(label) > duration_markers[label]) {
       remove(label);
       return false;
     }
@@ -88,26 +86,26 @@ namespace Honey {
     return true;
   }
 
-  void Logic::makeTransientCounter(string label, float seconds) {
+  void Timing::makeTransientCounter(string label, float seconds) {
     // Don't make the time lock if it already exists and hasn't expired.
-    if (duration_markers.count(label) == 1 && timeSince(label) < duration_markers[label]) {
+    if (check(label) && since(label) < duration_markers[label]) {
       printf("Warning: transient counter %s already exists.\n", label.c_str());
       return;
     }
 
     duration_markers[label] = seconds;
     transient_counter_values[label] = 0;
-    markTime(label);
+    mark(label);
   }
 
-  void Logic::incrementTransientCounter(string label, int value) {
+  void Timing::incrementTransientCounter(string label, int value) {
     // If the label doesn't exist, ignore and return.
-    if (duration_markers.count(label) == 0) {
+    if (!check(label)) {
       return;
     }
 
     // If the label exists but it has expired, destroy it and recreate it.
-    if (time_markers.count(label) == 1 && timeSince(label) > duration_markers[label]) {
+    if (check(label) && since(label) > duration_markers[label]) {
       float seconds = duration_markers[label];
       remove(label);
       makeTransientCounter(label, seconds);
@@ -116,14 +114,14 @@ namespace Honey {
     transient_counter_values[label] += value;
   }
 
-  int Logic::transientCounterValue(string label) {
+  int Timing::transientCounterValue(string label) {
     // If the label doesn't exist, ignore and return 0.
-    if (duration_markers.count(label) == 0) {
+    if (!check(label)) {
       return 0;
     }
 
     // If the label exists but it has expired, destroy it and return 0.
-    if (time_markers.count(label) == 1 && timeSince(label) > duration_markers[label]) {
+    if (check(label) && since(label) > duration_markers[label]) {
       remove(label);
       return 0;
     }
@@ -131,11 +129,7 @@ namespace Honey {
     return transient_counter_values[label];
   }
 
-  int Logic::randomInt(int low, int high) {
-    return rand() % (int) (high - low) + low;
-  }
-
-  Logic::~Logic() {
+  Timing::~Timing() {
     time_markers.clear();
     duration_markers.clear();
     transient_counter_values.clear();

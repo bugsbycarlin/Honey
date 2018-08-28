@@ -25,6 +25,7 @@
 #include "primitives.h"
 #include "window.h"
 #include "shaders.h"
+#include "effects.h"
 
 using namespace std;
 
@@ -40,6 +41,7 @@ namespace Honey {
     http://www.friendsonmountains.com/blog/2018/07/12/lets-make-honey-version-0-06-draw-caching
     http://www.friendsonmountains.com/blog/2018/07/21/lets-make-honey-version-0-10-starshine-the-graphics
     http://www.friendsonmountains.com/blog/2018/07/25/lets-make-honey-version-0-12-layouts-and-refactoring
+    http://www.friendsonmountains.com/blog/2018/08/28/lets-make-honey-version-0-15-attaching-effects
   */
   class Graphics final {
    public:
@@ -49,6 +51,20 @@ namespace Honey {
       @return This'll get you the one instance of Graphics you're supposed to have.
     */
     static Graphics& instance();
+
+    /*!
+      Effects Types.
+
+      See graphs in http://www.friendsonmountains.com/blog/2018/07/14/lets-make-honey-version-0-07-effects
+    */
+    enum TWEEN_STYLES {
+      LINEAR, /*!< Linear Tween. Constant speed. */
+      SIGMOID, /*!< Sigmoid Tween. Starts slow, gets fast in the middle, ends slow. */
+      CUBIC, /*!< Cubic Tween. Starts fast, pauses in the middle, ends fast. */
+      RAMPDOWN, /*!< Rampdown Tween. Starts fast, ends slow. */
+      RAMPUP, /*!< Rampdown Tween. Starts slow, ends fast. */
+      SINEWAVE /*!< Sinewave Tween. Moves from start to end, then boomerangs back to start. */
+    };
 
     /*!
       Initialize Graphics by performing OpenGL setup, including shaders, rendering pipeline, and model-view-control type stuff.
@@ -162,6 +178,14 @@ namespace Honey {
       @param path the path to an image file on disk (like "Art/star.png").
     */
     void addImage(string label, string path);
+
+    /*!
+      Add many images to this system. Assumes png files under one root path.
+
+      @param root_path OS valid path of a set of png files (eg "Art/"). Should have the slash.
+      @param labels list of labels, each corresponding to a png file inside root_path (eg "star", "bear1", "bear2").
+    */
+    void addImages(string root_path, vector<string> labels);
 
     /*!
       Add an image from an existing SDL_Surface object, storing it on the graphics card, where we

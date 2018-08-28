@@ -343,6 +343,13 @@ namespace Honey {
     SDL_FreeSurface(image);
   }
 
+  void Graphics::addImages(string root_path, vector<string> labels) {
+    for (string label : labels) {
+      string full_path = root_path + label + ".png";
+      addImage(label, full_path);
+    }
+  }
+
   void Graphics::addImageFromSurface(string label, SDL_Surface* image) {
     // Make a texture
     GLuint* texture = new GLuint[1];
