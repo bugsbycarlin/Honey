@@ -57,7 +57,7 @@ int main(int argc, char* args[]) {
     hot_config.getString("layout", "bear_color_5"),
   };
 
-  // Star field locations
+  // Add star field locations
   array<int, 120> star_field_x;
   array<int, 120> star_field_y;
   for (int i = 0; i < star_field_x.size(); i++) {
@@ -65,14 +65,14 @@ int main(int argc, char* args[]) {
     star_field_y[i] = math_utils.randomInt(-screen_height / 2.0, 1.5 * screen_height);
   }
 
-  // Bear layout; we wrap around every 3 bears
+  // Add bear layout; we wrap around every 3 bears
   int first_bear_x = hot_config.getInt("layout", "first_bear_x");
   int first_bear_y = hot_config.getInt("layout", "first_bear_y");
   int bear_margin_x = hot_config.getInt("layout", "bear_margin_x");
   int bear_margin_y = hot_config.getInt("layout", "bear_margin_y");
   layouts.makeTileWrapLayout("bearousel", first_bear_x, first_bear_y, bear_margin_x, bear_margin_y, 3);
 
-  // Textbox for the selected bear
+  // Add textbox for the selected bear
   int font_x = hot_config.getInt("layout", "font_x");
   int font_y = hot_config.getInt("layout", "font_y");
   int font_size = hot_config.getInt("layout", "font_size");
@@ -88,16 +88,31 @@ int main(int argc, char* args[]) {
   int selected_bear = 1;
   int animation_direction = 0;
 
+  float animation_duration = hot_config.getFloat("animation", "animation_duration");
+  float choose_duration = hot_config.getFloat("animation", "choose_duration");
+  float shake_width = hot_config.getFloat("animation", "shake_width");
+
+  // Make tweens to animate the bears
+  for (int i = 0; i < bears.size(); i++) {
+    for (int direction : { -1, 1 }) {
+      position p1 = layouts.tileWrap("bearousel", (i + bears.size() + direction) % bears.size());
+      position p2 = layouts.tileWrap("bearousel", i);
+      effects.makeTween(bears[i] + "_x_" + to_string(direction), p1.x, p2.x, animation_duration);
+      effects.makeTween(bears[i] + "_y_" + to_string(direction), p1.y, p2.y, animation_duration);
+    }
+  }
+
+  // Make tweens for the shaking and star animations
+  effects.makeShake("shakey shakey", shake_width, choose_duration);
+  effects.makeTween("star_opacity", 0, 1, animation_duration);
+  effects.makeTween("star_travel", 0, 300, animation_duration);
+
   // Set action keys
   input.addActionKey("select left", hot_config.getString("input", "select_left_key"));
   input.addActionKey("select right", hot_config.getString("input", "select_right_key"));
   input.addActionKey("choose", hot_config.getString("input", "choose_key"));
 
   string screen_color = hot_config.getString("layout", "screen_color");
-
-  float animation_duration = hot_config.getFloat("animation", "animation_duration");
-  float choose_duration = hot_config.getFloat("animation", "choose_duration");
-  float shake_width = hot_config.getFloat("animation", "shake_width");
 
   float sound_volume = hot_config.getFloat("sound", "sound_volume");
   float music_volume = hot_config.getFloat("sound", "music_volume");
@@ -123,10 +138,8 @@ int main(int argc, char* args[]) {
       animation_direction = -1;
 
       for (int i = 0; i < bears.size(); i++) {
-        position p1 = layouts.tileWrap("bearousel", (i + bears.size() - 1) % bears.size());
-        position p2 = layouts.tileWrap("bearousel", i);
-        effects.makeTween(bears[i] + "x", p1.x, p2.x, animation_duration);
-        effects.makeTween(bears[i] + "y", p1.y, p2.y, animation_duration);
+        effects.start(bears[i] + "_x_" + to_string(animation_direction));
+        effects.start(bears[i] + "_y_" + to_string(animation_direction));
       }
     }
 
@@ -141,10 +154,8 @@ int main(int argc, char* args[]) {
       animation_direction = 1;
 
       for (int i = 0; i < bears.size(); i++) {
-        position p1 = layouts.tileWrap("bearousel", (i + 1) % bears.size());
-        position p2 = layouts.tileWrap("bearousel", i);
-        effects.makeTween(bears[i] + "x", p1.x, p2.x, animation_duration);
-        effects.makeTween(bears[i] + "y", p1.y, p2.y, animation_duration);
+        effects.start(bears[i] + "_x_" + to_string(animation_direction));
+        effects.start(bears[i] + "_y_" + to_string(animation_direction));
       }
     }
 
@@ -156,8 +167,9 @@ int main(int argc, char* args[]) {
         sound.playSound("bob", 1);
       }
       input.lockInput(animation_duration);
-      effects.makeShake("shakey shakey", shake_width, choose_duration);
-      effects.makeTween("star_phasing", 0, 1, animation_duration);
+      effects.start("shakey shakey");
+      effects.start("star_opacity");
+      effects.start("star_travel");
       animation_direction = 0;
     }
 
@@ -176,18 +188,18 @@ int main(int argc, char* args[]) {
     graphics.draw2D();
 
     // Light up the sky
-    if (effects.tween("star_phasing", 0) != 0 && timing.since("star_phasing") < animation_duration) {
-      float opacity = effects.tween("star_phasing", effects.SINEWAVE);
-      float shooting_star = 300 * effects.tween("star_phasing", effects.LINEAR);
+    if (effects.busy("star_opacity")) {
+      float opacity = effects.tween("star_opacity", effects.SINEWAVE);
+      float star_travel = effects.tween("star_travel", effects.LINEAR);
       graphics.setColor(bear_colors[selected_bear], opacity);
 
       if (selected_bear != 4) {
         for (int i = 0; i < star_field_x.size(); i++) {
-          graphics.drawImage("star", star_field_x[i] + shooting_star, star_field_y[i] - shooting_star, true, 0, 0.15);
+          graphics.drawImage("star", star_field_x[i] + star_travel, star_field_y[i] - star_travel, true, 0, 0.15);
         }
       } else {
         for (int i = 0; i < star_field_x.size(); i++) {
-          graphics.drawImage("star", star_field_x[i], star_field_y[i] + shooting_star, true, 0, 0.15);
+          graphics.drawImage("star", star_field_x[i], star_field_y[i] + star_travel, true, 0, 0.15);
         }
       }
 
@@ -201,8 +213,8 @@ int main(int argc, char* args[]) {
       position p = layouts.tileWrap("bearousel", i);
       if (input.locked()) {
         if (animation_direction != 0) {
-          p.x = effects.tween(bears[i] + "x", effects.SIGMOID);
-          p.y = effects.tween(bears[i] + "y", effects.SIGMOID);
+          p.x = effects.tween(bears[i] + "_x_" + to_string(animation_direction), effects.SIGMOID);
+          p.y = effects.tween(bears[i] + "_y_" + to_string(animation_direction), effects.SIGMOID);
         } else if (bear_num == selected_bear) {
           p.x += effects.shake("shakey shakey");
           p.y += effects.shake("shakey shakey");
