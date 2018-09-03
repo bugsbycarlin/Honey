@@ -23,6 +23,7 @@ namespace Honey {
     Primarily covered in blog posts:
 
     http://www.friendsonmountains.com/blog/2018/07/14/lets-make-honey-version-0-07-effects
+    http://www.friendsonmountains.com/blog/2018/08/31/lets-make-honey-version-0-15-sprites
   */
   class Effects final {
    public:

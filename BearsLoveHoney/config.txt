@@ -3,8 +3,8 @@
   <param type="int" name="screen_height">600</param>
   <param type="bool" name="full_screen">false</param>
   <param type="string" name="screen_color">#F0F0F0</param>
-  <param type="int" name="first_bear_x">60</param>
-  <param type="int" name="first_bear_y">200</param>
+  <param type="int" name="first_bear_x">117</param>
+  <param type="int" name="first_bear_y">277</param>
   <param type="int" name="bear_margin_x">340</param>
   <param type="int" name="bear_margin_y">200</param>
   <param type="int" name="font_x">400</param>

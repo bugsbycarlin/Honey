@@ -201,6 +201,20 @@ namespace Honey {
     }
   }
 
+  int Graphics::getWidth(string label) {
+    if (texture_widths.count(label) != 1) {
+      return -1; // TO DO: throw a value error
+    }
+    return texture_widths[label];
+  }
+
+  int Graphics::getHeight(string label) {
+    if (texture_heights.count(label) != 1) {
+      return -1; // TO DO: throw a value error
+    }
+    return texture_heights[label];
+  }
+
   floatColor Graphics::parseFloatColor(string color) {
     // This method takes a hex-string color (eg #A4F4E3 or #FFFFFF or #003030)
     // and decomposes it into r, g, and b floats, which are each a fraction from 0 (black)

@@ -93,7 +93,7 @@ namespace Honey {
     /*!
       Perform a rotation by the specified angle, around a vector defined by x, y, and z.
       
-      @param angle desired rotation angle.
+      @param angle desired rotation angle in degrees.
       @param x component of rotation vector.
       @param y component of rotation vector.
       @param z component of rotation vector.
@@ -108,6 +108,22 @@ namespace Honey {
       @param z desired rescale along the z axis.
     */
     void scale(float x, float y, float z);
+
+    /*!
+      Return width of an image
+
+      @param label the name of an image in our system. It is assumed this has already been loaded with addImage.
+      @returns width of the label
+    */
+    int getWidth(string label);
+
+    /*!
+      Return height of an image
+
+      @param label the name of an image in our system. It is assumed this has already been loaded with addImage.
+      @returns height of the label
+    */
+    int getHeight(string label);
 
     /*!
       Parse a string color such as #FFD4C5 into a floatColor primitive.
@@ -221,7 +237,7 @@ namespace Honey {
       @param x_position desired x coordinate of the image on the screen.
       @param y_position desired y coordinate of the image on the screen.
       @param centered whether to draw the image from the center instead of the top left.
-      @param rotation desired clockwise rotation of the image on the screen.
+      @param rotation desired clockwise rotation of the image on the screen in degrees.
       @param scale desired scale of the image on the screen (1 is the original size, 0.5 is half size, 2 is double size, etc).
     */
     void drawImage(string label, int x_position, int y_position, bool centered, float rotation, float scale);

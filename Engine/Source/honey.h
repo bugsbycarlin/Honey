@@ -68,6 +68,7 @@
 #include "effects.h"
 #include "graphics.h"
 #include "layouts.h"
+#include "sprite.h"
 #include "textbox.h"
 #include "sound.h"
 
