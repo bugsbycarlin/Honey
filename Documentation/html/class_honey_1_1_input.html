@@ -57,6 +57,12 @@ $(function() {
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a8e646438eab4bd5ed41995e2c39bb41a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_input.html#a8e646438eab4bd5ed41995e2c39bb41a">processInput</a> ()</td></tr>
 <tr class="separator:a8e646438eab4bd5ed41995e2c39bb41a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90f07366c922b151cb8f30dcc7fe7897"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_input.html#a90f07366c922b151cb8f30dcc7fe7897">lockInput</a> (float duration_in_seconds)</td></tr>
+<tr class="separator:a90f07366c922b151cb8f30dcc7fe7897"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefacbbb4f67ac151213a8f33e37a497b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_input.html#aefacbbb4f67ac151213a8f33e37a497b">unlockInput</a> ()</td></tr>
+<tr class="separator:aefacbbb4f67ac151213a8f33e37a497b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac55e54ee2b973a94099f4b3547ea802c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_input.html#ac55e54ee2b973a94099f4b3547ea802c">locked</a> ()</td></tr>
+<tr class="separator:ac55e54ee2b973a94099f4b3547ea802c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c8b9cfa7e55ad29cb10a4d3bd9a4989"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_input.html#a9c8b9cfa7e55ad29cb10a4d3bd9a4989">keyPressed</a> (string key)</td></tr>
 <tr class="separator:a9c8b9cfa7e55ad29cb10a4d3bd9a4989"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70d31495ebdb35961fc540650856ceb6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_input.html#a70d31495ebdb35961fc540650856ceb6">keyDown</a> (string key)</td></tr>
@@ -222,6 +228,68 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a90f07366c922b151cb8f30dcc7fe7897"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90f07366c922b151cb8f30dcc7fe7897">&#9670;&nbsp;</a></span>lockInput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Honey::Input::lockInput </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>duration_in_seconds</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Lock all input for a period of time. All input commands will return negative or zero.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">duration_in_seconds</td><td>The duration of the global input lock. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aefacbbb4f67ac151213a8f33e37a497b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefacbbb4f67ac151213a8f33e37a497b">&#9670;&nbsp;</a></span>unlockInput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Honey::Input::unlockInput </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Unlock all input, canceling the global input lock. </p>
+
+</div>
+</div>
+<a id="ac55e54ee2b973a94099f4b3547ea802c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac55e54ee2b973a94099f4b3547ea802c">&#9670;&nbsp;</a></span>locked()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Honey::Input::locked </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return true if the input is currently globally locked.</p>
+<dl class="section return"><dt>Returns</dt><dd>true if the input is currently globally locked. </dd></dl>
+
+</div>
+</div>
 <a id="a9c8b9cfa7e55ad29cb10a4d3bd9a4989"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9c8b9cfa7e55ad29cb10a4d3bd9a4989">&#9670;&nbsp;</a></span>keyPressed()</h2>
 
@@ -244,7 +312,7 @@ Static Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the number if times this key was pressed </dd></dl>
 
 </div>
 </div>
@@ -348,7 +416,7 @@ Static Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the number if times this action was performed </dd></dl>
 
 </div>
 </div>
@@ -492,8 +560,8 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/Users/matthewcarlin/Projects/2018 - Honey/Engine/Source/input.h</li>
-<li>/Users/matthewcarlin/Projects/2018 - Honey/Engine/Source/input.cpp</li>
+<li>/Users/matthewcarlin/Projects/2018_Honey/Engine/Source/input.h</li>
+<li>/Users/matthewcarlin/Projects/2018_Honey/Engine/Source/input.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

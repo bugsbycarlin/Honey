@@ -63,6 +63,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a25e99980744a8807c85a34c7232771d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acfb7d39378f72f965264940ce2a88065"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_sound.html#acfb7d39378f72f965264940ce2a88065">addSound</a> (string label, string path)</td></tr>
 <tr class="separator:acfb7d39378f72f965264940ce2a88065"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae128e65bcba53a2562f972fd23e49a85"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_sound.html#ae128e65bcba53a2562f972fd23e49a85">addSounds</a> (string root_path, vector&lt; string &gt; labels)</td></tr>
+<tr class="separator:ae128e65bcba53a2562f972fd23e49a85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8aa5f4edd0968af7a5e1ba1f7fe7d496"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_sound.html#a8aa5f4edd0968af7a5e1ba1f7fe7d496">playSound</a> (string label, int loops)</td></tr>
 <tr class="separator:a8aa5f4edd0968af7a5e1ba1f7fe7d496"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa194db582ed4b6e4f4dc8a4a12badad5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_sound.html#aa194db582ed4b6e4f4dc8a4a12badad5">removeSound</a> (string label)</td></tr>
@@ -71,6 +73,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad5634f726162df9f4dcd54b1a6a28177"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5346add1d8327dfee5d9b6660c1f8062"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_sound.html#a5346add1d8327dfee5d9b6660c1f8062">addMusic</a> (string label, string path)</td></tr>
 <tr class="separator:a5346add1d8327dfee5d9b6660c1f8062"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a072dd318ba5be2c8db8e84c8e9bc7a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_sound.html#a2a072dd318ba5be2c8db8e84c8e9bc7a">addMusics</a> (string root_path, vector&lt; string &gt; labels)</td></tr>
+<tr class="separator:a2a072dd318ba5be2c8db8e84c8e9bc7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a357237ffaf4bcae8b226952acef451ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_sound.html#a357237ffaf4bcae8b226952acef451ef">playMusic</a> (string label, int loops)</td></tr>
 <tr class="separator:a357237ffaf4bcae8b226952acef451ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b4ae1ddacbc7ace53fba4ee035bb211"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_sound.html#a8b4ae1ddacbc7ace53fba4ee035bb211">removeMusic</a> (string label)</td></tr>
@@ -88,7 +92,7 @@ Static Public Member Functions</h2></td></tr>
 <p>We guarantee that the sound loader is compatible with wav files, and the music loader is compatible with mp3 files.</p>
 <p>SDL mixer may add additional functionality by default, but we don't support it.</p>
 <p>Primarily covered in blog posts:</p>
-<p><a href="http://www.friendsonmountains.com/blog/2018/07/17/lets-make-honey-version-0-09-sounds-good">http://www.friendsonmountains.com/blog/2018/07/17/lets-make-honey-version-0-09-sounds-good</a> </p>
+<p><a href="http://www.friendsonmountains.com/blog/2018/07/17/lets-make-honey-version-0-09-sounds-good">http://www.friendsonmountains.com/blog/2018/07/17/lets-make-honey-version-0-09-sounds-good</a> <a href="http://www.friendsonmountains.com/blog/2018/08/28/lets-make-honey-version-0-15-attaching-effects">http://www.friendsonmountains.com/blog/2018/08/28/lets-make-honey-version-0-15-attaching-effects</a> </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="aea36f7da384c195f512da424c65e5f4c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aea36f7da384c195f512da424c65e5f4c">&#9670;&nbsp;</a></span>instance()</h2>
@@ -221,6 +225,42 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ae128e65bcba53a2562f972fd23e49a85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae128e65bcba53a2562f972fd23e49a85">&#9670;&nbsp;</a></span>addSounds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Honey::Sound::addSounds </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>root_path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vector&lt; string &gt;&#160;</td>
+          <td class="paramname"><em>labels</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Add many sounds to this system. Assumes wav files under one root path.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">root_path</td><td>OS valid path of a set of wav files (eg "Sound/"). Should have the slash. </td></tr>
+    <tr><td class="paramname">labels</td><td>list of labels, each corresponding to a wav file inside root_path (eg "cheer", "shout", "yay"). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a8aa5f4edd0968af7a5e1ba1f7fe7d496"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8aa5f4edd0968af7a5e1ba1f7fe7d496">&#9670;&nbsp;</a></span>playSound()</h2>
 
@@ -336,6 +376,42 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a2a072dd318ba5be2c8db8e84c8e9bc7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a072dd318ba5be2c8db8e84c8e9bc7a">&#9670;&nbsp;</a></span>addMusics()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Honey::Sound::addMusics </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>root_path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vector&lt; string &gt;&#160;</td>
+          <td class="paramname"><em>labels</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Add many musicas to this system. Assumes mp3 files under one root path.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">root_path</td><td>OS valid path of a set of mp3 files (eg "Music/"). Should have the slash. </td></tr>
+    <tr><td class="paramname">labels</td><td>list of labels, each corresponding to an mp3 file inside root_path (eg "song1", "song2", "song3"). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a357237ffaf4bcae8b226952acef451ef"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a357237ffaf4bcae8b226952acef451ef">&#9670;&nbsp;</a></span>playMusic()</h2>
 
@@ -416,8 +492,8 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/Users/matthewcarlin/Projects/2018 - Honey/Engine/Source/sound.h</li>
-<li>/Users/matthewcarlin/Projects/2018 - Honey/Engine/Source/sound.cpp</li>
+<li>/Users/matthewcarlin/Projects/2018_Honey/Engine/Source/sound.h</li>
+<li>/Users/matthewcarlin/Projects/2018_Honey/Engine/Source/sound.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

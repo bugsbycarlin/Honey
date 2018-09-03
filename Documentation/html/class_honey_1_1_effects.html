@@ -67,11 +67,24 @@ Public Types</h2></td></tr>
 <br />
  }</td></tr>
 <tr class="separator:a00236fe2559811463f478bce0f422d89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb4f9ef7c1c9ae6626c1d5b217932f4d"><td class="memItemLeft" align="right" valign="top"><a id="afb4f9ef7c1c9ae6626c1d5b217932f4d"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>STATE</b> { <b>WAITING</b>, 
+<b>BUSY</b>, 
+<b>FINISHED</b>
+ }</td></tr>
+<tr class="separator:afb4f9ef7c1c9ae6626c1d5b217932f4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aff115d5f69e72a272409a19176f3fd79"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_effects.html#aff115d5f69e72a272409a19176f3fd79">check</a> (string label)</td></tr>
-<tr class="separator:aff115d5f69e72a272409a19176f3fd79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12ee78a78813a0dead8ab99bd26d7bb8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_effects.html#a12ee78a78813a0dead8ab99bd26d7bb8">start</a> (string label)</td></tr>
+<tr class="separator:a12ee78a78813a0dead8ab99bd26d7bb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae540b5979e307b2d0c994c7e3c8e83b5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_effects.html#ae540b5979e307b2d0c994c7e3c8e83b5">stop</a> (string label)</td></tr>
+<tr class="separator:ae540b5979e307b2d0c994c7e3c8e83b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a003440367743c1e340352846b4a2496c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_effects.html#a003440367743c1e340352846b4a2496c">waiting</a> (string label)</td></tr>
+<tr class="separator:a003440367743c1e340352846b4a2496c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0953528d8255ce699af604d35d86ec7f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_effects.html#a0953528d8255ce699af604d35d86ec7f">busy</a> (string label)</td></tr>
+<tr class="separator:a0953528d8255ce699af604d35d86ec7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bc3d81bf90cacf8627aca3530a53443"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_effects.html#a8bc3d81bf90cacf8627aca3530a53443">finished</a> (string label)</td></tr>
+<tr class="separator:a8bc3d81bf90cacf8627aca3530a53443"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87c3f13fcf78161db3a05537caf43f18"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_effects.html#a87c3f13fcf78161db3a05537caf43f18">removeAllEffects</a> ()</td></tr>
 <tr class="separator:a87c3f13fcf78161db3a05537caf43f18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a08c1772244621a2bcb30ecd8fc90d170"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_effects.html#a08c1772244621a2bcb30ecd8fc90d170">makeTween</a> (string label, float start_value, float end_value, float duration_in_seconds)</td></tr>
@@ -95,7 +108,7 @@ Static Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="class_honey_1_1_effects.html">Effects</a> class provides convenience methods to create visual effects.</p>
 <p>Primarily covered in blog posts:</p>
-<p><a href="http://www.friendsonmountains.com/blog/2018/07/14/lets-make-honey-version-0-07-effects">http://www.friendsonmountains.com/blog/2018/07/14/lets-make-honey-version-0-07-effects</a> </p>
+<p><a href="http://www.friendsonmountains.com/blog/2018/07/14/lets-make-honey-version-0-07-effects">http://www.friendsonmountains.com/blog/2018/07/14/lets-make-honey-version-0-07-effects</a> <a href="http://www.friendsonmountains.com/blog/2018/08/31/lets-make-honey-version-0-15-sprites">http://www.friendsonmountains.com/blog/2018/08/31/lets-make-honey-version-0-15-sprites</a> </p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a00236fe2559811463f478bce0f422d89"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a00236fe2559811463f478bce0f422d89">&#9670;&nbsp;</a></span>TWEEN_STYLES</h2>
@@ -155,14 +168,14 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aff115d5f69e72a272409a19176f3fd79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aff115d5f69e72a272409a19176f3fd79">&#9670;&nbsp;</a></span>check()</h2>
+<a id="a12ee78a78813a0dead8ab99bd26d7bb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12ee78a78813a0dead8ab99bd26d7bb8">&#9670;&nbsp;</a></span>start()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool Honey::Effects::check </td>
+          <td class="memname">void Honey::Effects::start </td>
           <td>(</td>
           <td class="paramtype">string&#160;</td>
           <td class="paramname"><em>label</em></td><td>)</td>
@@ -170,14 +183,116 @@ Static Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Check for the existence of an effect.</p>
+<p>Start the effect!</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">label</td><td>The effect you want to start. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ae540b5979e307b2d0c994c7e3c8e83b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae540b5979e307b2d0c994c7e3c8e83b5">&#9670;&nbsp;</a></span>stop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Honey::Effects::stop </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>label</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Stop the effect!</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">label</td><td>The effect you want to stop. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a003440367743c1e340352846b4a2496c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a003440367743c1e340352846b4a2496c">&#9670;&nbsp;</a></span>waiting()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Honey::Effects::waiting </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>label</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Check whether an effect is waiting.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">label</td><td>The effect you want to check. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if and only if the label exists. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if and only if the label exists and the state is waiting. </dd></dl>
+
+</div>
+</div>
+<a id="a0953528d8255ce699af604d35d86ec7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0953528d8255ce699af604d35d86ec7f">&#9670;&nbsp;</a></span>busy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Honey::Effects::busy </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>label</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Check whether an effect is busy.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">label</td><td>The effect you want to check. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if and only if the label exists and the state is busy. </dd></dl>
+
+</div>
+</div>
+<a id="a8bc3d81bf90cacf8627aca3530a53443"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bc3d81bf90cacf8627aca3530a53443">&#9670;&nbsp;</a></span>finished()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Honey::Effects::finished </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>label</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Check whether an effect is finished.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">label</td><td>The effect you want to check. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if and only if the label exists and the state is finished. </dd></dl>
 
 </div>
 </div>
@@ -429,8 +544,8 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/Users/matthewcarlin/Projects/2018 - Honey/Engine/Source/effects.h</li>
-<li>/Users/matthewcarlin/Projects/2018 - Honey/Engine/Source/effects.cpp</li>
+<li>/Users/matthewcarlin/Projects/2018_Honey/Engine/Source/effects.h</li>
+<li>/Users/matthewcarlin/Projects/2018_Honey/Engine/Source/effects.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
