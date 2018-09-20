@@ -41,7 +41,7 @@ namespace Honey {
     http://www.friendsonmountains.com/blog/2018/07/12/lets-make-honey-version-0-06-draw-caching
     http://www.friendsonmountains.com/blog/2018/07/21/lets-make-honey-version-0-10-starshine-the-graphics
     http://www.friendsonmountains.com/blog/2018/07/25/lets-make-honey-version-0-12-layouts-and-refactoring
-    http://www.friendsonmountains.com/blog/2018/08/28/lets-make-honey-version-0-15-attaching-effects
+    http://www.friendsonmountains.com/blog/2018/08/28/lets-make-honey-version-0-15-sprites
   */
   class Graphics final {
    public:

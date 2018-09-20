@@ -19,6 +19,7 @@ namespace Honey {
     time_markers = {};
     duration_markers = {};
     transient_counter_values = {};
+    sequence_timings = {};
   }
 
   void Timing::remove(string label) {
@@ -127,6 +128,52 @@ namespace Honey {
     }
 
     return transient_counter_values[label];
+  }
+
+  void Timing::makeSequence(string label, vector<float> sequence_timing) {
+    // If the label already exists, it will be overwritten.
+    sequence_timings[label] = sequence_timing;
+    sequence_counters[label] = -1;
+    mark(label);
+  }
+
+  int Timing::sequenceValue(string label) {
+    // If the label doesn't exist, ignore and return 0.
+    if (!check(label) || sequence_timings.count(label) != 1) {
+      return 0;
+    }
+
+    float elapsed_sequence_time = since(label);
+    float candidate_duration = 0;
+    int candidate_value = 0;
+    for (float duration : sequence_timings[label]) {
+      candidate_duration += duration;
+      if (elapsed_sequence_time < candidate_duration) {
+        return candidate_value;
+      }
+      candidate_value += 1;
+    }
+
+    return candidate_value;
+  }
+
+  void Timing::makeSequenceWithFunction(string label, vector<float> sequence_timing, void (*action)(int, float)) {
+    makeSequence(label, sequence_timing);
+    sequence_counters[label] = -1;
+    sequence_actions[label] = action;
+  }
+
+  void Timing::doSequence(string label) {
+    // If the label doesn't exist, ignore.
+    if (!check(label) || sequence_timings.count(label) != 1 || sequence_actions.count(label) != 1) {
+      return;
+    }
+
+    int current_value = sequenceValue(label);
+    if (current_value > sequence_counters[label]) {
+      sequence_counters[label] = current_value;
+      (*sequence_actions[label])(sequence_counters[label], sequence_timings[label][sequence_counters[label]]);
+    }
   }
 
   Timing::~Timing() {

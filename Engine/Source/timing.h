@@ -10,6 +10,7 @@
 #include <string>
 #include <stdlib.h>
 #include <unordered_map>
+#include <vector>
 
 using namespace std;
 
@@ -22,7 +23,8 @@ namespace Honey {
     Primarily covered in blog posts:
 
     http://www.friendsonmountains.com/blog/2018/07/11/lets-make-honey-version-0-05-basic-controls
-    http://www.friendsonmountains.com/blog/2018/08/28/lets-make-honey-version-0-15-attaching-effects
+    http://www.friendsonmountains.com/blog/2018/08/28/lets-make-honey-version-0-15-sprites
+    http://www.friendsonmountains.com/blog/2018/08/28/lets-make-honey-version-0-16-sequences
   */
   class Timing final {
    public:
@@ -119,6 +121,65 @@ namespace Honey {
     */
     int transientCounterValue(string label);
 
+    /*!
+      Make a timed sequence.
+
+      This will count up from zero, delaying each increment by the next timing value in the sequence.
+
+      For instance, if the timing {0.5, 1.0, 0.5} is supplied, the counter will start at 0,
+      increment to 1 after 0.5 seconds, increment to 2 after 0.5+1.0 seconds, and increment
+      to 3 after 0.5+1.0+0.5 seconds.
+      
+      @param label Name of the label.
+      @param sequence_timing list of delays between increments.
+    */
+    void makeSequence(string label, vector<float> sequence_timing);
+
+    /*
+      Get the value of a timed sequence.
+
+      For instance, if the timing {0.5, 1.0, 0.5} was supplied during creation,
+      at any time before 0.5 seconds, this method will return 0, at any time between 0.5 and
+      1.5 seconds, this method will return 1, at any time between 1.5 seconds and 2.0 seconds,
+      this method will return 2, and at any time after 2.0 seconds this method will return 3.
+
+      If the label doesn't exist, this method will return 0.
+
+      @param label Name of the label.
+    */
+    int sequenceValue(string label);
+
+    /*!
+      Make a timed sequence with a function to perform actions.
+
+      This will make a sequence, the same as makeSequence. It will also attach a function pointer
+      to that sequence; calls to doSequence will call that function with the current sequence value
+      and current timing value as parameters.
+      
+      @param label Name of the label.
+      @param sequence_timing list of delays between increments.
+      @param action function pointer to an action function which takes integer sequence value and float sequence timing as parameters.
+    */
+    void makeSequenceWithFunction(string label, vector<float> sequence_timing, void (*action)(int, float));
+
+    /*
+      Use a timed sequence to perform actions at desired moments in time.
+
+      This method presumes an action has been attached using makeSequenceWithFunctions (and returns if none is found).
+
+      When each new sequence value is reached, this method fires the action method *one time*.
+      The duration of the final action (called when the full sequence is complete) is 0.
+
+      For instance, if the timing {0.5, 1.0, 0.5} is applied, this method
+      will call action(0, 0.5) immediately,
+      will call action(1, 1.0) after 0.5 seconds,
+      will call action(2, 0.5) after 1.5 seconds,
+      will call action(3, 0.0) after 2.0 seconds.
+
+      @param label Name of the label.
+    */
+    void doSequence(string label);
+
    private:
     // Hide constructor, destructor, copy constructor and assignment operator
     Timing();
@@ -133,6 +194,10 @@ namespace Honey {
     unordered_map<string, float> duration_markers;
 
     unordered_map<string, int> transient_counter_values;
+
+    unordered_map<string, vector<float>> sequence_timings;
+    unordered_map<string, int> sequence_counters;
+    unordered_map<string, void(*)(int, float)> sequence_actions;
   };
 
   extern Timing& timing;

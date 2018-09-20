@@ -21,6 +21,7 @@ void initializeInput();
 
 void render();
 void logic();
+void animationSequence(int sequence_counter, float duration);
 
 void cleanup();
 
@@ -123,7 +124,7 @@ void initializeAssets() {
 
   // Make star sprite
   star_sprite = new Sprite(
-    "star", 
+    "star",
     origin,
     "#ffffff", 0.0, 0.0, 0.15
   );
@@ -162,6 +163,9 @@ void initializeLogic() {
   animation_duration = hot_config.getFloat("animation", "animation_duration");
   choose_duration = hot_config.getFloat("animation", "choose_duration");
   shake_width = hot_config.getFloat("animation", "shake_width");
+
+  // add a test sequence
+  timing.makeSequenceWithFunction("test_sequence", {0.25, 0.5, 0.5, 2.5}, animationSequence);
 }
 
 
@@ -252,6 +256,15 @@ void logic() {
   if (!input.locked()) {
     star_sprite->setPosition(position {.x = 0, .y = 0});
   }
+
+  timing.doSequence("test_sequence");
+}
+
+
+void animationSequence(int sequence_counter, float duration) {
+  printf("I am inside the animation sequence, with counter value %d and duration value %0.2f\n",
+    sequence_counter,
+    duration);
 }
 
 
