@@ -27,7 +27,8 @@ namespace Honey {
     Primarily covered in blog posts:
 
     http://www.friendsonmountains.com/blog/2018/07/17/lets-make-honey-version-0-09-sounds-good
-    http://www.friendsonmountains.com/blog/2018/08/28/lets-make-honey-version-0-15-attaching-effects
+
+    http://www.friendsonmountains.com/blog/2018/08/28/lets-make-honey-version-0-15-sprites
   */
   class Sound final {
    public:

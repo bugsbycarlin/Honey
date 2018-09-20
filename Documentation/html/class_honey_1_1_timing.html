@@ -77,6 +77,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a65efffb263abccf6ec523888aed50192"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5029788fc8a8120e9a7999ae84422d18"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_timing.html#a5029788fc8a8120e9a7999ae84422d18">transientCounterValue</a> (string label)</td></tr>
 <tr class="separator:a5029788fc8a8120e9a7999ae84422d18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3e33ddf968a25214846d7484292cdb0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_timing.html#af3e33ddf968a25214846d7484292cdb0">makeSequence</a> (string label, vector&lt; float &gt; sequence_timing)</td></tr>
+<tr class="separator:af3e33ddf968a25214846d7484292cdb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3264c5d30cdd0f0841f444c23288498b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_timing.html#a3264c5d30cdd0f0841f444c23288498b">sequenceValue</a> (string label)</td></tr>
+<tr class="separator:a3264c5d30cdd0f0841f444c23288498b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92f9abd935d22cb4079e0bad94fdc47c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_timing.html#a92f9abd935d22cb4079e0bad94fdc47c">makeSequenceWithFunction</a> (string label, vector&lt; float &gt; sequence_timing, void(*action)(int, float))</td></tr>
+<tr class="separator:a92f9abd935d22cb4079e0bad94fdc47c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0fe52c0df61b61d1209ce9f17e0ec55"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_timing.html#af0fe52c0df61b61d1209ce9f17e0ec55">doSequence</a> (string label)</td></tr>
+<tr class="separator:af0fe52c0df61b61d1209ce9f17e0ec55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -87,7 +95,9 @@ Static Public Member Functions</h2></td></tr>
 <div class="textblock"><p>The <a class="el" href="class_honey_1_1_timing.html">Timing</a> class provides time logic convenience functions.</p>
 <p>Different functions are all referenced by string labels; these labels are shared across functions.</p>
 <p>Primarily covered in blog posts:</p>
-<p><a href="http://www.friendsonmountains.com/blog/2018/07/11/lets-make-honey-version-0-05-basic-controls">http://www.friendsonmountains.com/blog/2018/07/11/lets-make-honey-version-0-05-basic-controls</a> <a href="http://www.friendsonmountains.com/blog/2018/08/28/lets-make-honey-version-0-15-attaching-effects">http://www.friendsonmountains.com/blog/2018/08/28/lets-make-honey-version-0-15-attaching-effects</a> </p>
+<p><a href="http://www.friendsonmountains.com/blog/2018/07/11/lets-make-honey-version-0-05-basic-controls">http://www.friendsonmountains.com/blog/2018/07/11/lets-make-honey-version-0-05-basic-controls</a></p>
+<p><a href="http://www.friendsonmountains.com/blog/2018/08/28/lets-make-honey-version-0-15-sprites">http://www.friendsonmountains.com/blog/2018/08/28/lets-make-honey-version-0-15-sprites</a></p>
+<p><a href="http://www.friendsonmountains.com/blog/2018/08/28/lets-make-honey-version-0-16-sequences">http://www.friendsonmountains.com/blog/2018/08/28/lets-make-honey-version-0-16-sequences</a> </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a157bc87fdd4d8c55a3bfce6e588c5850"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a157bc87fdd4d8c55a3bfce6e588c5850">&#9670;&nbsp;</a></span>instance()</h2>
@@ -437,6 +447,143 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the value of the counter. </dd></dl>
+
+</div>
+</div>
+<a id="af3e33ddf968a25214846d7484292cdb0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3e33ddf968a25214846d7484292cdb0">&#9670;&nbsp;</a></span>makeSequence()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Honey::Timing::makeSequence </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>label</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vector&lt; float &gt;&#160;</td>
+          <td class="paramname"><em>sequence_timing</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Make a timed sequence.</p>
+<p>This will count up from zero, delaying each increment by the next timing value in the sequence.</p>
+<p>For instance, if the timing {0.5, 1.0, 0.5} is supplied, the counter will start at 0, increment to 1 after 0.5 seconds, increment to 2 after 0.5+1.0 seconds, and increment to 3 after 0.5+1.0+0.5 seconds.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">label</td><td>Name of the label. </td></tr>
+    <tr><td class="paramname">sequence_timing</td><td>list of delays between increments. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a3264c5d30cdd0f0841f444c23288498b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3264c5d30cdd0f0841f444c23288498b">&#9670;&nbsp;</a></span>sequenceValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Honey::Timing::sequenceValue </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>label</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get the value of a timed sequence.</p>
+<p>For instance, if the timing {0.5, 1.0, 0.5} was supplied during creation, at any time before 0.5 seconds, this method will return 0, at any time between 0.5 and 1.5 seconds, this method will return 1, at any time between 1.5 seconds and 2.0 seconds, this method will return 2, and at any time after 2.0 seconds this method will return 3.</p>
+<p>If the label doesn't exist, this method will return 0.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">label</td><td>Name of the label. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a92f9abd935d22cb4079e0bad94fdc47c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92f9abd935d22cb4079e0bad94fdc47c">&#9670;&nbsp;</a></span>makeSequenceWithFunction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Honey::Timing::makeSequenceWithFunction </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>label</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vector&lt; float &gt;&#160;</td>
+          <td class="paramname"><em>sequence_timing</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void(*)(int, float)&#160;</td>
+          <td class="paramname"><em>action</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Make a timed sequence with a function to perform actions.</p>
+<p>This will make a sequence, the same as makeSequence. It will also attach a function pointer to that sequence; calls to doSequence will call that function with the current sequence value and current timing value as parameters.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">label</td><td>Name of the label. </td></tr>
+    <tr><td class="paramname">sequence_timing</td><td>list of delays between increments. </td></tr>
+    <tr><td class="paramname">action</td><td>function pointer to an action function which takes integer sequence value and float sequence timing as parameters. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af0fe52c0df61b61d1209ce9f17e0ec55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0fe52c0df61b61d1209ce9f17e0ec55">&#9670;&nbsp;</a></span>doSequence()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Honey::Timing::doSequence </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>label</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Use a timed sequence to perform actions at desired moments in time.</p>
+<p>This method presumes an action has been attached using makeSequenceWithFunctions (and returns if none is found).</p>
+<p>When each new sequence value is reached, this method fires the action method <em>one time</em>. The duration of the final action (called when the full sequence is complete) is 0.</p>
+<p>For instance, if the timing {0.5, 1.0, 0.5} is applied, this method will call action(0, 0.5) immediately, will call action(1, 1.0) after 0.5 seconds, will call action(2, 0.5) after 1.5 seconds, will call action(3, 0.0) after 2.0 seconds.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">label</td><td>Name of the label. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

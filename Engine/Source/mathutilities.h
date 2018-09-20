@@ -15,7 +15,7 @@ namespace Honey {
   /*!
     The MathUtilities class provides math utility functions.
 
-    http://www.friendsonmountains.com/blog/2018/08/28/lets-make-honey-version-0-15-attaching-effects
+    http://www.friendsonmountains.com/blog/2018/08/28/lets-make-honey-version-0-15-sprites
   */
   class MathUtilities final {
    public:
