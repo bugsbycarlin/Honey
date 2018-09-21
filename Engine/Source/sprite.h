@@ -34,7 +34,7 @@ namespace Honey {
     /*!
       Public constructor. Makes one Sprite.
       
-      @param label The label of an image loaded in the graphics system.
+      @param draw_label The label of an image loaded in the graphics system.
       @param pos The position of the sprite on screen.
       @param color A hex string color (eg "#FCFCFC") to color the sprite.
       @param opacity value from 0 (invisible) to 1 (fully opaque).
@@ -42,21 +42,21 @@ namespace Honey {
       @param scale desired scale of the image on the screen (1 is the original size, 0.5 is half size, 2 is double size, etc).
       @return a Sprite, of course.
     */
-    Sprite(string label, position pos, string color, float opacity, float rotation, float scale);
+    Sprite(string draw_label, position pos, string color, float opacity, float rotation, float scale);
 
     /*!
-      Get the label of the Sprite.
+      Get the draw label of the Sprite.
 
-      @return label of the Sprite.
+      @return draw_label of the Sprite.
     */
     string getLabel();
 
     /*!
-      Set the label of the Sprite.
+      Set the draw_label of the Sprite.
 
-      @param label The label of an image loaded in the graphics system.
+      @param draw_label The label of an image loaded in the graphics system.
     */
-    void setLabel(string label);
+    void setLabel(string draw_label);
 
     /*!
       Get the position of the Sprite.
@@ -195,12 +195,16 @@ namespace Honey {
     */
     ~Sprite();
 
-   private:
-    string label;
+   protected:
+    string draw_label;
+    string unique_label; // we can't use the same draw label for a hundred sprites with different effects.
     position pos;
     string color;
     float opacity;
     float scale;
     float rotation;
+    bool centered;
+
+    static int unique_count;
   };
 }
