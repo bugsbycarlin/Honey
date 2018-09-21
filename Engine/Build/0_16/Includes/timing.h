@@ -23,7 +23,9 @@ namespace Honey {
     Primarily covered in blog posts:
 
     http://www.friendsonmountains.com/blog/2018/07/11/lets-make-honey-version-0-05-basic-controls
+
     http://www.friendsonmountains.com/blog/2018/08/28/lets-make-honey-version-0-15-sprites
+
     http://www.friendsonmountains.com/blog/2018/08/28/lets-make-honey-version-0-16-sequences
   */
   class Timing final {
@@ -135,7 +137,7 @@ namespace Honey {
     */
     void makeSequence(string label, vector<float> sequence_timing);
 
-    /*
+    /*!
       Get the value of a timed sequence.
 
       For instance, if the timing {0.5, 1.0, 0.5} was supplied during creation,
@@ -162,7 +164,7 @@ namespace Honey {
     */
     void makeSequenceWithFunction(string label, vector<float> sequence_timing, void (*action)(int, float));
 
-    /*
+    /*!
       Use a timed sequence to perform actions at desired moments in time.
 
       This method presumes an action has been attached using makeSequenceWithFunctions (and returns if none is found).

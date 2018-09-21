@@ -19,6 +19,7 @@
 // Honey includes
 #include "primitives.h"
 #include "graphics.h"
+#include "sprite.h"
 
 using namespace std;
 
@@ -30,30 +31,20 @@ namespace Honey {
 
     http://www.friendsonmountains.com/blog/2018/07/24/lets-make-honey-version-0-11-fonts-and-text
   */
-  class Textbox {
+  class Textbox : public Sprite {
    public:
-    /*!
-      public variable controlling the horizontal position of the Textbox.
-    */
-    int x;
-
-    /*!
-      public variable controlling the vertical position of the Textbox.
-    */
-    int y;
-
     /*!
       Public constructor. Makes one Textbox.
       
       @param font_path OS valid path to a ttf font file (eg "Fonts/crayon.ttf").
       @param font_size The size of the font.
       @param text The text of the box.
+      @param pos The position of the textbox on screen.
       @param color A hex string color (eg "#FCFCFC") which will be the color of the text.
-      @param x Horizontal position.
-      @param y Vertical position.
       @return a Textbox, of course.
+      
     */
-    Textbox(string font_path, int font_size, string text, string color, int x, int y);
+    Textbox(string font_path, int font_size, string text, position pos, string color);
 
     /*!
       Get the width of the Textbox.
@@ -83,10 +74,10 @@ namespace Honey {
     */
     void setColor(string color);
 
-    /*!
-      Draw the Textbox.
-    */
-    void draw();
+    // !
+    //   Draw the Textbox.
+    
+    // void draw();
 
     /*!
       Public destructor. Called when you call delete on a Textbox.
@@ -96,9 +87,8 @@ namespace Honey {
    private:
     SDL_Surface* text_surface;
     TTF_Font* font;
-    SDL_Color color;
+    SDL_Color text_color;
 
-    string label;
     string text;
 
     int width;

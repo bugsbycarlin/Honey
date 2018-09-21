@@ -36,11 +36,17 @@ namespace Honey {
     Primarily covered in blog posts:
 
     http://www.friendsonmountains.com/blog/2018/07/08/lets-make-honey-version-0-02-set-up-opengl
+
     http://www.friendsonmountains.com/blog/2018/07/09/lets-make-honey-version-0-03-draw-something
+
     http://www.friendsonmountains.com/blog/2018/07/09/lets-make-honey-version-0-04-load-and-draw-images
+
     http://www.friendsonmountains.com/blog/2018/07/12/lets-make-honey-version-0-06-draw-caching
+
     http://www.friendsonmountains.com/blog/2018/07/21/lets-make-honey-version-0-10-starshine-the-graphics
+
     http://www.friendsonmountains.com/blog/2018/07/25/lets-make-honey-version-0-12-layouts-and-refactoring
+
     http://www.friendsonmountains.com/blog/2018/08/28/lets-make-honey-version-0-15-sprites
   */
   class Graphics final {
