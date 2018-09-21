@@ -63,7 +63,9 @@ namespace Honey {
   }
 
   Textbox::~Textbox() {
-    graphics.removeImage(this->draw_label);
+    if (graphics.checkImage(draw_label)) {
+      graphics.removeImage(draw_label);
+    }
     TTF_CloseFont(font);
   }
 }

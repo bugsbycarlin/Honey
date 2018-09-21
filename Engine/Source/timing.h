@@ -26,7 +26,7 @@ namespace Honey {
 
     http://www.friendsonmountains.com/blog/2018/08/28/lets-make-honey-version-0-15-sprites
 
-    http://www.friendsonmountains.com/blog/2018/08/28/lets-make-honey-version-0-16-sequences
+    http://www.friendsonmountains.com/blog/2018/09/20/lets-make-honey-version-0-16-sequences
   */
   class Timing final {
    public:

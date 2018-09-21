@@ -32,6 +32,8 @@ namespace Honey {
     http://www.friendsonmountains.com/blog/2018/07/24/lets-make-honey-version-0-11-fonts-and-text
 
     http://www.friendsonmountains.com/blog/2018/08/31/lets-make-honey-version-0-15-sprites
+
+    http://www.friendsonmountains.com/blog/2018/09/20/lets-make-honey-version-0-16-sequences
   */
   class Textbox : public Sprite {
    public:

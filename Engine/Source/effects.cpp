@@ -179,7 +179,7 @@ namespace Honey {
     // We're misusing duration for period
     float time_fraction = timing.since(label) / timing.duration(label);
     float space_fraction = sin(2 * M_PI * time_fraction);
-    return (2 * space_fraction - 1) * size[label];
+    return space_fraction * size[label];
   }
 
   Effects::~Effects() {

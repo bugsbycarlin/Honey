@@ -9,7 +9,10 @@
 #include <string>
 #include <stdlib.h>
 
+#include "primitives.h"
+
 using namespace std;
+using namespace Honey;
 
 namespace Honey {
   /*!
@@ -35,6 +38,15 @@ namespace Honey {
     */
     int randomInt(int low, int high);
 
+    /*!
+      Get the distance between two positions.
+      
+      @param p1 a position.
+      @param p2 a position.
+      @returns distance between p1 and p2.
+    */
+    float distance(position p1, position p2);
+
    private:
     // Hide constructor, destructor, copy constructor and assignment operator
     MathUtilities();
@@ -46,5 +58,5 @@ namespace Honey {
     MathUtilities& operator=(MathUtilities&&) = delete;
   };
 
-  extern MathUtilities& math_utilities;
+  extern MathUtilities& math_utils;
 }

@@ -27,6 +27,8 @@ namespace Honey {
     Primarily covered in blog posts:
 
     http://www.friendsonmountains.com/blog/2018/08/31/lets-make-honey-version-0-15-sprites
+
+    http://www.friendsonmountains.com/blog/2018/09/20/lets-make-honey-version-0-16-sequences
   */
   class Sprite {
    public:

@@ -10,6 +10,8 @@
 using namespace std;
 
 namespace Honey {
+  
+
   Window& Window::instance() {
     static Window window_instance;
     return window_instance;
