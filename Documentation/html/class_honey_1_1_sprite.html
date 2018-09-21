@@ -46,20 +46,24 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
 <a href="class_honey_1_1_sprite-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Honey::Sprite Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Inherited by <a class="el" href="class_honey_1_1_textbox.html">Honey::Textbox</a>.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae91cb4035dde811131767ec11200462f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_sprite.html#ae91cb4035dde811131767ec11200462f">Sprite</a> (string label, <a class="el" href="struct_honey_1_1position.html">position</a> pos, string color, float opacity, float rotation, float scale)</td></tr>
-<tr class="separator:ae91cb4035dde811131767ec11200462f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad61cfe6da2c09864f6ef58981a869a61"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_sprite.html#ad61cfe6da2c09864f6ef58981a869a61">Sprite</a> (string draw_label, <a class="el" href="struct_honey_1_1position.html">position</a> pos, string color, float opacity, float rotation, float scale)</td></tr>
+<tr class="separator:ad61cfe6da2c09864f6ef58981a869a61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2c93280312ec749510a3f9193aa5c9e"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_sprite.html#ac2c93280312ec749510a3f9193aa5c9e">getLabel</a> ()</td></tr>
 <tr class="separator:ac2c93280312ec749510a3f9193aa5c9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8398330e51abc68dc5629fd4a1b315e6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_sprite.html#a8398330e51abc68dc5629fd4a1b315e6">setLabel</a> (string label)</td></tr>
-<tr class="separator:a8398330e51abc68dc5629fd4a1b315e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab33914d2b4feb710f0babd80f6c22caf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_sprite.html#ab33914d2b4feb710f0babd80f6c22caf">setLabel</a> (string draw_label)</td></tr>
+<tr class="separator:ab33914d2b4feb710f0babd80f6c22caf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1663d7f82d99e2cd7bce5a85493717c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_honey_1_1position.html">position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_sprite.html#ac1663d7f82d99e2cd7bce5a85493717c">getPosition</a> ()</td></tr>
 <tr class="separator:ac1663d7f82d99e2cd7bce5a85493717c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21286b6175fc78b1bec95cfb74764c8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_sprite.html#a21286b6175fc78b1bec95cfb74764c8f">setPosition</a> (<a class="el" href="struct_honey_1_1position.html">position</a> pos)</td></tr>
@@ -100,6 +104,39 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a0cfac6655cf4b8c4ef40f1e9cdacaddd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a047293ffe6bc31252e97e6d1d99f2ec1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_sprite.html#a047293ffe6bc31252e97e6d1d99f2ec1">~Sprite</a> ()</td></tr>
 <tr class="separator:a047293ffe6bc31252e97e6d1d99f2ec1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:aedc1521c9b327dc102511b33e6bdc4dc"><td class="memItemLeft" align="right" valign="top"><a id="aedc1521c9b327dc102511b33e6bdc4dc"></a>
+string&#160;</td><td class="memItemRight" valign="bottom"><b>draw_label</b></td></tr>
+<tr class="separator:aedc1521c9b327dc102511b33e6bdc4dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55c5011f7ed881fc65849796004f5c43"><td class="memItemLeft" align="right" valign="top"><a id="a55c5011f7ed881fc65849796004f5c43"></a>
+string&#160;</td><td class="memItemRight" valign="bottom"><b>unique_label</b></td></tr>
+<tr class="separator:a55c5011f7ed881fc65849796004f5c43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa00b25f55498fff1944fc81c4eebf590"><td class="memItemLeft" align="right" valign="top"><a id="aa00b25f55498fff1944fc81c4eebf590"></a>
+<a class="el" href="struct_honey_1_1position.html">position</a>&#160;</td><td class="memItemRight" valign="bottom"><b>pos</b></td></tr>
+<tr class="separator:aa00b25f55498fff1944fc81c4eebf590"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d32517c693ab17ae87894f10ac7c932"><td class="memItemLeft" align="right" valign="top"><a id="a5d32517c693ab17ae87894f10ac7c932"></a>
+string&#160;</td><td class="memItemRight" valign="bottom"><b>color</b></td></tr>
+<tr class="separator:a5d32517c693ab17ae87894f10ac7c932"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a310fb8d8f463df69eb0328ffa412c0dc"><td class="memItemLeft" align="right" valign="top"><a id="a310fb8d8f463df69eb0328ffa412c0dc"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>opacity</b></td></tr>
+<tr class="separator:a310fb8d8f463df69eb0328ffa412c0dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a299923d157dcb8960f48101672068033"><td class="memItemLeft" align="right" valign="top"><a id="a299923d157dcb8960f48101672068033"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>scale</b></td></tr>
+<tr class="separator:a299923d157dcb8960f48101672068033"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abfcdf203eeb638aa3dcda3b13b6cfa23"><td class="memItemLeft" align="right" valign="top"><a id="abfcdf203eeb638aa3dcda3b13b6cfa23"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>rotation</b></td></tr>
+<tr class="separator:abfcdf203eeb638aa3dcda3b13b6cfa23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0cc2038cf24c018703a73bee40afef9"><td class="memItemLeft" align="right" valign="top"><a id="ae0cc2038cf24c018703a73bee40afef9"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>centered</b></td></tr>
+<tr class="separator:ae0cc2038cf24c018703a73bee40afef9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
+Static Protected Attributes</h2></td></tr>
+<tr class="memitem:a06adb47022aca0c03d69520426d46ce0"><td class="memItemLeft" align="right" valign="top"><a id="a06adb47022aca0c03d69520426d46ce0"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>unique_count</b> = 0</td></tr>
+<tr class="separator:a06adb47022aca0c03d69520426d46ce0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="class_honey_1_1_sprite.html">Sprite</a> class models a sprite; a sprite is a 2d image with a position on screen and its own draw method.</p>
@@ -107,8 +144,8 @@ Public Member Functions</h2></td></tr>
 <p>Primarily covered in blog posts:</p>
 <p><a href="http://www.friendsonmountains.com/blog/2018/08/31/lets-make-honey-version-0-15-sprites">http://www.friendsonmountains.com/blog/2018/08/31/lets-make-honey-version-0-15-sprites</a> </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ae91cb4035dde811131767ec11200462f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae91cb4035dde811131767ec11200462f">&#9670;&nbsp;</a></span>Sprite()</h2>
+<a id="ad61cfe6da2c09864f6ef58981a869a61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad61cfe6da2c09864f6ef58981a869a61">&#9670;&nbsp;</a></span>Sprite()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -117,7 +154,7 @@ Public Member Functions</h2></td></tr>
           <td class="memname">Honey::Sprite::Sprite </td>
           <td>(</td>
           <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>label</em>, </td>
+          <td class="paramname"><em>draw_label</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -159,7 +196,7 @@ Public Member Functions</h2></td></tr>
 <p>Public constructor. Makes one <a class="el" href="class_honey_1_1_sprite.html">Sprite</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">label</td><td>The label of an image loaded in the graphics system. </td></tr>
+    <tr><td class="paramname">draw_label</td><td>The label of an image loaded in the graphics system. </td></tr>
     <tr><td class="paramname">pos</td><td>The position of the sprite on screen. </td></tr>
     <tr><td class="paramname">color</td><td>A hex string color (eg "#FCFCFC") to color the sprite. </td></tr>
     <tr><td class="paramname">opacity</td><td>value from 0 (invisible) to 1 (fully opaque). </td></tr>
@@ -205,13 +242,13 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the label of the <a class="el" href="class_honey_1_1_sprite.html">Sprite</a>.</p>
-<dl class="section return"><dt>Returns</dt><dd>label of the <a class="el" href="class_honey_1_1_sprite.html">Sprite</a>. </dd></dl>
+<p>Get the draw label of the <a class="el" href="class_honey_1_1_sprite.html">Sprite</a>.</p>
+<dl class="section return"><dt>Returns</dt><dd>draw_label of the <a class="el" href="class_honey_1_1_sprite.html">Sprite</a>. </dd></dl>
 
 </div>
 </div>
-<a id="a8398330e51abc68dc5629fd4a1b315e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8398330e51abc68dc5629fd4a1b315e6">&#9670;&nbsp;</a></span>setLabel()</h2>
+<a id="ab33914d2b4feb710f0babd80f6c22caf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab33914d2b4feb710f0babd80f6c22caf">&#9670;&nbsp;</a></span>setLabel()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -220,15 +257,15 @@ Public Member Functions</h2></td></tr>
           <td class="memname">void Honey::Sprite::setLabel </td>
           <td>(</td>
           <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>label</em></td><td>)</td>
+          <td class="paramname"><em>draw_label</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Set the label of the <a class="el" href="class_honey_1_1_sprite.html">Sprite</a>.</p>
+<p>Set the draw_label of the <a class="el" href="class_honey_1_1_sprite.html">Sprite</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">label</td><td>The label of an image loaded in the graphics system. </td></tr>
+    <tr><td class="paramname">draw_label</td><td>The label of an image loaded in the graphics system. </td></tr>
   </table>
   </dd>
 </dl>
