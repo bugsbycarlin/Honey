@@ -21,7 +21,7 @@ namespace Honey {
   }
 
   void Sound::initialize() {
-    Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 640);
+    Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 4096);
   }
 
   void Sound::setSoundVolume(float fraction) {
