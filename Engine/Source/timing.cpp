@@ -157,7 +157,7 @@ namespace Honey {
     return candidate_value;
   }
 
-  void Timing::makeSequenceWithFunction(string label, vector<float> sequence_timing, void (*action)(int, float)) {
+  void Timing::makeSequenceWithFunction(string label, vector<float> sequence_timing, function<void(int, float)> action) {
     makeSequence(label, sequence_timing);
     sequence_counters[label] = -1;
     sequence_actions[label] = action;
@@ -172,7 +172,7 @@ namespace Honey {
     int current_value = sequenceValue(label);
     if (current_value > sequence_counters[label]) {
       sequence_counters[label] = current_value;
-      (*sequence_actions[label])(sequence_counters[label], sequence_timings[label][sequence_counters[label]]);
+      sequence_actions[label](sequence_counters[label], sequence_timings[label][sequence_counters[label]]);
     }
   }
 
