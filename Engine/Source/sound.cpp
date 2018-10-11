@@ -59,6 +59,10 @@ namespace Honey {
     Mix_PlayChannel(-1, sounds[label], loops);
   }
 
+  void Sound::stopSound() {
+    Mix_HaltChannel(-1);
+  }
+
   void Sound::removeSound(string label) {
     if (sounds.count(label) == 0) {
       printf("Failed to delete %s because it wasn't in sounds.\n", label.c_str());
@@ -96,6 +100,10 @@ namespace Honey {
     }
 
     Mix_PlayMusic(music[label], loops);
+  }
+
+  void Sound::stopMusic() {
+    Mix_HaltMusic();
   }
 
   void Sound::removeMusic(string label) {

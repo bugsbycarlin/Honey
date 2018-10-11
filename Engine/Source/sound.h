@@ -83,6 +83,11 @@ namespace Honey {
     void playSound(string label, int loops);
 
     /*!
+      Stop existing sounds.
+    */
+    void stopSound();
+
+    /*!
       Remove a sound from this system.
 
       @param label The sound.
@@ -117,6 +122,11 @@ namespace Honey {
       @param loops The number of times to loop. -1 loops the music forever.
     */
     void playMusic(string label, int loops);
+
+    /*!
+      Stop existing music.
+    */
+    void stopMusic();
 
     /*!
       Remove music from this system.
