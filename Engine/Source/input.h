@@ -176,6 +176,13 @@ namespace Honey {
     bool threeQuickKey(string key);
 
     /*!
+      Convenience method. Was any key pressed?
+      
+      @return true if and only if any key was pressed.
+    */
+    bool anyKeyPressed();
+
+    /*!
       Count the number of times this action was performed.
       
       @param action The name of an action.

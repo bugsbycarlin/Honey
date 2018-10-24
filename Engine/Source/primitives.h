@@ -53,6 +53,16 @@ namespace Honey {
   };
 
   /*!
+    box holds a two dimensional box shape.
+  */
+  struct box {
+    float top;
+    float left;
+    float bottom;
+    float right;
+  };
+
+  /*!
     <pre>
     \typdef settings is a cheap way to build settings dictionaries like
       settings s = {

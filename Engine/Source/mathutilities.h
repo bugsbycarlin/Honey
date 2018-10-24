@@ -47,6 +47,21 @@ namespace Honey {
     */
     float distance(position p1, position p2);
 
+    /*!
+      For a line defined by p1 and p2 and a third point p3, get the closest point on the line.
+
+      Note this may be outside the segment between p1 and p2.
+      
+      @param p1 a position.
+      @param p2 a position.
+      @param p3 a position.
+      @returns the closest point on the line to p3
+    */
+    position closestPoint(position p1, position p2, position p3);
+
+
+
+
    private:
     // Hide constructor, destructor, copy constructor and assignment operator
     MathUtilities();

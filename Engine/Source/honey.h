@@ -68,6 +68,7 @@
 #include "mathutilities.h"
 #include "hotconfig.h"
 #include "input.h"
+#include "collisions.h"
 #include "effects.h"
 #include "graphics.h"
 #include "layouts.h"

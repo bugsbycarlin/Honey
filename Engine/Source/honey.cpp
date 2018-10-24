@@ -16,6 +16,7 @@ namespace Honey {
   MathUtilities& math_utils = MathUtilities::instance();
   HotConfig& hot_config = HotConfig::instance();
   Input& input = Input::instance();
+  Collisions& collisions = Collisions::instance();
   Effects& effects = Effects::instance();
   Layouts& layouts = Layouts::instance();
   Graphics& graphics = Graphics::instance();

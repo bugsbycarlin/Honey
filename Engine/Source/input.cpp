@@ -205,6 +205,13 @@ namespace Honey {
     return false;
   }
 
+  bool Input::anyKeyPressed() {
+    for (std::pair<std::string, int> element : pressed) {
+      if (element.second > 0) return true;
+    }
+    return false;
+  }
+
   int Input::actionPressed(string action) {
     if (action_to_key.count(action) == 0) {
       return 0;
