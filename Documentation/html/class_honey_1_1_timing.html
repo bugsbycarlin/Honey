@@ -81,8 +81,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af3e33ddf968a25214846d7484292cdb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3264c5d30cdd0f0841f444c23288498b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_timing.html#a3264c5d30cdd0f0841f444c23288498b">sequenceValue</a> (string label)</td></tr>
 <tr class="separator:a3264c5d30cdd0f0841f444c23288498b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92f9abd935d22cb4079e0bad94fdc47c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_timing.html#a92f9abd935d22cb4079e0bad94fdc47c">makeSequenceWithFunction</a> (string label, vector&lt; float &gt; sequence_timing, void(*action)(int, float))</td></tr>
-<tr class="separator:a92f9abd935d22cb4079e0bad94fdc47c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5950278aed4d218251766e6190b4ff5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_timing.html#af5950278aed4d218251766e6190b4ff5">makeSequenceWithFunction</a> (string label, vector&lt; float &gt; sequence_timing, function&lt; void(int, float)&gt; action)</td></tr>
+<tr class="separator:af5950278aed4d218251766e6190b4ff5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0fe52c0df61b61d1209ce9f17e0ec55"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_timing.html#af0fe52c0df61b61d1209ce9f17e0ec55">doSequence</a> (string label)</td></tr>
 <tr class="separator:af0fe52c0df61b61d1209ce9f17e0ec55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -515,8 +515,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a92f9abd935d22cb4079e0bad94fdc47c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a92f9abd935d22cb4079e0bad94fdc47c">&#9670;&nbsp;</a></span>makeSequenceWithFunction()</h2>
+<a id="af5950278aed4d218251766e6190b4ff5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5950278aed4d218251766e6190b4ff5">&#9670;&nbsp;</a></span>makeSequenceWithFunction()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -536,7 +536,7 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">void(*)(int, float)&#160;</td>
+          <td class="paramtype">function&lt; void(int, float)&gt;&#160;</td>
           <td class="paramname"><em>action</em>&#160;</td>
         </tr>
         <tr>
@@ -552,7 +552,7 @@ Static Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">label</td><td>Name of the label. </td></tr>
     <tr><td class="paramname">sequence_timing</td><td>list of delays between increments. </td></tr>
-    <tr><td class="paramname">action</td><td>function pointer to an action function which takes integer sequence value and float sequence timing as parameters. </td></tr>
+    <tr><td class="paramname">action</td><td>std::function, void(int, float), which takes sequence value and sequence timing as parameters. </td></tr>
   </table>
   </dd>
 </dl>
