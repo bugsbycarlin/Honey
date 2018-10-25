@@ -155,7 +155,7 @@ bool test_collision(int i, int j) {
     } else if (j == 4) {
       // Line 1 and box 2
       return collisions.test(b2, box2, l1a, l1b);
-    } else if (j == 6) {
+    } else if (j == 5) {
       // Line 1 and circle 1
       return collisions.test(c1, circle_1_radius, l1a, l1b);
     } else if (j == 6) {
