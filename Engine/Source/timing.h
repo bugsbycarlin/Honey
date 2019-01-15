@@ -101,6 +101,39 @@ namespace Honey {
     bool locked(string label);
 
     /*!
+      Override the global time value to force a particular time.
+      
+      @param float Time in seconds.
+    */
+    void setOverrideTime(float seconds);
+
+    /*!
+      Remove the global time override, returning to the system clock.
+      
+      @param float Time in seconds.
+    */
+    void removeOverrideTime();
+
+    /*!
+      Pause all existing time counters. New ones will run as normal.
+
+      Pausing is a stack; if there are three counters, A, B and C, and pause
+      is called, these three counters will be paused. If counter D is created,
+      it will run as normal. If pause is called again, D will also be paused.
+      If unpause is called, D will be unpaused. If unpause is called again,
+      A, B and C will be unpaused. This is to allow the running of timers
+      during a game's pause state, for instance for pause animations.
+
+      See Tests/Pausing for a demonstration.
+    */
+    void pause();
+
+    /*!
+      Unpause the counters that were paused on the last pause.
+    */
+    void unpause();
+
+    /*!
       Make an integer counter for this label that lasts for this many seconds.
       
       @param label Name of the label.
@@ -193,14 +226,24 @@ namespace Honey {
     Timing(Timing&&) = delete;
     Timing& operator=(Timing&&) = delete;
 
+    // Time getter; checks for override, then uses system clock
+    unsigned long getTime();
+
     unordered_map<string, unsigned long> time_markers;
     unordered_map<string, float> duration_markers;
+    unordered_map<string, int> pause_values;
+
+    unordered_map<int, float> pause_history;
 
     unordered_map<string, int> transient_counter_values;
 
     unordered_map<string, vector<float>> sequence_timings;
     unordered_map<string, int> sequence_counters;
     unordered_map<string, function<void(int, float)>> sequence_actions;
+
+    bool time_from_override;
+    float time_override;
+    int pause_counter;
   };
 
   extern Timing& timing;

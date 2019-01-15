@@ -18,13 +18,27 @@ namespace Honey {
   Timing::Timing() {
     time_markers = {};
     duration_markers = {};
+    pause_values = {};
     transient_counter_values = {};
     sequence_timings = {};
+    pause_history = {};
+    time_from_override = false;
+    time_override = 0;
+    pause_counter = 0;
+  }
+
+  unsigned long Timing::getTime() {
+    if(time_from_override) {
+      return (unsigned long) (time_override * 1000);
+    } else {
+      return chrono::system_clock::now().time_since_epoch() / chrono::milliseconds(1);
+    }
   }
 
   void Timing::remove(string label) {
     time_markers.erase(label);
     duration_markers.erase(label);
+    pause_values.erase(label);
     transient_counter_values.erase(label);
   }
 
@@ -34,7 +48,8 @@ namespace Honey {
 
   void Timing::mark(string label) {
     // Get the time in milliseconds since the world was created.
-    time_markers[label] = chrono::system_clock::now().time_since_epoch() / chrono::milliseconds(1);
+    time_markers[label] = getTime();
+    pause_values[label] = pause_counter;
   }
 
   void Timing::setDuration(string label, float seconds) {
@@ -47,9 +62,16 @@ namespace Honey {
       return 0;
     }
     // Get the time in milliseconds since the world was created.
-    unsigned long current_time = chrono::system_clock::now().time_since_epoch() / chrono::milliseconds(1);
+    unsigned long current_time = getTime();
     // Subtract the old marked time, and divide by 1000 to get the time difference in seconds.
     float time_difference = (current_time - time_markers[label]) / 1000.0;
+    // Account for time paused at this level
+    int pause_value = pause_values[label];
+    time_difference -= pause_history[pause_value];
+    if (pause_value < pause_counter) {
+      time_difference -= (current_time - time_markers["pause_timer_" + to_string(pause_value)]) / 1000.0;
+    }
+    // Return the final difference
     return time_difference;
   }
 
@@ -85,6 +107,32 @@ namespace Honey {
 
     // Otherwise, it's locked. Return true.
     return true;
+  }
+
+  void Timing::setOverrideTime(float seconds) {
+    time_from_override = true;
+    time_override = seconds;
+  }
+
+  void Timing::removeOverrideTime() {
+    time_from_override = false;
+    time_override = 0;
+  }
+
+  void Timing::pause() {
+    timing.mark("pause_timer_" + to_string(pause_counter));
+    if (pause_history.count(pause_counter) != 1) {
+      pause_history[pause_counter] = 0;
+    }
+    pause_counter += 1;
+  }
+
+  void Timing::unpause() {
+    pause_counter -= 1;
+    unsigned long current_time = getTime();
+    float time_difference = (current_time - time_markers["pause_timer_" + to_string(pause_counter)]) / 1000.0;
+    pause_history[pause_counter] += time_difference;
+    remove("pause_timer_" + to_string(pause_counter));
   }
 
   void Timing::makeTransientCounter(string label, float seconds) {
@@ -180,5 +228,6 @@ namespace Honey {
     time_markers.clear();
     duration_markers.clear();
     transient_counter_values.clear();
+    pause_history.clear();
   }
 }
