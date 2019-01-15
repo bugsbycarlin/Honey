@@ -71,6 +71,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a0d742a6c1ef00abe66a5b436118d5bb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad225ffc24fe78808024cca4a7108288"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_timing.html#aad225ffc24fe78808024cca4a7108288">locked</a> (string label)</td></tr>
 <tr class="separator:aad225ffc24fe78808024cca4a7108288"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae754af10255bf4bc3fb3c85952425c18"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_timing.html#ae754af10255bf4bc3fb3c85952425c18">setOverrideTime</a> (float seconds)</td></tr>
+<tr class="separator:ae754af10255bf4bc3fb3c85952425c18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25b3c24078b15f5c784ee55a43cffdf5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_timing.html#a25b3c24078b15f5c784ee55a43cffdf5">removeOverrideTime</a> ()</td></tr>
+<tr class="separator:a25b3c24078b15f5c784ee55a43cffdf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11184f860c6a58c2d79ab783a978eec4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_timing.html#a11184f860c6a58c2d79ab783a978eec4">pause</a> ()</td></tr>
+<tr class="separator:a11184f860c6a58c2d79ab783a978eec4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac82d2c6f2d58871963a9154b6bc58594"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_timing.html#ac82d2c6f2d58871963a9154b6bc58594">unpause</a> ()</td></tr>
+<tr class="separator:ac82d2c6f2d58871963a9154b6bc58594"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b8fcb631dccd88b13e23723b037d3cd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_timing.html#a6b8fcb631dccd88b13e23723b037d3cd">makeTransientCounter</a> (string label, float seconds)</td></tr>
 <tr class="separator:a6b8fcb631dccd88b13e23723b037d3cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65efffb263abccf6ec523888aed50192"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_timing.html#a65efffb263abccf6ec523888aed50192">incrementTransientCounter</a> (string label, int value)</td></tr>
@@ -349,6 +357,93 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if and only if the label has been locked using makeTimeLock, less than a certain number of seconds ago. </dd></dl>
+
+</div>
+</div>
+<a id="ae754af10255bf4bc3fb3c85952425c18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae754af10255bf4bc3fb3c85952425c18">&#9670;&nbsp;</a></span>setOverrideTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Honey::Timing::setOverrideTime </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>seconds</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Override the global time value to force a particular time.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">float</td><td>Time in seconds. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a25b3c24078b15f5c784ee55a43cffdf5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25b3c24078b15f5c784ee55a43cffdf5">&#9670;&nbsp;</a></span>removeOverrideTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Honey::Timing::removeOverrideTime </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Remove the global time override, returning to the system clock.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">float</td><td>Time in seconds. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a11184f860c6a58c2d79ab783a978eec4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11184f860c6a58c2d79ab783a978eec4">&#9670;&nbsp;</a></span>pause()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Honey::Timing::pause </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Pause all existing time counters. New ones will run as normal.</p>
+<p>Pausing is a stack; if there are three counters, A, B and C, and pause is called, these three counters will be paused. If counter D is created, it will run as normal. If pause is called again, D will also be paused. If unpause is called, D will be unpaused. If unpause is called again, A, B and C will be unpaused. This is to allow the running of timers during a game's pause state, for instance for pause animations.</p>
+<p>See Tests/Pausing for a demonstration. </p>
+
+</div>
+</div>
+<a id="ac82d2c6f2d58871963a9154b6bc58594"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac82d2c6f2d58871963a9154b6bc58594">&#9670;&nbsp;</a></span>unpause()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Honey::Timing::unpause </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Unpause the counters that were paused on the last pause. </p>
 
 </div>
 </div>
