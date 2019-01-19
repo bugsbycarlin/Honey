@@ -17,6 +17,7 @@ namespace Honey {
 
   Input::Input() {
     action_to_key = {};
+    mouse_events = {};
   }
 
   void Input::processInput() {
@@ -25,7 +26,10 @@ namespace Honey {
     pressed.clear();
     up.clear();
 
-    // If the global key lock is engaged, additionally clear the down list
+    // Clear the previous mouse events
+    mouse_events.clear();
+
+    // If the global input lock is engaged, additionally clear the down list
     // and empty the queue before returning.
     if (locked()) {
       down.clear();
@@ -62,6 +66,56 @@ namespace Honey {
         string key = translateToKey(event);
         down.erase(key);
         up[key] = true;
+      } else if (event.type == SDL_MOUSEBUTTONDOWN) {
+        string button = "";
+        if (event.button.button == SDL_BUTTON_LEFT) {
+          button = "left";
+        } else if (event.button.button == SDL_BUTTON_MIDDLE) {
+          button = "middle";
+        } else if (event.button.button == SDL_BUTTON_RIGHT) {
+          button = "right";
+        }
+        if (!button.empty()) {
+          mouse_events.push_back({
+            button,
+            "down",
+            event.button.x,
+            event.button.y,
+          });
+        }
+      } else if (event.type == SDL_MOUSEBUTTONUP) {
+        string button = "";
+        if (event.button.button == SDL_BUTTON_LEFT) {
+          button = "left";
+        } else if (event.button.button == SDL_BUTTON_MIDDLE) {
+          button = "middle";
+        } else if (event.button.button == SDL_BUTTON_RIGHT) {
+          button = "right";
+        }
+        if (!button.empty()) {
+          mouse_events.push_back({
+            button,
+            "up",
+            event.button.x,
+            event.button.y,
+          });
+        }
+      } else if (event.type == SDL_MOUSEMOTION) {
+        // Note we don't support multiple buttons dragging.
+        string button = "none";
+        if (event.motion.state & SDL_BUTTON_LMASK) {
+          button = "left";
+        } else if (event.motion.state & SDL_BUTTON_MMASK) {
+          button = "middle";
+        } else if (event.motion.state & SDL_BUTTON_RMASK) {
+          button = "right";
+        }
+        mouse_events.push_back({
+          button,
+          "move",
+          event.motion.x,
+          event.motion.y,
+        });
       }
     }
   }
@@ -258,6 +312,10 @@ namespace Honey {
 
   void Input::removeAction(string action) {
     action_to_key.erase(action);
+  }
+
+  vector<mouseEvent> Input::getMouseEvents() {
+    return mouse_events;
   }
 
   Input::~Input() {

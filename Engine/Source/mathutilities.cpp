@@ -24,7 +24,17 @@ namespace Honey {
   }
 
   float MathUtilities::distance(position p1, position p2) {
-    return sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y));
+    return distance(p1.x, p1.y, p2.x, p2.y);
+  }
+
+  float MathUtilities::distance(float x1, float y1, float x2, float y2) {
+    return sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+  }
+
+  point MathUtilities::rotateVector(float x, float y, float theta) {
+    float cos_theta = cos(theta * M_PI / 180.0);
+    float sin_theta = sin(theta * M_PI / 180.0);
+    return {x * cos_theta - y * sin_theta, x * sin_theta + y * cos_theta, 0};
   }
 
   position MathUtilities::closestPoint(position p1, position p2, position p3) {
