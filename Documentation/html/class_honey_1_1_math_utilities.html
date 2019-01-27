@@ -59,6 +59,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a169185b127636175b452840f4bc865ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ab2c1b5462988cabdaa0350ec7462dd"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_math_utilities.html#a6ab2c1b5462988cabdaa0350ec7462dd">distance</a> (<a class="el" href="struct_honey_1_1position.html">position</a> p1, <a class="el" href="struct_honey_1_1position.html">position</a> p2)</td></tr>
 <tr class="separator:a6ab2c1b5462988cabdaa0350ec7462dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a685102c64d122d65f1d78d4ad5d6514b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_math_utilities.html#a685102c64d122d65f1d78d4ad5d6514b">distance</a> (float x1, float y1, float x2, float y2)</td></tr>
+<tr class="separator:a685102c64d122d65f1d78d4ad5d6514b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69ef594a13775788a3de464a8a302150"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_honey_1_1point.html">point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_math_utilities.html#a69ef594a13775788a3de464a8a302150">rotateVector</a> (float x, float y, float theta)</td></tr>
+<tr class="separator:a69ef594a13775788a3de464a8a302150"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae091e00ae8911122f389163e8f303a1f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_honey_1_1position.html">position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_math_utilities.html#ae091e00ae8911122f389163e8f303a1f">closestPoint</a> (<a class="el" href="struct_honey_1_1position.html">position</a> p1, <a class="el" href="struct_honey_1_1position.html">position</a> p2, <a class="el" href="struct_honey_1_1position.html">position</a> p3)</td></tr>
 <tr class="separator:ae091e00ae8911122f389163e8f303a1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -136,7 +140,7 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="a6ab2c1b5462988cabdaa0350ec7462dd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ab2c1b5462988cabdaa0350ec7462dd">&#9670;&nbsp;</a></span>distance()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ab2c1b5462988cabdaa0350ec7462dd">&#9670;&nbsp;</a></span>distance() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -169,6 +173,101 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>distance between p1 and p2. </dd></dl>
+
+</div>
+</div>
+<a id="a685102c64d122d65f1d78d4ad5d6514b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a685102c64d122d65f1d78d4ad5d6514b">&#9670;&nbsp;</a></span>distance() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Honey::MathUtilities::distance </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>x1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>y1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>x2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>y2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get the distance between two positions represented in floats.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x1</td><td>first x coordinate. </td></tr>
+    <tr><td class="paramname">y1</td><td>first y coordinate. </td></tr>
+    <tr><td class="paramname">x2</td><td>second x coordinate. </td></tr>
+    <tr><td class="paramname">y2</td><td>second y coordinate. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>distance between x1,y1 and x2,y2. </dd></dl>
+
+</div>
+</div>
+<a id="a69ef594a13775788a3de464a8a302150"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69ef594a13775788a3de464a8a302150">&#9670;&nbsp;</a></span>rotateVector()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_honey_1_1point.html">point</a> Honey::MathUtilities::rotateVector </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>theta</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Rotate a vector x,y by theta degrees counterclockwise.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>x coordinate of the vector. </td></tr>
+    <tr><td class="paramname">y</td><td>y coordinate of the vector. </td></tr>
+    <tr><td class="paramname">theta</td><td>rotation angle in degrees. positive is counterclockwise. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a vector the same magnitude as x,y, rotated theta degrees from the origin. </dd></dl>
 
 </div>
 </div>

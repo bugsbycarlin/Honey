@@ -85,6 +85,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aed175937482c25274d9827844d8f2665"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adddc36e0724eb9828595e413176dd8e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_input.html#adddc36e0724eb9828595e413176dd8e1">removeAction</a> (string action)</td></tr>
 <tr class="separator:adddc36e0724eb9828595e413176dd8e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cbb6ac62638e3feae1beb34ee7de8aa"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="struct_honey_1_1mouse_event.html">mouseEvent</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_input.html#a7cbb6ac62638e3feae1beb34ee7de8aa">getMouseEvents</a> ()</td></tr>
+<tr class="separator:a7cbb6ac62638e3feae1beb34ee7de8aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -577,6 +579,27 @@ Static Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a7cbb6ac62638e3feae1beb34ee7de8aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7cbb6ac62638e3feae1beb34ee7de8aa">&#9670;&nbsp;</a></span>getMouseEvents()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">vector&lt; <a class="el" href="struct_honey_1_1mouse_event.html">mouseEvent</a> &gt; Honey::Input::getMouseEvents </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get a list of mouseEvents since the last processInput.</p>
+<p>The list is in time order. Each event is a string button, a string action, and x, y coordinates.</p>
+<p>Example list: left, down, 100, 100 none, move, 110, 100 none, move, 110, 110 left, up, 110, 110</p>
+<dl class="section return"><dt>Returns</dt><dd>vector of mouseEvents. </dd></dl>
 
 </div>
 </div>
