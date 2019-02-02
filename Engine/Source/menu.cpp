@@ -258,7 +258,7 @@ namespace Honey {
   }
 
   bool Menu::typewriterFinished() {
-    return (typewriter_position >= text_length);
+    return (!typewriter || typewriter_position >= text_length);
   }
 
   Menu::~Menu() {
