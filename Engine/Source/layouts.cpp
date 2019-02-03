@@ -111,8 +111,8 @@ namespace Honey {
     LayoutSettings s = settings[label];
 
     position p;
-    p.y = s.y + column_number * s.y_margin;
-    p.x = s.x + row_number * s.x_margin;
+    p.y = s.y + row_number * s.y_margin;
+    p.x = s.x + column_number * s.x_margin;
 
     return p;
   }
@@ -141,8 +141,8 @@ namespace Honey {
     LayoutSettings s = settings[label];
 
     position p;
-    p.y = s.y + column_number * s.y_margin;
-    p.x = s.x + row_number * s.x_margin;
+    p.y = s.y + row_number * s.y_margin;
+    p.x = s.x + column_number * s.x_margin;
 
     if (column_number % 2 == 1) {
       p.x += s.x_margin / 2;
