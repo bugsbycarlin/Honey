@@ -51,6 +51,14 @@ namespace Honey {
     return state.count(label) == 1 && state[label] == FINISHED;
   }
 
+  void Effects::remove(string label) {
+    timing.remove(label);
+    state.erase(label);
+    if (start_value.count(label) == 1) start_value.erase(label);
+    if (end_value.count(label) == 1) end_value.erase(label);
+    if (size.count(label) == 1) size.erase(label);
+  }
+
   void Effects::removeAllEffects() {
     for (pair<string, float> item : start_value) {
       timing.remove(item.first);

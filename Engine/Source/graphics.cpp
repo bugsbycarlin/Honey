@@ -416,7 +416,7 @@ namespace Honey {
     bool centered,
     float rotation,
     float scale) {
-    drawImage(label, x_position, y_position, centered, rotation, scale, false, false, false);
+    drawImage(label, x_position, y_position, centered, rotation, scale, scale, scale);
   }
 
   void Graphics::drawImage(
@@ -425,15 +425,14 @@ namespace Honey {
     int y_position,
     bool centered,
     float rotation,
-    float scale,
-    bool x_flip,
-    bool y_flip,
-    bool z_flip) {
+    float x_scale,
+    float y_scale,
+    float z_scale) {
     pushModelMatrix();
 
     translate(x_position, y_position, 0);
     rotate(rotation, 0, 0, 1);
-    this->scale(scale * (x_flip ? -1 : 1), scale * (y_flip ? -1 : 1), scale * (z_flip ? -1 : 1));
+    this->scale(x_scale, y_scale, z_scale);
 
     if (centered) {
       int width = texture_widths[label];
