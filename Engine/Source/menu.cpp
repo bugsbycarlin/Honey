@@ -43,6 +43,22 @@ namespace Honey {
     this->image = image_root + "_" + to_string(unique_count);
     unique_count++;
 
+    setupMenu(
+      image_location,
+      image_root,
+      font_path,
+      font_size,
+      font_color
+    );
+  }
+
+  void Menu::setupMenu(
+    string image_location,
+    string image_root,
+    string font_path,
+    int font_size,
+    string font_color) {
+
     text_lines.resize(num_lines);
 
     // Load the components to surfaces
@@ -175,6 +191,31 @@ namespace Honey {
     }
   }
 
+  Menu::Menu(string image_location, string section, string name_root) {
+    this->x = hot_config.getInt(section, name_root + "_x");
+    this->y = hot_config.getInt(section, name_root + "_y");
+    this->width = hot_config.getInt(section, name_root + "_width");
+    this->height = hot_config.getInt(section, name_root + "_height");
+    this->margin_x = hot_config.getInt(section, name_root + "_margin_x");
+    this->margin_y = hot_config.getInt(section, name_root + "_margin_y");
+    this->num_lines = hot_config.getInt(section, name_root + "_num_lines");
+    this->wrap_length = hot_config.getInt(section, name_root + "_wrap_length");
+    this->typewriter = hot_config.getBool(section, name_root + "_typewriter");
+    this->typewriter_delay = hot_config.getFloat(section, name_root + "_typewriter_delay");
+
+    string image_root = hot_config.getString(section, name_root + "_image_root");
+    this->image = image_root + "_" + to_string(unique_count);
+    unique_count++;
+
+    setupMenu(
+      image_location,
+      image_root,
+      hot_config.getString(section, name_root + "_font_path"),
+      hot_config.getInt(section, name_root + "_font_size"),
+      hot_config.getString(section, name_root + "_font_color")
+    );
+  }
+
   void Menu::setText(string text) {
     text_length = text.length();
     std::vector<std::string> words;
@@ -232,6 +273,10 @@ namespace Honey {
         textboxes[i]->setText(text_lines[i]);
       }
     }
+  }
+
+  void Menu::setLineColor(int line, string color) {
+    textboxes[line]->setColor(color);
   }
 
   void Menu::draw() {
