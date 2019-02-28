@@ -31,7 +31,7 @@ namespace Honey {
     static MathUtilities& instance();
 
     /*!
-      Get a random integer between low and high (inclusive, eg 3,5 will return any of 3, 4, and 5).
+      Get a random integer between low and high (non-inclusive, eg 3,5 will return 3 or 4, not 5).
       
       @param low lowest value.
       @param high highest value.

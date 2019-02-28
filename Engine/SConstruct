@@ -1,6 +1,6 @@
 import os
 
-version = "0_21"
+version = "0_22"
 
 env=Environment()
 env.Append(CXXFLAGS = "-std=c++11")

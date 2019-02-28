@@ -21,6 +21,10 @@ namespace Honey {
   struct position {
     int x;
     int y;
+
+    bool operator<(const position & pos) const {
+      return y < pos.y;
+    }
   };
 
   const position origin = {0, 0};

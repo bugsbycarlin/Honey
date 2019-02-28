@@ -20,6 +20,12 @@ namespace Honey {
   }
 
   int MathUtilities::randomInt(int low, int high) {
+    if (low == high) return low;
+    if (high < low) {
+      int temp = high;
+      high = low;
+      low = temp;
+    }
     return rand() % (int) (high - low) + low;
   }
 
