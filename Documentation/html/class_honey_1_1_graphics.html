@@ -642,7 +642,7 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Tell <a class="el" href="class_honey_1_1_graphics.html">Graphics</a> to use a particular layer value. By default this is zero.</p>
-<p>In 2d drawings, higher layers will draw in front of lower layers. In fact, graphics will just divide the layer by 5000 and use this as the z value of the drawing. This works with transparency but does not work well with translucency.</p>
+<p>In 2d drawings, higher layers will draw in front of lower layers. In fact, graphics will just divide the layer by 100 and use this as the z value of the drawing. This works with transparency but does not work well with translucency.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">layer</td><td>a float layer value. </td></tr>
@@ -687,7 +687,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Tell <a class="el" href="class_honey_1_1_graphics.html">Graphics</a> to use the draw order as de facto layering. This is the default.</p>
 <p>In this case, a later item will be drawn in front of an earlier item.</p>
-<p>The layer can still be set manually with setLayer; within each manual layer, order will determine what's in front of that particular layer. </p>
+<p>The layer can be set manually with setLayer; within each manual layer, order will determine what's in front of that particular layer. </p>
 
 </div>
 </div>

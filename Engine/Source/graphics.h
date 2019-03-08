@@ -184,7 +184,7 @@ namespace Honey {
       Tell Graphics to use a particular layer value. By default this is zero.
       
       In 2d drawings, higher layers will draw in front of lower layers. In fact,
-      graphics will just divide the layer by 5000 and use this as the z value of the
+      graphics will just divide the layer by 100 and use this as the z value of the
       drawing. This works with transparency but does not work well with translucency.
 
       @param layer a float layer value.
@@ -203,7 +203,7 @@ namespace Honey {
 
       In this case, a later item will be drawn in front of an earlier item.
 
-      The layer can still be set manually with setLayer; within each manual layer,
+      The layer can be set manually with setLayer; within each manual layer,
       order will determine what's in front of that particular layer.
     */
     void useOrderBasedLayers();

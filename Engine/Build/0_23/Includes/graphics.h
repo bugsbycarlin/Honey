@@ -182,8 +182,10 @@ namespace Honey {
 
     /*!
       Tell Graphics to use a particular layer value. By default this is zero.
-      In 2d drawings, higher layers will draw above lower layers. In fact,
-      graphics will just use the layer value over 5000 for the z value of 2d drawings.
+      
+      In 2d drawings, higher layers will draw in front of lower layers. In fact,
+      graphics will just divide the layer by 100 and use this as the z value of the
+      drawing. This works with transparency but does not work well with translucency.
 
       @param layer a float layer value.
     */
@@ -191,13 +193,20 @@ namespace Honey {
 
     /*!
       Tell Graphics to use the y position of every 2d drawing as the layer.
+
+      In this case, items at the bottom of the screen are drawn in front of those higher up.
     */
-    void useYPositionAsLayer();
+    void usePositionBasedLayers();
 
     /*!
-      Tell Graphics not to use the y position of every 2d drawing as the layer.
+      Tell Graphics to use the draw order as de facto layering. This is the default.
+
+      In this case, a later item will be drawn in front of an earlier item.
+
+      The layer can be set manually with setLayer; within each manual layer,
+      order will determine what's in front of that particular layer.
     */
-    void doNotUseYPositionAsLayer();
+    void useOrderBasedLayers();
 
     /*!
       Draw a 2D rectangle at the given x and y position with the given width and height.

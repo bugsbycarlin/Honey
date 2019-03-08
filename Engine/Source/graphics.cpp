@@ -343,9 +343,9 @@ namespace Honey {
 
     pushModelMatrix();
     if (!using_y_position_as_layer) {
-      translate(x_position, y_position, layer / 5000.0f);
+      translate(x_position, y_position, layer / 100.0f);
     } else {
-      translate(x_position, y_position, y_position / 5000.0f);
+      translate(x_position, y_position, layer / 100.0f + y_position / 500000.0f);
     }
 
     int size = 4;
@@ -453,9 +453,9 @@ namespace Honey {
     pushModelMatrix();
 
     if (!using_y_position_as_layer) {
-      translate(x_position, y_position, layer / 5000.0f);
+      translate(x_position, y_position, layer / 100.0f);
     } else {
-      translate(x_position, y_position, y_position / 5000.0f);
+      translate(x_position, y_position, layer / 100.0f + y_position / 500000.0f);
     }
     rotate(rotation, 0, 0, 1);
     this->scale(x_scale, y_scale, z_scale);
