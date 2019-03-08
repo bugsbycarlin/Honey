@@ -375,6 +375,8 @@ namespace Honey {
     void initializeShaders();
 
     void cacheRectangle(float width, float height);
+
+    float draw_counter;
   };
 
   extern Graphics& graphics;

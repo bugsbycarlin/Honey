@@ -25,6 +25,7 @@ namespace Honey {
 
     using_2d = false;
     using_y_position_as_layer = false;
+    layer = 0;
   }
 
   void Graphics::initializeOpenGL() {
@@ -38,6 +39,9 @@ namespace Honey {
 
     // Enable depth testing, so we can draw in layers.
     glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_TRUE);
+    glDepthFunc(GL_LEQUAL);
+    glDepthRange(-1.0f, 1.0f);
 
     // glViewport tells OpenGL it's drawing on a square the size of the window.
     glViewport(0, 0, window.width, window.height);
@@ -269,12 +273,13 @@ namespace Honey {
 
     // and the color
     setColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+    // reset the little draw counter
+    draw_counter = 0;
   }
 
   void Graphics::draw2D() {
     // In order to do 2D graphics, as opposed to 3D, we need
-    // No depth testing (checking whether one polygon is closer to the camera than another),
-    // glDisable(GL_DEPTH_TEST);
     // an Orthographic projection (camera is looking straight overhead, and there's no perspective correction),
     projection = glm::ortho(0.0f, (float) window.width, (float) window.height, 0.0f, -1.0f, 1.0f);
     glUniformMatrix4fv(mvp_matrix_id, 1, GL_FALSE, glm::value_ptr(projection));
@@ -343,10 +348,11 @@ namespace Honey {
 
     pushModelMatrix();
     if (!using_y_position_as_layer) {
-      translate(x_position, y_position, layer / 100.0f);
+      translate(x_position, y_position, layer / 100.0f + draw_counter / 50000000.0f);
     } else {
       translate(x_position, y_position, layer / 100.0f + y_position / 500000.0f);
     }
+    draw_counter++;
 
     int size = 4;
 
@@ -453,10 +459,11 @@ namespace Honey {
     pushModelMatrix();
 
     if (!using_y_position_as_layer) {
-      translate(x_position, y_position, layer / 100.0f);
+      translate(x_position, y_position, layer / 100.0f + draw_counter / 50000000.0f);
     } else {
       translate(x_position, y_position, layer / 100.0f + y_position / 500000.0f);
     }
+    draw_counter++;
     rotate(rotation, 0, 0, 1);
     this->scale(x_scale, y_scale, z_scale);
 
