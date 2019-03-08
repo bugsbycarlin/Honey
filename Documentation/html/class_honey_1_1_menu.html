@@ -57,10 +57,14 @@ $(function() {
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ac83cb60d8684761bf64b14129514364f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_menu.html#ac83cb60d8684761bf64b14129514364f">Menu</a> (int x, int y, int width, int height, string image_location, string image_root, int margin_x, int margin_y, int num_lines, int wrap_length, bool typewriter, float typewriter_delay, string font_path, int font_size, string font_color)</td></tr>
 <tr class="separator:ac83cb60d8684761bf64b14129514364f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a366b4c5e4a8248af60b5e0e2750394c5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_menu.html#a366b4c5e4a8248af60b5e0e2750394c5">Menu</a> (string image_location, string section, string name_root)</td></tr>
+<tr class="separator:a366b4c5e4a8248af60b5e0e2750394c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cf0e02d5740c2edca7f538b656eddeb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_menu.html#a5cf0e02d5740c2edca7f538b656eddeb">setText</a> (string text)</td></tr>
 <tr class="separator:a5cf0e02d5740c2edca7f538b656eddeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5507459ecac40a793752181dbad5c54d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_menu.html#a5507459ecac40a793752181dbad5c54d">setTextLines</a> (vector&lt; string &gt; lines)</td></tr>
 <tr class="separator:a5507459ecac40a793752181dbad5c54d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ef384acf46bb0b84f3e07976d5ee1d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_menu.html#a1ef384acf46bb0b84f3e07976d5ee1d9">setLineColor</a> (int line, string color)</td></tr>
+<tr class="separator:a1ef384acf46bb0b84f3e07976d5ee1d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc730b97bce7fbec9158932b3a6b557a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_menu.html#adc730b97bce7fbec9158932b3a6b557a">draw</a> ()</td></tr>
 <tr class="separator:adc730b97bce7fbec9158932b3a6b557a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b3ba97b03421773b5ae048af18ef095"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_menu.html#a7b3ba97b03421773b5ae048af18ef095">startTypewriter</a> ()</td></tr>
@@ -84,7 +88,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>unique_count</b
 <p>None yet! </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac83cb60d8684761bf64b14129514364f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac83cb60d8684761bf64b14129514364f">&#9670;&nbsp;</a></span>Menu()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac83cb60d8684761bf64b14129514364f">&#9670;&nbsp;</a></span>Menu() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -213,6 +217,51 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>unique_count</b
 
 </div>
 </div>
+<a id="a366b4c5e4a8248af60b5e0e2750394c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a366b4c5e4a8248af60b5e0e2750394c5">&#9670;&nbsp;</a></span>Menu() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Honey::Menu::Menu </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>image_location</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>section</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>name_root</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Public constructor. Makes one <a class="el" href="class_honey_1_1_menu.html">Menu</a>.</p>
+<p>Initializes a menu using values drawn from config.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">image_root</td><td>the location of art files </td></tr>
+    <tr><td class="paramname">section</td><td>config section for lookup. </td></tr>
+    <tr><td class="paramname">name_root</td><td>config root name for lookup. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="class_honey_1_1_menu.html">Menu</a>. </dd></dl>
+
+</div>
+</div>
 <a id="a77377d01330d17c3fd85e36ed8d5fa2a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a77377d01330d17c3fd85e36ed8d5fa2a">&#9670;&nbsp;</a></span>~Menu()</h2>
 
@@ -276,6 +325,42 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>unique_count</b
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">text</td><td>The text of the box. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1ef384acf46bb0b84f3e07976d5ee1d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ef384acf46bb0b84f3e07976d5ee1d9">&#9670;&nbsp;</a></span>setLineColor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Honey::Menu::setLineColor </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>color</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the color of a line of the <a class="el" href="class_honey_1_1_menu.html">Menu</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">int</td><td>line The line number to set. </td></tr>
+    <tr><td class="paramname">color</td><td>string hex color, eg #FFFFFF. </td></tr>
   </table>
   </dd>
 </dl>

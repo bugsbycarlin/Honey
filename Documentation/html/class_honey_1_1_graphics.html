@@ -98,6 +98,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aebffee9a9c1b50ef8ba8dfb077b7c940"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a125b03aff41fe49089d8fd10e24e10bf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_graphics.html#a125b03aff41fe49089d8fd10e24e10bf">draw2D</a> ()</td></tr>
 <tr class="separator:a125b03aff41fe49089d8fd10e24e10bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37074c800777a39d66231bf8ab1546d1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_graphics.html#a37074c800777a39d66231bf8ab1546d1">setLayer</a> (float layer)</td></tr>
+<tr class="separator:a37074c800777a39d66231bf8ab1546d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0f0a6ba18a6ccc802927b4a1331863c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_graphics.html#ad0f0a6ba18a6ccc802927b4a1331863c">usePositionBasedLayers</a> ()</td></tr>
+<tr class="separator:ad0f0a6ba18a6ccc802927b4a1331863c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27cc870a49cdf578f2984376a4e9225f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_graphics.html#a27cc870a49cdf578f2984376a4e9225f">useOrderBasedLayers</a> ()</td></tr>
+<tr class="separator:a27cc870a49cdf578f2984376a4e9225f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c934f85376edfed76024722999de05b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_graphics.html#a6c934f85376edfed76024722999de05b">drawRectangle</a> (float x_position, float y_position, float width, float height)</td></tr>
 <tr class="separator:a6c934f85376edfed76024722999de05b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a278be5ef9bdda31a5c6eea30410cbad4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_graphics.html#a278be5ef9bdda31a5c6eea30410cbad4">addImage</a> (string label, string path)</td></tr>
@@ -112,6 +118,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a338a9c4584c7ff814df8272052f0cdd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afee2317c059a8d8e85f9fb0cf1969b08"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_graphics.html#afee2317c059a8d8e85f9fb0cf1969b08">drawImage</a> (string label, int x_position, int y_position, bool centered, float rotation, float <a class="el" href="class_honey_1_1_graphics.html#a67c413f90c60bbf44554a8dd4a73be1e">scale</a>)</td></tr>
 <tr class="separator:afee2317c059a8d8e85f9fb0cf1969b08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a180f547435b88a658cb5d81728b356b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_graphics.html#a180f547435b88a658cb5d81728b356b4">drawImage</a> (string label, int x_position, int y_position, bool centered, float rotation, float x_scale, float y_scale, float z_scale)</td></tr>
+<tr class="separator:a180f547435b88a658cb5d81728b356b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a3464e954a750e28a9996e8140510a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_graphics.html#a7a3464e954a750e28a9996e8140510a1">removeImage</a> (string label)</td></tr>
 <tr class="separator:a7a3464e954a750e28a9996e8140510a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae5ba27f61456882ac5564b98283c0ee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_honey_1_1_graphics.html#aae5ba27f61456882ac5564b98283c0ee">removeAllImages</a> ()</td></tr>
@@ -618,6 +626,71 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a37074c800777a39d66231bf8ab1546d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37074c800777a39d66231bf8ab1546d1">&#9670;&nbsp;</a></span>setLayer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Honey::Graphics::setLayer </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>layer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Tell <a class="el" href="class_honey_1_1_graphics.html">Graphics</a> to use a particular layer value. By default this is zero.</p>
+<p>In 2d drawings, higher layers will draw in front of lower layers. In fact, graphics will just divide the layer by 5000 and use this as the z value of the drawing. This works with transparency but does not work well with translucency.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">layer</td><td>a float layer value. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad0f0a6ba18a6ccc802927b4a1331863c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0f0a6ba18a6ccc802927b4a1331863c">&#9670;&nbsp;</a></span>usePositionBasedLayers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Honey::Graphics::usePositionBasedLayers </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Tell <a class="el" href="class_honey_1_1_graphics.html">Graphics</a> to use the y position of every 2d drawing as the layer.</p>
+<p>In this case, items at the bottom of the screen are drawn in front of those higher up. </p>
+
+</div>
+</div>
+<a id="a27cc870a49cdf578f2984376a4e9225f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27cc870a49cdf578f2984376a4e9225f">&#9670;&nbsp;</a></span>useOrderBasedLayers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Honey::Graphics::useOrderBasedLayers </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Tell <a class="el" href="class_honey_1_1_graphics.html">Graphics</a> to use the draw order as de facto layering. This is the default.</p>
+<p>In this case, a later item will be drawn in front of an earlier item.</p>
+<p>The layer can still be set manually with setLayer; within each manual layer, order will determine what's in front of that particular layer. </p>
+
+</div>
+</div>
 <a id="a6c934f85376edfed76024722999de05b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6c934f85376edfed76024722999de05b">&#9670;&nbsp;</a></span>drawRectangle()</h2>
 
@@ -802,7 +875,7 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="a338a9c4584c7ff814df8272052f0cdd0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a338a9c4584c7ff814df8272052f0cdd0">&#9670;&nbsp;</a></span>drawImage() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a338a9c4584c7ff814df8272052f0cdd0">&#9670;&nbsp;</a></span>drawImage() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -845,7 +918,7 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="afee2317c059a8d8e85f9fb0cf1969b08"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afee2317c059a8d8e85f9fb0cf1969b08">&#9670;&nbsp;</a></span>drawImage() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afee2317c059a8d8e85f9fb0cf1969b08">&#9670;&nbsp;</a></span>drawImage() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -902,6 +975,84 @@ Static Public Member Functions</h2></td></tr>
     <tr><td class="paramname">centered</td><td>whether to draw the image from the center instead of the top left. </td></tr>
     <tr><td class="paramname">rotation</td><td>desired clockwise rotation of the image on the screen in degrees. </td></tr>
     <tr><td class="paramname">scale</td><td>desired scale of the image on the screen (1 is the original size, 0.5 is half size, 2 is double size, etc). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a180f547435b88a658cb5d81728b356b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a180f547435b88a658cb5d81728b356b4">&#9670;&nbsp;</a></span>drawImage() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Honey::Graphics::drawImage </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>label</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x_position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y_position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>centered</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>rotation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>x_scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>y_scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>z_scale</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Draw an image at the given location. This version has more options; the image can be centered at x,y instead of drawn from the top left corner. It can be rotated clockwise by a specified angle, and scaled by a specified scale value.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">label</td><td>the name of an image in our system. It is assumed this has already been loaded with addImage. </td></tr>
+    <tr><td class="paramname">x_position</td><td>desired x coordinate of the image on the screen. </td></tr>
+    <tr><td class="paramname">y_position</td><td>desired y coordinate of the image on the screen. </td></tr>
+    <tr><td class="paramname">centered</td><td>whether to draw the image from the center instead of the top left. </td></tr>
+    <tr><td class="paramname">rotation</td><td>desired clockwise rotation of the image on the screen in degrees. </td></tr>
+    <tr><td class="paramname">x_scale</td><td>desired x_scale of the image on the screen (1 is the original size, 0.5 is half size, 2 is double size, etc). </td></tr>
+    <tr><td class="paramname">y_scale</td><td>desired x_scale of the image on the screen (1 is the original size, 0.5 is half size, 2 is double size, etc). </td></tr>
+    <tr><td class="paramname">z_scale</td><td>desired x_scale of the image on the screen (1 is the original size, 0.5 is half size, 2 is double size, etc). </td></tr>
   </table>
   </dd>
 </dl>
