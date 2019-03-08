@@ -41,7 +41,13 @@ namespace Honey {
   out vec4 final_color_vector;
 
   void main(){
-    final_color_vector = color * texture(texture_sampler, fragment_texture_vector);
+    vec4 color_vector = color * texture(texture_sampler, fragment_texture_vector);
+
+    if (color_vector.a <= 0.0001) {
+      discard;
+    }
+
+    final_color_vector = color_vector;
   } 
   )";
 }

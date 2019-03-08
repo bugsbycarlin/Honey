@@ -181,6 +181,34 @@ namespace Honey {
     void draw2D();
 
     /*!
+      Tell Graphics to use a particular layer value. By default this is zero.
+      
+      In 2d drawings, higher layers will draw in front of lower layers. In fact,
+      graphics will just divide the layer by 5000 and use this as the z value of the
+      drawing. This works with transparency but does not work well with translucency.
+
+      @param layer a float layer value.
+    */
+    void setLayer(float layer);
+
+    /*!
+      Tell Graphics to use the y position of every 2d drawing as the layer.
+
+      In this case, items at the bottom of the screen are drawn in front of those higher up.
+    */
+    void usePositionBasedLayers();
+
+    /*!
+      Tell Graphics to use the draw order as de facto layering. This is the default.
+
+      In this case, a later item will be drawn in front of an earlier item.
+
+      The layer can still be set manually with setLayer; within each manual layer,
+      order will determine what's in front of that particular layer.
+    */
+    void useOrderBasedLayers();
+
+    /*!
       Draw a 2D rectangle at the given x and y position with the given width and height.
       It is assumed that the color or texture (ie image) of the rectangle will have been
       set before this, either with setColor or setImage.
@@ -333,11 +361,13 @@ namespace Honey {
     GLuint texture_sampler_id;
     GLuint shader_program;
 
-    // Variables for working on the CPU size
+    // Variables for working on the CPU side
     glm::mat4 projection;
     glm::mat4 model;
     glm::vec4 color;
     bool using_2d;
+    bool using_y_position_as_layer;
+    float layer;
     vector<glm::mat4> model_stack;
 
     void initializeOpenGL();

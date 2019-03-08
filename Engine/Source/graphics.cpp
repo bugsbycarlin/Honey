@@ -22,6 +22,9 @@ namespace Honey {
     initializeOpenGL();
     initializeShaders();
     initializeBuffersAndGeometry();
+
+    using_2d = false;
+    using_y_position_as_layer = false;
   }
 
   void Graphics::initializeOpenGL() {
@@ -32,6 +35,9 @@ namespace Honey {
     // Enable blending, so we can use the alpha or transparency component of images.
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    // Enable depth testing, so we can draw in layers.
+    glEnable(GL_DEPTH_TEST);
 
     // glViewport tells OpenGL it's drawing on a square the size of the window.
     glViewport(0, 0, window.width, window.height);
@@ -268,12 +274,24 @@ namespace Honey {
   void Graphics::draw2D() {
     // In order to do 2D graphics, as opposed to 3D, we need
     // No depth testing (checking whether one polygon is closer to the camera than another),
-    glDisable(GL_DEPTH_TEST);
+    // glDisable(GL_DEPTH_TEST);
     // an Orthographic projection (camera is looking straight overhead, and there's no perspective correction),
-    projection = glm::ortho(0.0f, (float) window.width, (float) window.height, 0.0f, 0.0f, 1.0f);
+    projection = glm::ortho(0.0f, (float) window.width, (float) window.height, 0.0f, -1.0f, 1.0f);
     glUniformMatrix4fv(mvp_matrix_id, 1, GL_FALSE, glm::value_ptr(projection));
     // and a boolean to make sure other parts of the system behave in a 2d way.
     using_2d = true;
+  }
+
+  void Graphics::setLayer(float layer) {
+    this->layer = layer;
+  }
+
+  void Graphics::usePositionBasedLayers() {
+    using_y_position_as_layer = true;
+  }
+
+  void Graphics::useOrderBasedLayers() {
+    using_y_position_as_layer = false;
   }
 
   void Graphics::cacheRectangle(float width, float height) {
@@ -324,7 +342,11 @@ namespace Honey {
     );
 
     pushModelMatrix();
-    translate(x_position, y_position, 0);
+    if (!using_y_position_as_layer) {
+      translate(x_position, y_position, layer / 5000.0f);
+    } else {
+      translate(x_position, y_position, y_position / 5000.0f);
+    }
 
     int size = 4;
 
@@ -430,7 +452,11 @@ namespace Honey {
     float z_scale) {
     pushModelMatrix();
 
-    translate(x_position, y_position, 0);
+    if (!using_y_position_as_layer) {
+      translate(x_position, y_position, layer / 5000.0f);
+    } else {
+      translate(x_position, y_position, y_position / 5000.0f);
+    }
     rotate(rotation, 0, 0, 1);
     this->scale(x_scale, y_scale, z_scale);
 
