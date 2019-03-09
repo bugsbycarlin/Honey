@@ -65,6 +65,14 @@ namespace Honey {
     @param SDLK_LEFTPAREN (
     @param SDLK_RIGHTPAREN )
     @param SDLK_ASTERISK *
+    @param SDLK_LCTRL left_control
+    @param SDLK_RCTRL right_control
+    @param SDLK_LALT left_alt
+    @param SDLK_RALT right_alt
+    @param SDLK_LSHIFT left_shift
+    @param SDLK_RSHIFT right_shift
+    @param SDLK_LGUI left_command
+    @param SDLK_RGUI right_command
     @param SDLK_0 0
     @param SDLK_1 1
     @param SDLK_2 2

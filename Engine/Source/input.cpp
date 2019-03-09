@@ -160,6 +160,14 @@ namespace Honey {
       case SDLK_LEFTPAREN : key = "("; break;
       case SDLK_RIGHTPAREN : key = ")"; break;
       case SDLK_ASTERISK : key = "*"; break;
+      case SDLK_LCTRL : key = "left_control"; break;
+      case SDLK_RCTRL : key = "right_control"; break;
+      case SDLK_LALT : key = "left_alt"; break;
+      case SDLK_RALT : key = "right_alt"; break;
+      case SDLK_LSHIFT : key = "left_shift"; break;
+      case SDLK_RSHIFT : key = "right_shift"; break;
+      case SDLK_LGUI : key = "left_command"; break;
+      case SDLK_RGUI : key = "right_command"; break;
       case SDLK_0 : key = "0"; break;
       case SDLK_1 : key = "1"; break;
       case SDLK_2 : key = "2"; break;
