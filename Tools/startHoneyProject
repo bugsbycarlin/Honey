@@ -1,0 +1,122 @@
+#!/usr/bin/python
+
+import argparse
+import os
+import sys
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument("--name", action="store", required=True)
+parser.add_argument("--path", action="store", required=True)
+parser.add_argument("--version", action="store", required=True)
+
+args = parser.parse_args()
+name = args.name
+path = os.path.expanduser(args.path)
+version = args.version
+
+os.makedirs(path)
+
+os.makedirs(os.path.join(path, "Art"))
+os.makedirs(os.path.join(path, "Fonts"))
+os.makedirs(os.path.join(path, "Honey"))
+os.makedirs(os.path.join(path, "Music"))
+os.makedirs(os.path.join(path, "Sound"))
+os.makedirs(os.path.join(path, "Source"))
+
+construct = """import os
+
+honey_version = "%s"
+
+env=Environment()
+env.Append(CXXFLAGS = "-std=c++11")
+
+libraries = ["libHoney.a", "boost_filesystem-mt", "boost_system-mt"]
+
+env.AppendUnique(FRAMEWORKS = Split("OpenGL SDL2 SDL2_image SDL2_mixer SDL2_ttf"))
+
+%s = env.Program(target = "%s",
+  source = Glob("./Source/*.cpp"),
+  LIBS = libraries,
+  LIBPATH="./Honey/%%s/Library" %% honey_version,
+  CPPPATH="./Honey/%%s/Includes" %% honey_version)
+
+Default()
+
+def cleanObjects(target, source, env):
+  os.system("rm ./Source/*.o")
+
+cleanup = Command("cleanObjects", [], cleanObjects)
+Depends(cleanup, BUILD_TARGETS)
+#BUILD_TARGETS.append("cleanObjects")
+"""
+
+with open(os.path.join(path, "SConstruct"), "w") as construct_file:
+  construct_file.write(construct % (version, name, name))
+
+
+config = """<section name="layout">
+  <param type="int" name="screen_width">1280</param>
+  <param type="int" name="screen_height">720</param>
+  <param type="bool" name="full_screen">false</param>
+</section>
+"""
+
+with open(os.path.join(path, "config.txt"), "w") as config_file:
+  config_file.write(config)
+
+
+main = """/*
+  %s
+*/
+
+#include "honey.h"
+
+#include <string>
+
+using namespace Honey;
+using namespace std;
+
+bool quit;
+
+void initialize() {
+  quit = false;
+}
+
+void render() {
+  graphics.draw2D();
+  graphics.clearScreen("#808080");
+}
+
+void logic() {
+  if (input.threeQuickKey("escape")) {
+    quit = true;
+  }
+}
+
+void cleanup() {
+  printf("Clean up, clean up, everybody everywhere. Clean up, clean up, everybody do a share.\\n");
+}
+
+int main(int argc, char* args[]) {
+  StartHoney("%s");
+
+  // A reasonable thing to do:
+  initialize();
+  while (!quit) {
+    input.processInput();
+    logic();
+    render();
+    graphics.updateDisplay();
+  }
+  cleanup();
+}
+
+"""
+
+with open(os.path.join(os.path.join(path, "Source"), "main.cpp"), "w") as main_file:
+  main_file.write(main % (name, name))
+
+engine_path = os.path.abspath(os.path.join(os.path.dirname(sys.argv[0]), "../Engine/Build/%s" % version))
+
+os.system("cp -R %s %s" % (engine_path, os.path.join(path, "Honey")))
