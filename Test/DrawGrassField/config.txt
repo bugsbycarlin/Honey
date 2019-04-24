@@ -1,0 +1,5 @@
+<section name="layout">
+  <param type="int" name="screen_width">1280</param>
+  <param type="int" name="screen_height">720</param>
+  <param type="bool" name="full_screen">false</param>
+</section>

@@ -43,6 +43,23 @@ namespace Honey {
     return {x * cos_theta - y * sin_theta, x * sin_theta + y * cos_theta, 0};
   }
 
+  point MathUtilities::parabolicArc(
+      float a_x,
+      float a_y,
+      float b_x,
+      float b_y,
+      float c_x,
+      float c_y,
+      float fraction) {
+    float a_c_x = (1 - fraction) * a_x + fraction * c_x;
+    float a_c_y = (1 - fraction) * a_y + fraction * c_y;
+    float c_b_x = (1 - fraction) * c_x + fraction * b_x;
+    float c_b_y = (1 - fraction) * c_y + fraction * b_y;
+    float p_x = (1 - fraction) * a_c_x + fraction * c_b_x;
+    float p_y = (1 - fraction) * a_c_y + fraction * c_b_y;
+    return {p_x, p_y, 0};
+  }
+
   position MathUtilities::closestPoint(position p1, position p2, position p3) {
     // TODO: stop doing this in ints. Change position to doubles maybe.
     if (abs(p2.x - p1.x) < 0.000001) {

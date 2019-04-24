@@ -87,6 +87,18 @@ namespace Honey {
 
     // We also start out with white as the color.
     color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+
+    // Create a plain white texture
+    const Uint32 rmask = 0x00ff0000;
+    const Uint32 gmask = 0x0000ff00;
+    const Uint32 bmask = 0x000000ff;
+    const Uint32 amask = 0xff000000;
+    SDL_Surface* plain_white = SDL_CreateRGBSurface(0, 1, 1, 32, rmask, gmask, bmask, amask);
+    SDL_LockSurface(plain_white);
+    unsigned int * plain_white_pixels = (unsigned int *)plain_white->pixels;
+    plain_white_pixels[0] = SDL_MapRGBA(plain_white->format, 255, 255, 255, 255);
+    SDL_UnlockSurface(plain_white);
+    addImageFromSurface("__plain_white__", plain_white);
   }
 
   void Graphics::initializeShaders() {
@@ -321,6 +333,86 @@ namespace Honey {
     if (vertex_buffers.count(id) == 0) {
       cacheRectangle(width, height);
     }
+
+    // 1st buffer : vertices
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffers[id]);
+    glVertexAttribPointer(
+      0,                  // buffer number 0
+      3,                  // size per item is 3 (3 points to a vertex)
+      GL_FLOAT,           // of type float
+      GL_FALSE,           // not normalized
+      0,                  // stride (ignore me!)
+      (void*)0            // array buffer offset (ignore meeee!)
+    );
+
+    // 2nd buffer : textures
+    glEnableVertexAttribArray(1);
+    glBindBuffer(GL_ARRAY_BUFFER, rectangle_texture_buffer);
+    glVertexAttribPointer(
+      1,                  // buffer number 1
+      2,                  // size per item is 2 (2 points to a texture coordinate)
+      GL_FLOAT,           // of type float
+      GL_FALSE,           // not normalized
+      0,                  // stride (ignore me!)
+      (void*)0            // array buffer offset (ignore meeee!)
+    );
+
+    pushModelMatrix();
+    if (!using_y_position_as_layer) {
+      translate(x_position, y_position, layer / 100.0f + draw_counter / 50000000.0f);
+    } else {
+      translate(x_position, y_position, layer / 100.0f + y_position / 500000.0f);
+    }
+    draw_counter++;
+
+    int size = 4;
+
+    if (size == 4) {
+      glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    } else {
+      glDrawArrays(GL_TRIANGLES, 0, 3);
+    }
+
+    popModelMatrix();
+
+    glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(1);
+  }
+
+  void Graphics::drawQuad(
+    float x_position,
+    float y_position,
+    float x1,
+    float y1,
+    float x2,
+    float y2,
+    float x3,
+    float y3,
+    float x4,
+    float y4) {
+    // Cache if it doesn't exist
+    // This id is a bad hack
+    string id = to_string(x1+x2+x3+x4) + "," + to_string(y1*y2+y3*y4);
+
+    if (vertex_buffers.count(id) == 0) {
+      GLfloat vertex_data[] = {
+        x1, y1, 0,
+        x2, y2, 0,
+        x3, y3, 0,
+        x4, y4, 0,
+      };
+
+      glGenBuffers(1, &vertex_buffers[id]);
+      glBindBuffer(GL_ARRAY_BUFFER, vertex_buffers[id]);
+      glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_data) * 4 * 3, vertex_data, GL_STATIC_DRAW);
+    }
+
+    // Unbind the texture
+    // glActiveTexture(GL_TEXTURE0);
+    // glBindTexture(GL_TEXTURE_2D, 0);
+    // glUniform1i(texture_sampler_id, 0);
+    setImage("__plain_white__");
 
     // 1st buffer : vertices
     glEnableVertexAttribArray(0);

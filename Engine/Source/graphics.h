@@ -221,6 +221,37 @@ namespace Honey {
     void drawRectangle(float x_position, float y_position, float width, float height);
 
     /*!
+      Draw a 2D quad using four coordinate pairs. Texture is cleared out and the rectangle
+      is drawn with the last set color.
+
+      @param desired x_position x coordinate of the rectangle on the screen.
+      @param desired y_position y coordinate of the rectangle on the screen.
+      @param x1 coordinate of the first point.
+      @param y1 coordinate of the first point.
+      @param x2 coordinate of the second point.
+      @param y2 coordinate of the second point.
+      @param x3 coordinate of the third point.
+      @param y3 coordinate of the third point.
+      @param x4 coordinate of the fourth point.
+      @param y4 coordinate of the fourth point.
+    */
+    void drawQuad(
+      float x_position,
+      float y_position,
+      float x1,
+      float y1,
+      float x2,
+      float y2,
+      float x3,
+      float y3,
+      float x4,
+      float y4);
+
+    /*!
+      Draw a crappy line.
+    */
+
+    /*!
       Load an image at the specified path, storing it on the graphics card, where we
       can reference it later by using the specified label.
       

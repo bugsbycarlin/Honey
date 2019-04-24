@@ -168,6 +168,8 @@ namespace Honey {
     vector<Textbox*> textboxes;
     vector<string> text_lines;
 
+    bool background;
+
     int x;
     int y;
     int width;

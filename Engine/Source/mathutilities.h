@@ -70,6 +70,29 @@ namespace Honey {
     point rotateVector(float x, float y, float theta);
 
     /*!
+      Find a point on a parabolic arc.
+
+      The arc is defined by points A and B, and control point C.
+      
+      @param a_x x coordinate of start point.
+      @param a_y y coordinate of start point.
+      @param b_x x coordinate of end point.
+      @param b_y y coordinate of end point.
+      @param c_x x coordinate of control point.
+      @param c_y y coordinate of control point.
+      @param fraction how far along the arc; 0.0 is A, 1.0 is B.
+      @returns a point on the arc.
+    */
+    point parabolicArc(
+      float a_x,
+      float a_y,
+      float b_x,
+      float b_y,
+      float c_x,
+      float c_y,
+      float fraction);
+
+    /*!
       For a line defined by p1 and p2 and a third point p3, get the closest point on the line.
 
       Note this may be outside the segment between p1 and p2.
