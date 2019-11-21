@@ -190,6 +190,22 @@ namespace Honey {
     return strings[section][name];
   }
 
+  bool Config::getBool(string name) {
+    return getBool("", name);
+  }
+
+  int Config::getInt(string name) {
+    return getInt("", name);
+  }
+
+  float Config::getFloat(string name) {
+    return getFloat("", name);
+  }
+
+  string Config::getString(string name) {
+    return getString("", name);
+  }
+
   Config::~Config() {
     bools.clear();
     ints.clear();

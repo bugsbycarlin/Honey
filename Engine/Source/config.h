@@ -82,7 +82,7 @@ namespace Honey {
     bool getBool(string section, string name);
 
     /*!
-      Get a int value from config.
+      Get an int value from config.
       
       @param section Config section.
       @param name Value name.
@@ -107,6 +107,38 @@ namespace Honey {
       @return string The value. Default is the empty string.
     */
     string getString(string section, string name);
+
+    /*!
+      Get a boolean value from config, no section.
+      
+      @param name Value name.
+      @return bool The value. Default is false.
+    */
+    bool getBool(string name);
+
+    /*!
+      Get an int value from config, no section.
+      
+      @param name Value name.
+      @return int The value. Default is 0.
+    */
+    int getInt(string name);
+
+    /*!
+      Get a float value from config, no section.
+      
+      @param name Value name.
+      @return float The value. Default is 0.
+    */
+    float getFloat(string name);
+
+    /*!
+      Get a string value from config, no section.
+
+      @param name Value name.
+      @return string The value. Default is the empty string.
+    */
+    string getString(string name);
 
    private:
     // Hide constructor, destructor, copy constructor and assignment operator
