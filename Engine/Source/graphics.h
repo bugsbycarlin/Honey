@@ -166,6 +166,14 @@ namespace Honey {
     void setColor(float r, float g, float b, float opacity);
 
     /*!
+      Wipe the screen clean, setting everything to the specified color and opacity.
+      
+      @param color a hex string color such as "#CF48FF".
+      @param opacity an opacity value from 0 (fully transparent) to 1 (opaque).
+    */
+    void clearScreen(string color, float opacity);
+
+    /*!
       Wipe the screen clean, setting everything to the specified color.
       
       @param color a hex string color such as "#CF48FF".

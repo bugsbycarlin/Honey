@@ -129,6 +129,18 @@ namespace Honey {
     void stopMusic();
 
     /*!
+      Returns true if and only if music is playing.
+      @returns true if and only if music is playing.
+    */
+    bool musicPlaying();
+
+    /*!
+      Set the music to a particular time.
+      @param time_in_seconds desired time
+    */
+    void setMusicPosition(double time_in_seconds);
+
+    /*!
       Remove music from this system.
 
       @param label The music.

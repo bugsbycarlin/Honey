@@ -271,10 +271,14 @@ namespace Honey {
   }
 
   void Graphics::clearScreen(string color) {
+    clearScreen(color, 1.0f);
+  }
+
+  void Graphics::clearScreen(string color, float opacity) {
     floatColor c = parseFloatColor(color);
 
     // Tell OpenGL to clear the whole screen to our chosen color.
-    glClearColor(c.r, c.g, c.b, 1.0f);
+    glClearColor(c.r, c.g, c.b, opacity);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Also, for convenience, reset the model matrix

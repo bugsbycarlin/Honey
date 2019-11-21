@@ -106,6 +106,16 @@ namespace Honey {
     Mix_HaltMusic();
   }
 
+  bool Sound::musicPlaying() {
+    return (Mix_PlayingMusic() == 1 && Mix_PausedMusic() == 0);
+  }
+
+  void Sound::setMusicPosition(double time_in_seconds) {
+    // This assumes MP3. Ogg and others behave differently.
+    Mix_RewindMusic();
+    Mix_SetMusicPosition(time_in_seconds);
+  }
+
   void Sound::removeMusic(string label) {
     if (music.count(label) == 0) {
       printf("Failed to delete %s because it wasn't in sounds.\n", label.c_str());
