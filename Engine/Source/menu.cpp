@@ -199,27 +199,27 @@ namespace Honey {
   }
 
   Menu::Menu(string image_location, string section, string name_root) {
-    this->x = hot_config.getInt(section, name_root + "_x");
-    this->y = hot_config.getInt(section, name_root + "_y");
-    this->width = hot_config.getInt(section, name_root + "_width");
-    this->height = hot_config.getInt(section, name_root + "_height");
-    this->margin_x = hot_config.getInt(section, name_root + "_margin_x");
-    this->margin_y = hot_config.getInt(section, name_root + "_margin_y");
-    this->num_lines = hot_config.getInt(section, name_root + "_num_lines");
-    this->wrap_length = hot_config.getInt(section, name_root + "_wrap_length");
-    this->typewriter = hot_config.getBool(section, name_root + "_typewriter");
-    this->typewriter_delay = hot_config.getFloat(section, name_root + "_typewriter_delay");
+    this->x = config.getInt(section, name_root + "_x");
+    this->y = config.getInt(section, name_root + "_y");
+    this->width = config.getInt(section, name_root + "_width");
+    this->height = config.getInt(section, name_root + "_height");
+    this->margin_x = config.getInt(section, name_root + "_margin_x");
+    this->margin_y = config.getInt(section, name_root + "_margin_y");
+    this->num_lines = config.getInt(section, name_root + "_num_lines");
+    this->wrap_length = config.getInt(section, name_root + "_wrap_length");
+    this->typewriter = config.getBool(section, name_root + "_typewriter");
+    this->typewriter_delay = config.getFloat(section, name_root + "_typewriter_delay");
 
-    string image_root = hot_config.getString(section, name_root + "_image_root");
+    string image_root = config.getString(section, name_root + "_image_root");
     this->image = image_root + "_" + to_string(unique_count);
     unique_count++;
 
     setupMenu(
       image_location,
       image_root,
-      hot_config.getString(section, name_root + "_font_path"),
-      hot_config.getInt(section, name_root + "_font_size"),
-      hot_config.getString(section, name_root + "_font_color")
+      config.getString(section, name_root + "_font_path"),
+      config.getInt(section, name_root + "_font_size"),
+      config.getString(section, name_root + "_font_color")
     );
   }
 

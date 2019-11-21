@@ -18,7 +18,7 @@ using namespace std;
 
 namespace Honey {
   /*!
-    The HotConfig class reads config from a file and can update during runtime.
+    The Config class reads config from a file and can update during runtime.
 
     Configs are expected to be light xml-like, organized into sections, with bool,
     int, float, or string values. Example config doesn't look good in doxygen;
@@ -28,20 +28,20 @@ namespace Honey {
 
     http://www.friendsonmountains.com/blog/2018/07/14/lets-make-honey-version-0-08-honey-hot-config
   */
-  class HotConfig final {
+  class Config final {
    public:
     /*!
       Singleton instance getter.
 
-      @return This'll get you the one instance of HotConfig you're supposed to have.
+      @return This'll get you the one instance of Config you're supposed to have.
     */
-    static HotConfig& instance();
+    static Config& instance();
 
-    /*! HotConfig status. */
+    /*! Config status. */
     enum STATUS {
       SUCCESS, /*!< Success. */
       FAILURE, /*!< Failure to update. */
-      SLEEPING, /*!< Sleeping. HotConfig sleeps for a few seconds between updates. */
+      SLEEPING, /*!< Sleeping. Config sleeps for a few seconds between updates. */
     };
 
     /*!
@@ -110,13 +110,13 @@ namespace Honey {
 
    private:
     // Hide constructor, destructor, copy constructor and assignment operator
-    HotConfig();
-    ~HotConfig();
+    Config();
+    ~Config();
 
-    HotConfig(const HotConfig&) = delete;
-    HotConfig& operator=(const HotConfig&) = delete;
-    HotConfig(HotConfig&&) = delete;
-    HotConfig& operator=(HotConfig&&) = delete;
+    Config(const Config&) = delete;
+    Config& operator=(const Config&) = delete;
+    Config(Config&&) = delete;
+    Config& operator=(Config&&) = delete;
 
     const float default_update_interval = 2;
     float update_interval;
@@ -130,5 +130,7 @@ namespace Honey {
     unordered_map<string, unordered_map<string, string>> strings = {};
   };
 
-  extern HotConfig& hot_config;
+  extern Config& config;
+  extern Config& conf;
+  extern Config& hot_config;
 }
